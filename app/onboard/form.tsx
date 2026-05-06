@@ -14,25 +14,25 @@ export function OnboardForm() {
   const [draftSuccess, setDraftSuccess] = useState(false);
   const [draftId, setDraftId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
-    businessName: '',
-    ownerName: '',
+    businessname: '',
+    ownername: '',
     industry: '',
-    existingPhone: '',
-    ownerEmail: '',
-    ownerMobile: '',
-    newNumber: false,
-    serviceTypes: '',
-    operatingHours: '',
-    callVolume: '',
+    existingphone: '',
+    owneremail: '',
+    ownermobile: '',
+    newnumber: false,
+    servicetypes: '',
+    operatinghours: '',
+    callvolume: '',
     faqs: '',
-    callbackOffer: '',
-    callbackSlots: '',
+    callbackoffer: '',
+    callbackslots: '',
     escalation: '',
-    infoCapture: '',
-    summaryEmail: '',
-    summaryDetails: '',
-    customerConfirm: false,
-    successMetrics: '',
+    infocapture: '',
+    summaryemail: '',
+    summarydetails: '',
+    customerconfirm: false,
+    successmetrics: '',
     notes: '',
   });
 
@@ -129,25 +129,25 @@ export function OnboardForm() {
       setSuccess(true);
       setDraftId(null);
       setFormData({
-        businessName: '',
-        ownerName: '',
+        businessname: '',
+        ownername: '',
         industry: '',
-        existingPhone: '',
-        ownerEmail: '',
-        ownerMobile: '',
-        newNumber: false,
-        serviceTypes: '',
-        operatingHours: '',
-        callVolume: '',
+        existingphone: '',
+        owneremail: '',
+        ownermobile: '',
+        newnumber: false,
+        servicetypes: '',
+        operatinghours: '',
+        callvolume: '',
         faqs: '',
-        callbackOffer: '',
-        callbackSlots: '',
+        callbackoffer: '',
+        callbackslots: '',
         escalation: '',
-        infoCapture: '',
-        summaryEmail: '',
-        summaryDetails: '',
-        customerConfirm: false,
-        successMetrics: '',
+        infocapture: '',
+        summaryemail: '',
+        summarydetails: '',
+        customerconfirm: false,
+        successmetrics: '',
         notes: '',
       });
 
@@ -201,8 +201,8 @@ export function OnboardForm() {
                 <label className="block text-sm font-medium text-slate-700 mb-2">Business name</label>
                 <input
                   type="text"
-                  name="businessName"
-                  value={formData.businessName}
+                  name="businessname"
+                  value={formData.businessname}
                   onChange={handleChange}
                   placeholder="e.g. Mini Marshmallows"
                   className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -213,8 +213,8 @@ export function OnboardForm() {
                 <label className="block text-sm font-medium text-slate-700 mb-2">Owner name</label>
                 <input
                   type="text"
-                  name="ownerName"
-                  value={formData.ownerName}
+                  name="ownername"
+                  value={formData.ownername}
                   onChange={handleChange}
                   className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
@@ -236,8 +236,8 @@ export function OnboardForm() {
                 <label className="block text-sm font-medium text-slate-700 mb-2">Existing business phone</label>
                 <input
                   type="tel"
-                  name="existingPhone"
-                  value={formData.existingPhone}
+                  name="existingphone"
+                  value={formData.existingphone}
                   onChange={handleChange}
                   className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
@@ -247,8 +247,8 @@ export function OnboardForm() {
                 <label className="block text-sm font-medium text-slate-700 mb-2">Owner email</label>
                 <input
                   type="email"
-                  name="ownerEmail"
-                  value={formData.ownerEmail}
+                  name="owneremail"
+                  value={formData.owneremail}
                   onChange={handleChange}
                   className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
@@ -258,8 +258,8 @@ export function OnboardForm() {
                 <label className="block text-sm font-medium text-slate-700 mb-2">Owner mobile</label>
                 <input
                   type="tel"
-                  name="ownerMobile"
-                  value={formData.ownerMobile}
+                  name="ownermobile"
+                  value={formData.ownermobile}
                   onChange={handleChange}
                   className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
@@ -270,8 +270,8 @@ export function OnboardForm() {
               <label className="flex items-center gap-3">
                 <input
                   type="checkbox"
-                  name="newNumber"
-                  checked={formData.newNumber}
+                  name="newnumber"
+                  checked={formData.newnumber}
                   onChange={handleChange}
                   className="w-4 h-4 rounded border-slate-300"
                 />
@@ -287,8 +287,8 @@ export function OnboardForm() {
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">Service types offered</label>
                 <textarea
-                  name="serviceTypes"
-                  value={formData.serviceTypes}
+                  name="servicetypes"
+                  value={formData.servicetypes}
                   onChange={handleChange}
                   placeholder="e.g. Event planning, Florist, Consultation, Booking"
                   rows={3}
@@ -301,8 +301,8 @@ export function OnboardForm() {
                   <label className="block text-sm font-medium text-slate-700 mb-2">Operating hours</label>
                   <input
                     type="text"
-                    name="operatingHours"
-                    value={formData.operatingHours}
+                    name="operatinghours"
+                    value={formData.operatinghours}
                     onChange={handleChange}
                     placeholder="e.g. Mon-Fri 9am-6pm, Sat 10am-4pm"
                     className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -313,8 +313,8 @@ export function OnboardForm() {
                   <label className="block text-sm font-medium text-slate-700 mb-2">Expected call volume per week</label>
                   <input
                     type="text"
-                    name="callVolume"
-                    value={formData.callVolume}
+                    name="callvolume"
+                    value={formData.callvolume}
                     onChange={handleChange}
                     placeholder="e.g. 15-20 calls"
                     className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -345,8 +345,8 @@ export function OnboardForm() {
                   <label className="block text-sm font-medium text-slate-700 mb-2">Should agent offer callbacks? (Y/N)</label>
                   <input
                     type="text"
-                    name="callbackOffer"
-                    value={formData.callbackOffer}
+                    name="callbackoffer"
+                    value={formData.callbackoffer}
                     onChange={handleChange}
                     placeholder="Yes / No"
                     className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -369,8 +369,8 @@ export function OnboardForm() {
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">Available callback time slots</label>
                 <textarea
-                  name="callbackSlots"
-                  value={formData.callbackSlots}
+                  name="callbackslots"
+                  value={formData.callbackslots}
                   onChange={handleChange}
                   placeholder="e.g. Monday 9am-12pm, Tuesday 2-5pm, Friday 10am-1pm"
                   rows={3}
@@ -381,8 +381,8 @@ export function OnboardForm() {
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">What information should be captured on each call?</label>
                 <textarea
-                  name="infoCapture"
-                  value={formData.infoCapture}
+                  name="infocapture"
+                  value={formData.infocapture}
                   onChange={handleChange}
                   placeholder="e.g. Name, email, phone, service type, event date, budget, special requests"
                   rows={3}
@@ -400,8 +400,8 @@ export function OnboardForm() {
                 <label className="block text-sm font-medium text-slate-700 mb-2">Send call summaries to this email</label>
                 <input
                   type="email"
-                  name="summaryEmail"
-                  value={formData.summaryEmail}
+                  name="summaryemail"
+                  value={formData.summaryemail}
                   onChange={handleChange}
                   className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
@@ -410,8 +410,8 @@ export function OnboardForm() {
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">What details should each summary include?</label>
                 <textarea
-                  name="summaryDetails"
-                  value={formData.summaryDetails}
+                  name="summarydetails"
+                  value={formData.summarydetails}
                   onChange={handleChange}
                   placeholder="e.g. Transcript, caller details, booking confirmation, follow-up actions"
                   rows={3}
@@ -422,8 +422,8 @@ export function OnboardForm() {
               <label className="flex items-center gap-3">
                 <input
                   type="checkbox"
-                  name="customerConfirm"
-                  checked={formData.customerConfirm}
+                  name="customerconfirm"
+                  checked={formData.customerconfirm}
                   onChange={handleChange}
                   className="w-4 h-4 rounded border-slate-300"
                 />
@@ -439,8 +439,8 @@ export function OnboardForm() {
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">How will success be measured?</label>
                 <textarea
-                  name="successMetrics"
-                  value={formData.successMetrics}
+                  name="successmetrics"
+                  value={formData.successmetrics}
                   onChange={handleChange}
                   placeholder="e.g. Calls answered, bookings captured, customer satisfaction"
                   rows={3}
