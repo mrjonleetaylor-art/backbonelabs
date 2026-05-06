@@ -1,6 +1,5 @@
 import Nav from "@/components/Nav"
 import Hero from "@/components/Hero"
-import SocialProof from "@/components/SocialProof"
 import DemoCall from "@/components/DemoCall"
 import Problem from "@/components/Problem"
 import HowItWorks from "@/components/HowItWorks"
@@ -17,7 +16,6 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
-        <SocialProof />
         <DemoCall />
         <Problem />
         <HowItWorks />

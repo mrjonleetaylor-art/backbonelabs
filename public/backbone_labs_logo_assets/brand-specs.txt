@@ -1,0 +1,9 @@
+Backbone Labs logo asset pack
+
+Design: 5 stacked elongated rounded-rectangle segments, tight vertical spine.
+Colours: violet primary #6366F1, cyan accent #06B6D4, white background #FFFFFF.
+Font for wordmark/email/OG: Inter.
+No effects, gradients, shadows, blur, or 3D treatments.
+
+SVG/backbone-labs-mark.svg is the clean source mark with white background and no fixed dimensions.
+SVG/backbone-labs-mark-transparent.svg is included for website flexibility.

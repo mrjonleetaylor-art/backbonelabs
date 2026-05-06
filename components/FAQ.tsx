@@ -1,27 +1,41 @@
 "use client"
 import { useState } from "react"
-import FadeIn from "@/components/FadeIn"
+import { motion, AnimatePresence } from "framer-motion"
+
+const ease = [0.22, 1, 0.36, 1] as const
 
 const faqs = [
   {
-    q: "Is Thomas actually an AI?",
-    a: "Yes. Thomas uses advanced voice AI to handle calls naturally. Most callers find the conversation indistinguishable from speaking with a human receptionist.",
+    q: "What happens when someone calls?",
+    a: "Backbone answers in two rings, greets the caller using your shop name, and handles the conversation from there. It takes orders, answers common questions, collects contact details, and sends you a summary after every call. Callers get a natural, helpful experience - and you don't miss a thing.",
   },
   {
-    q: "What if Thomas doesn't know the answer to something?",
-    a: "During onboarding, we train Thomas on everything specific to your shop - products, hours, delivery areas, pricing, and your most common questions. For anything that falls outside that, he takes a clear message and flags it for you.",
+    q: "What if Backbone doesn't know the answer to something?",
+    a: "During onboarding, we configure Backbone on everything specific to your shop - products, hours, delivery areas, pricing, and your most common questions. For anything outside that, the agent takes a clear message and flags it for you.",
   },
   {
-    q: "Can I customise what Thomas says?",
-    a: "Absolutely. We configure Thomas with your shop name, products, hours, pricing, and FAQs. The setup takes about 30 minutes, and most clients are live within 48 hours.",
+    q: "Can I customise what Backbone says?",
+    a: "Absolutely. We configure Backbone with your shop name, products, hours, pricing, and FAQs. The setup takes about 30 minutes, and most clients are live within 48 hours.",
   },
   {
-    q: "What if I want to take a call myself?",
-    a: "You can set rules to transfer calls straight to you - all calls, large orders only, VIP customers, or calls where someone asks to speak to a person. It's flexible.",
+    q: "Can Backbone take payment?",
+    a: "Yes. Backbone sends a secure SMS payment link to the caller's phone, processed with 3D Secure authentication. That's the same standard your bank uses for online card transactions. You can take full payment, a deposit, or split payments depending on what suits the order. Funds settle directly to your nominated account.",
   },
   {
-    q: "What does $300 a month cover?",
-    a: "Everything. Unlimited calls, 24/7 availability, custom setup, call summaries, and ongoing support. No per-call charges, no hidden fees.",
+    q: "Can calls be transferred to my mobile?",
+    a: "Yes. You set the rules - VIP customers, large orders, whatever you decide gets routed straight through to you.",
+  },
+  {
+    q: "How are call recordings and customer details handled?",
+    a: "Every call is logged and summarised. Recordings and data are stored securely and accessible only to you.",
+  },
+  {
+    q: "What does setup require from me?",
+    a: "About an hour of your time. We configure everything - your services, hours, pricing, and call rules. Most businesses are live within a week.",
+  },
+  {
+    q: "How does pricing work?",
+    a: "Plans start at $199/month and scale with your call volume. Each plan includes a set number of calls, and extra calls beyond that are charged at $1 per call. Setup is a one-off fee. No lock-in - cancel any month.",
   },
   {
     q: "What happens if I want to cancel?",
@@ -33,56 +47,87 @@ export default function FAQ() {
   const [open, setOpen] = useState<number | null>(null)
 
   return (
-    <section className="bg-primary border-t border-white/[0.06] py-24 md:py-32">
-      <div className="max-w-2xl mx-auto px-6">
-        <FadeIn>
-          <div className="text-center mb-14">
-            <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-accent mb-4">
-              FAQ
-            </p>
-            <h2 className="font-serif font-bold text-3xl md:text-[2.6rem] text-cream tracking-tight">
-              Common questions
-            </h2>
-          </div>
-        </FadeIn>
-        <div className="border-t border-white/[0.06]">
+    <section id="faq" className="bg-slate-50 py-24 border-t border-slate-200">
+      <div className="max-w-[1100px] mx-auto px-6 lg:px-12">
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease }}
+          className="mb-11"
+        >
+          <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold uppercase tracking-[0.09em] text-indigo-500 mb-3.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+            FAQ
+          </span>
+          <h2 className="text-[clamp(28px,3.5vw,44px)] font-bold leading-[1.1] tracking-[-0.025em] text-slate-900 mt-1.5">
+            Common questions
+          </h2>
+        </motion.div>
+
+        <div className="max-w-[700px]">
           {faqs.map((faq, i) => (
-            <FadeIn key={faq.q} delay={i * 50}>
-              <div className="border-b border-white/[0.06]">
+            <motion.div
+              key={faq.q}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, ease, delay: i * 0.04 }}
+            >
+              <div
+                className={`border-b border-slate-200 rounded-lg px-4 transition-colors duration-200 ${
+                  open === i ? "bg-slate-100" : "bg-transparent"
+                }`}
+              >
                 <button
                   onClick={() => setOpen(open === i ? null : i)}
-                  className="w-full flex items-start justify-between gap-4 py-5 text-left group"
+                  className="w-full flex items-center justify-between gap-4 py-[19px] text-left group"
                   aria-expanded={open === i}
+                  aria-controls={`faq-answer-${i}`}
                 >
-                  <span className="font-sans font-medium text-cream group-hover:text-accent transition-colors text-sm leading-snug">
+                  <span className="text-[17px] font-semibold text-slate-900 group-hover:text-indigo-500 transition-colors tracking-[-0.01em]">
                     {faq.q}
                   </span>
-                  <span
-                    className={`shrink-0 w-5 h-5 flex items-center justify-center transition-transform duration-200 mt-0.5 text-muted ${
-                      open === i ? "rotate-180 text-accent" : ""
-                    }`}
+                  <motion.svg
+                    animate={{ rotate: open === i ? 180 : 0 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    className={`flex-shrink-0 w-5 h-5 transition-colors ${open === i ? "text-indigo-500" : "text-slate-400"}`}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   >
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M6 9l6 6 6-6" />
-                    </svg>
-                  </span>
+                    <path d="M6 9l6 6 6-6" />
+                  </motion.svg>
                 </button>
-                {open === i && (
-                  <p className="font-sans text-muted text-sm pb-5 leading-relaxed -mt-1">
-                    {faq.a}
-                  </p>
-                )}
+                <AnimatePresence initial={false}>
+                  {open === i && (
+                    <motion.div
+                      key="answer"
+                      id={`faq-answer-${i}`}
+                      initial={{ height: 0 }}
+                      animate={{ height: "auto" }}
+                      exit={{ height: 0 }}
+                      transition={{ duration: 0.25, ease: "easeOut" }}
+                      className="overflow-hidden"
+                    >
+                      <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2, delay: 0.1 }}
+                        className="text-[15px] text-slate-500 leading-[1.7] pb-[18px] -mt-1"
+                      >
+                        {faq.a}
+                      </motion.p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
-            </FadeIn>
+            </motion.div>
           ))}
         </div>
       </div>

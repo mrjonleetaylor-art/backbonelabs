@@ -1,23 +1,49 @@
 import type { Metadata } from "next"
-import { Lora, DM_Sans } from "next/font/google"
+import { Inter } from "next/font/google"
+import Providers from "@/components/Providers"
+import CookieBanner from "@/components/CookieBanner"
 import "./globals.css"
 
-const lora = Lora({
-  variable: "--font-lora",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
-})
-
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
 })
 
 export const metadata: Metadata = {
-  title: "Backbone Labs - AI Phone Agent for Florists",
+  title: "Phone answering for local business | Backbone Labs",
   description:
-    "Thomas Anderson answers every call to your florist shop - 24/7, so you never miss an order. AI phone agents for Australian small businesses.",
+    "Backbone answers every inbound call for your local business. No missed orders, no busy signals. Keep your existing number or get a new one.",
+  icons: {
+    icon: [
+      { url: "/backbone_labs_logo_assets/favicon/favicon-16.png", sizes: "16x16", type: "image/png" },
+      { url: "/backbone_labs_logo_assets/favicon/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/backbone_labs_logo_assets/favicon/favicon-64.png", sizes: "64x64", type: "image/png" },
+    ],
+    apple: "/backbone_labs_logo_assets/favicon/favicon-64.png",
+    shortcut: "/backbone_labs_logo_assets/favicon/favicon.ico",
+  },
+  openGraph: {
+    type: "website",
+    title: "Phone answering for local business | Backbone Labs",
+    description:
+      "Backbone answers every inbound call for your local business. No missed orders, no busy signals.",
+    url: "https://backbonelabs.com.au",
+    images: [{ url: "https://backbonelabs.com.au/backbone_labs_logo_assets/OG/backbone-labs-og-1200x630.png" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Phone answering for local business | Backbone Labs",
+    description:
+      "Backbone answers every inbound call for your local business. No missed orders, no busy signals.",
+    images: ["https://backbonelabs.com.au/backbone_labs_logo_assets/OG/backbone-labs-og-1200x630.png"],
+  },
+  alternates: {
+    canonical: "https://backbonelabs.com.au",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 }
 
 export default function RootLayout({
@@ -26,8 +52,60 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${lora.variable} ${dmSans.variable}`}>
-      <body className="antialiased font-sans bg-primary text-cream">{children}</body>
+    <html lang="en" className={inter.variable}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              "name": "Backbone Labs",
+              "description": "Phone answering service for local Australian businesses. Answer every inbound call, capture orders, handle common questions.",
+              "url": "https://backbonelabs.com.au",
+              "telephone": "+61253023030",
+              "email": "hello@backbonelabs.com.au",
+              "areaServed": {
+                "@type": "Country",
+                "name": "AU"
+              },
+              "serviceType": "Phone Answering Service",
+              "priceRange": "$199-$999",
+              "knowsAbout": [
+                "Phone answering",
+                "Call handling",
+                "Order capture",
+                "Customer communication"
+              ]
+            })
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Service",
+              "name": "Phone Answering for Local Business",
+              "provider": {
+                "@type": "LocalBusiness",
+                "name": "Backbone Labs"
+              },
+              "areaServed": {
+                "@type": "Country",
+                "name": "AU"
+              },
+              "description": "24/7 phone answering for local businesses. Handles calls, captures details, answers FAQs, transfers when needed."
+            })
+          }}
+        />
+      </head>
+      <body className="antialiased font-sans bg-white text-slate-900">
+        <Providers>
+          {children}
+          <CookieBanner />
+        </Providers>
+      </body>
     </html>
   )
 }

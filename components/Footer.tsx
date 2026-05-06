@@ -1,26 +1,46 @@
-import { EMAIL_HREF } from "@/lib/contact"
+"use client"
+import { EMAIL_HREF, PHONE_DISPLAY, PHONE_HREF } from "@/lib/contact"
 
 export default function Footer() {
+  function openCookieBanner() {
+    window.dispatchEvent(new Event("backbone:open-cookie-banner"))
+  }
+
   return (
-    <footer className="bg-[#0C1410] border-t border-white/[0.06] py-10">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-sm">
-          <div className="font-serif font-bold text-base text-cream">
-            Backbone<span className="text-accent"> Labs</span>
-          </div>
-          <div className="flex items-center gap-6">
-            <a
-              href={EMAIL_HREF}
-              className="font-sans text-muted/60 hover:text-muted transition-colors text-xs"
-            >
-              hello@backbonelabs.com.au
-            </a>
-            <a href="/privacy" className="font-sans text-muted/60 hover:text-muted transition-colors text-xs">
-              Privacy Policy
-            </a>
-          </div>
-          <p className="font-sans text-muted/40 text-xs">© {new Date().getFullYear()} Backbone Labs. All rights reserved.</p>
+    <footer className="border-t border-white/[0.06] py-7" style={{ background: "#0A0F1E" }}>
+      <div className="max-w-[1100px] mx-auto px-6 lg:px-12 flex flex-wrap items-center justify-between gap-4">
+        <div className="text-[14px] font-bold tracking-[-0.02em] text-white/60">
+          Backbone<span className="text-indigo-400"> Labs</span>
         </div>
+        <div className="flex flex-wrap gap-6">
+          <a
+            href={PHONE_HREF}
+            className="text-[12px] text-white/30 hover:text-white/65 transition-colors"
+          >
+            {PHONE_DISPLAY}
+          </a>
+          <a
+            href={EMAIL_HREF}
+            className="text-[12px] text-white/30 hover:text-white/65 transition-colors"
+          >
+            hello@backbonelabs.com.au
+          </a>
+          <a
+            href="/privacy"
+            className="text-[12px] text-white/30 hover:text-white/65 transition-colors"
+          >
+            Privacy Policy
+          </a>
+          <button
+            onClick={openCookieBanner}
+            className="text-[12px] text-white/30 hover:text-white/65 transition-colors"
+          >
+            Cookie preferences
+          </button>
+        </div>
+        <p className="text-[12px] text-white/22">
+          © {new Date().getFullYear()} Backbone Labs. All rights reserved.
+        </p>
       </div>
     </footer>
   )

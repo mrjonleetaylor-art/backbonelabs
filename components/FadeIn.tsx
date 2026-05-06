@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useRef } from "react"
+import { motion } from "framer-motion"
 
 type Props = {
   children: React.ReactNode
@@ -7,36 +7,18 @@ type Props = {
   delay?: number
 }
 
+const ease = [0.22, 1, 0.36, 1] as const
+
 export default function FadeIn({ children, className = "", delay = 0 }: Props) {
-  const ref = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    let timeoutId: ReturnType<typeof setTimeout> | undefined
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          if (delay) {
-            timeoutId = setTimeout(() => el.classList.add("is-visible"), delay)
-          } else {
-            el.classList.add("is-visible")
-          }
-          observer.unobserve(el)
-        }
-      },
-      { threshold: 0.1 }
-    )
-    observer.observe(el)
-    return () => {
-      clearTimeout(timeoutId)
-      observer.disconnect()
-    }
-  }, [delay])
-
   return (
-    <div ref={ref} className={`fade-in-section ${className}`}>
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, ease, delay: delay / 1000 }}
+    >
       {children}
-    </div>
+    </motion.div>
   )
 }

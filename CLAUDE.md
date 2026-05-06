@@ -1,1 +1,114 @@
-@AGENTS.md
+# Backbone Labs — CLAUDE.md
+
+## About this project
+Backbone Labs (backbonelabs.com.au) is an AI phone agent service 
+for owner-operated local businesses in Australia. We answer every 
+inbound call using ElevenLabs voice AI + Claude API + Twilio.
+
+Three tiers: Overflow ($199), Receptionist ($499), Operator ($999).
+Setup fees: $300, $500, $2,000.
+
+The demo agent is called Thomas Anderson (Tom). Prospects call 
+the Backbone Labs number, speak to Tom, and think he is a real 
+person. The reveal happens on the demo call. Never break this 
+illusion anywhere on the website or in copy.
+
+## How we work
+- Scaffold, create files, install packages, run dev server 
+  without asking
+- Do not ask for confirmation on routine tasks — do it and 
+  report back
+- If you hit a blocker, state it clearly and give 2 options
+- Prefer simple and working over clever and complex
+- Mobile-first always — design for 375px first
+- Push back if a change breaks brand rules, hurts conversion, 
+  or breaks the Thomas Anderson illusion
+- Run npm run lint and npm run build after every change. 
+  Both must pass before reporting back.
+
+## Stack
+- Next.js App Router
+- Tailwind CSS
+- Framer Motion for animations
+- Deployed on Vercel
+- Single scrolling page + /privacy route
+
+## Shared constants
+- lib/constants.ts — MONTHLY_PRICE, tier prices, setup fees
+- lib/contact.ts — PHONE_DISPLAY, PHONE_HREF, EMAIL_HREF
+- Never hardcode prices, phone numbers, or email addresses
+
+## Contact details
+- Phone: 02 5302 3030 (tel:+61253023030)
+- Email: hello@backbonelabs.com.au
+- Domain: backbonelabs.com.au
+
+## Colour system
+- Background: #FFFFFF
+- Surface: #F8FAFC
+- Text primary: #0F172A
+- Text muted: #64748B
+- Primary accent: #6366F1 violet — buttons, CTAs
+- Secondary accent: #06B6D4 cyan — icons, step numbers, badges
+- Solid violet sections: #6366F1 - "Before you scroll" + Final CTA only
+- Dark navy: #0F172A - Footer only
+- No pure black. No pure white. No green.
+
+## Typography
+- Font: Inter
+- No serif fonts anywhere
+- No em dashes anywhere — use hyphen or rewrite the sentence
+- Australian English throughout
+- Sentence case for all headings and CTAs
+
+## Pricing tiers
+| Tier | Monthly | Setup | Calls |
+|------|---------|-------|-------|
+| Overflow | $199 | $300 | 150/month |
+| Receptionist | $499 | $500 | 300/month |
+| Operator | $999 | $2,000 | 1,000/month |
+
+- Overage: $1/call on all tiers
+- Payment links standard on all tiers (1.2% + 30c)
+- Referral: refer a customer, you both get a free month
+- Receptionist is most popular — highlight it
+
+## CTA rules
+- Primary: "Give us a call" → tel:+61253023030
+- Secondary: "Request a callback" → mailto:hello@backbonelabs.com.au
+- Never use "demo", "agent", or "AI" in any CTA label
+- Never break the Thomas Anderson illusion
+
+## Page sections in order
+1. Nav — floating pill, anchor links, hamburger on mobile
+2. Hero — left text, right cycling iMessage transcript widget
+3. "Before you scroll, give us a call" — solid violet, full viewport
+4. Problem + Sheena quote — combined, fades from white to image
+5. How it works / Process — 5-step interactive timeline
+6. What Backbone handles — 6 capability cards
+7. ROI calculator — 4 sliders
+8. Pricing — three tiers
+9. FAQ — accordion
+10. Final CTA
+11. Footer
+
+## Thomas Anderson
+- Lives in the demo call section only
+- Never mentioned by name in CTAs or nav
+- The site converts by making people call the number
+- Backbone is the hero, not Thomas
+
+## Brand rules — enforce always
+- No em dashes
+- No mention of AI, demo, or agent in CTAs or call section
+- Backbone is the hero — not Thomas Anderson
+- All copy in Australian English
+- Sentence case for all headings and CTAs
+
+## Do not
+- Add pages beyond single page + /privacy
+- Use stock photos or AI-generated imagery
+- Auto-play audio or video
+- Over-engineer anything
+- Ask for approval on bug fixes or copy changes
+- Proceed with structural changes without asking first

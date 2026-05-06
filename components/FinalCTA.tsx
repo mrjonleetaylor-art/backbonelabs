@@ -1,36 +1,74 @@
-import FadeIn from "@/components/FadeIn"
-import { PHONE_HREF, EMAIL_HREF } from "@/lib/contact"
+"use client"
+import { motion } from "framer-motion"
+import { PHONE_DISPLAY, PHONE_HREF, EMAIL_HREF } from "@/lib/contact"
+
+const ease = [0.22, 1, 0.36, 1] as const
 
 export default function FinalCTA() {
   return (
-    <section className="relative bg-secondary border-t border-white/[0.06] py-28 md:py-36 overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full bg-accent/[0.05] blur-[100px]" />
-      </div>
-      <div className="relative max-w-2xl mx-auto px-6 text-center">
-        <FadeIn>
-          <h2 className="font-serif font-bold text-[2.4rem] md:text-[3.2rem] lg:text-[4rem] text-cream mb-5 leading-[1.05] tracking-[-0.02em]">
-            Ready to stop missing orders?
-          </h2>
-          <p className="font-sans text-muted text-lg mb-10 max-w-md mx-auto leading-relaxed">
-            Thomas is live right now. Call him to hear what he can do, or book a time to talk about
-            getting him set up for your shop.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <a
-              href={PHONE_HREF}
-              className="bg-accent hover:bg-accent-light text-cream font-semibold text-base px-8 py-3.5 rounded transition-colors"
-            >
-              Talk to Thomas now
-            </a>
-            <a
-              href={EMAIL_HREF}
-              className="border border-white/15 hover:border-white/30 hover:bg-white/[0.04] text-cream font-semibold text-base px-8 py-3.5 rounded transition-all"
-            >
-              Book a demo
-            </a>
-          </div>
-        </FadeIn>
+    <section className="bg-indigo-500 py-[120px]">
+      <div className="max-w-[640px] mx-auto px-6 text-center">
+
+        <motion.h2
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease }}
+          className="font-bold text-white leading-[1.06] tracking-[-0.03em] mb-4"
+          style={{ fontSize: "clamp(34px, 4.5vw, 54px)" }}
+        >
+          Ready to stop missing orders?
+        </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease, delay: 0.1 }}
+          className="text-[17px] text-white/70 leading-[1.65] mb-8"
+        >
+          Give us a call now, or request a callback and we&apos;ll walk you through the right setup for your business.
+        </motion.p>
+
+        <motion.a
+          href={PHONE_HREF}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease, delay: 0.18 }}
+          whileHover={{ scale: 1.02, transition: { duration: 0.15 } }}
+          whileTap={{ scale: 0.97, transition: { duration: 0.1 } }}
+          className="block font-extrabold text-white/90 tabular-nums leading-none tracking-[-0.03em] mb-10"
+          style={{ fontSize: "clamp(40px, 7vw, 72px)" }}
+        >
+          {PHONE_DISPLAY}
+        </motion.a>
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease, delay: 0.26 }}
+          className="flex flex-col sm:flex-row gap-3 justify-center"
+        >
+          <motion.a
+            href={PHONE_HREF}
+            whileHover={{ scale: 1.03, transition: { duration: 0.15 } }}
+            whileTap={{ scale: 0.97, transition: { duration: 0.1 } }}
+            className="inline-flex items-center justify-center bg-white hover:bg-white/90 text-indigo-600 text-[16px] font-semibold rounded-full py-4 px-[34px] transition-colors"
+          >
+            Give us a call
+          </motion.a>
+          <motion.a
+            href={EMAIL_HREF}
+            whileHover={{ scale: 1.03, transition: { duration: 0.15 } }}
+            whileTap={{ scale: 0.97, transition: { duration: 0.1 } }}
+            className="inline-flex items-center justify-center border border-white/40 hover:border-white/70 hover:bg-white/[0.08] text-white text-[16px] font-semibold rounded-full py-4 px-[34px] transition-all"
+          >
+            Request a callback
+          </motion.a>
+        </motion.div>
+
       </div>
     </section>
   )
