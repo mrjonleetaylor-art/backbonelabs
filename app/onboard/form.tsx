@@ -164,7 +164,7 @@ export function OnboardForm() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-12 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">Backbone Labs</h1>
+          <h1 className="text-4xl font-bold text-slate-900 mb-2">RelayDesk</h1>
           <p className="text-lg text-slate-600">Business Onboarding</p>
         </div>
 
@@ -275,7 +275,7 @@ export function OnboardForm() {
                   onChange={handleChange}
                   className="w-4 h-4 rounded border-slate-300"
                 />
-                <span className="text-sm font-medium text-slate-700">Backbone phone number needed (new)?</span>
+                <span className="text-sm font-medium text-slate-700">RelayDesk phone number needed (new)?</span>
               </label>
             </div>
           </div>

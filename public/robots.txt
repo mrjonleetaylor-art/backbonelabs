@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://backbonelabs.com.au/sitemap.xml
+Sitemap: https://relaydesk.com.au/sitemap.xml

@@ -24,7 +24,7 @@ const tiers: Tier[] = [
     setup: "$300 one-off setup",
     tagline: "Better than voicemail. Smarter than missing it.",
     features: [
-      "Answers calls you miss - Backbone is your safety net",
+      "Answers calls you miss - RelayDesk is your safety net",
       "Takes orders and captures enquiry details",
       "Payment links sent via SMS",
       "Call summary after every call",
@@ -243,7 +243,7 @@ export default function Pricing() {
           transition={{ duration: 0.4, ease, delay: 0.4 }}
           className="text-[13px] text-slate-400 italic mt-10"
         >
-          Refer another business owner to Backbone. If they sign up, you both get a free month.
+          Refer another business owner to RelayDesk. If they sign up, you both get a free month.
         </motion.p>
 
       </div>

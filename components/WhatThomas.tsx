@@ -138,7 +138,7 @@ export default function WhatThomas() {
             Capabilities
           </span>
           <h2 className="text-[clamp(28px,3.5vw,44px)] font-bold leading-[1.1] tracking-[-0.025em] text-slate-900 mt-1.5">
-            What Backbone handles for you
+            What RelayDesk handles for you
           </h2>
         </motion.div>
 

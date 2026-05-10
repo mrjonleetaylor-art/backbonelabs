@@ -3,9 +3,9 @@ import { useState, useEffect, useCallback, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 
-const STORAGE_KEY = "backbone_cookie_consent"
-const OPEN_EVENT = "backbone:open-cookie-banner"
-const SAVED_EVENT = "backbone:consent-saved"
+const STORAGE_KEY = "relaydesk_cookie_consent"
+const OPEN_EVENT = "relaydesk:open-cookie-banner"
+const SAVED_EVENT = "relaydesk:consent-saved"
 
 const safeLocalStorage = {
   getItem: (key: string): string | null => {
@@ -151,7 +151,7 @@ function MainView({
   return (
     <div>
       <p className="text-[14px] text-slate-600 leading-[1.65] mb-4">
-        Backbone Labs uses cookies to keep our website working, understand how visitors use it, and improve our marketing.
+        RelayDesk uses cookies to keep our website working, understand how visitors use it, and improve our marketing.
         You can accept all cookies, reject non-essential cookies, or customise your preferences.{" "}
         <Link href="/privacy" className="text-indigo-500 hover:underline">
           Privacy Policy

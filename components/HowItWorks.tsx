@@ -14,7 +14,7 @@ const steps = [
   },
   {
     number: "02",
-    title: "We configure Backbone",
+    title: "We configure RelayDesk",
     summary: "We set up your services, hours, FAQs, transfer rules, and payment links.",
     example: "Configured: services, hours, FAQs, transfer rules, payment links.",
   },

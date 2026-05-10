@@ -10,9 +10,9 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Phone answering for local business | Backbone Labs",
+  title: "Phone answering for local business | RelayDesk",
   description:
-    "Backbone answers every inbound call for your local business. No missed orders, no busy signals. Keep your existing number or get a new one.",
+    "RelayDesk answers every inbound call for your local business. No missed orders, no busy signals. Keep your existing number or get a new one.",
   icons: {
     icon: [
       { url: "/backbone_labs_logo_assets/favicon/favicon-16.png", sizes: "16x16", type: "image/png" },
@@ -24,21 +24,21 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    title: "Phone answering for local business | Backbone Labs",
+    title: "Phone answering for local business | RelayDesk",
     description:
-      "Backbone answers every inbound call for your local business. No missed orders, no busy signals.",
-    url: "https://backbonelabs.com.au",
-    images: [{ url: "https://backbonelabs.com.au/backbone_labs_logo_assets/OG/backbone-labs-og-1200x630.png" }],
+      "RelayDesk answers every inbound call for your local business. No missed orders, no busy signals.",
+    url: "https://relaydesk.com.au",
+    images: [{ url: "https://relaydesk.com.au/backbone_labs_logo_assets/OG/backbone-labs-og-1200x630.png" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Phone answering for local business | Backbone Labs",
+    title: "Phone answering for local business | RelayDesk",
     description:
-      "Backbone answers every inbound call for your local business. No missed orders, no busy signals.",
-    images: ["https://backbonelabs.com.au/backbone_labs_logo_assets/OG/backbone-labs-og-1200x630.png"],
+      "RelayDesk answers every inbound call for your local business. No missed orders, no busy signals.",
+    images: ["https://relaydesk.com.au/backbone_labs_logo_assets/OG/backbone-labs-og-1200x630.png"],
   },
   alternates: {
-    canonical: "https://backbonelabs.com.au",
+    canonical: "https://relaydesk.com.au",
   },
   robots: {
     index: true,
@@ -60,11 +60,11 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
-              "name": "Backbone Labs",
+              "name": "RelayDesk",
               "description": "Phone answering service for local Australian businesses. Answer every inbound call, capture orders, handle common questions.",
-              "url": "https://backbonelabs.com.au",
+              "url": "https://relaydesk.com.au",
               "telephone": "+61253023030",
-              "email": "hello@backbonelabs.com.au",
+              "email": "hello@relaydesk.com.au",
               "areaServed": {
                 "@type": "Country",
                 "name": "AU"
@@ -89,7 +89,7 @@ export default function RootLayout({
               "name": "Phone Answering for Local Business",
               "provider": {
                 "@type": "LocalBusiness",
-                "name": "Backbone Labs"
+                "name": "RelayDesk"
               },
               "areaServed": {
                 "@type": "Country",

@@ -69,7 +69,7 @@ export default function Hero() {
               {...slideUp(0.35)}
               className="text-[20px] text-slate-600 leading-[1.7] max-w-[460px] mb-9"
             >
-              Backbone answers your shop phone, captures order details, handles common questions, and
+              RelayDesk answers your shop phone, captures order details, handles common questions, and
               sends a clear summary after every call.
             </motion.p>
 

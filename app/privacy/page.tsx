@@ -4,8 +4,8 @@ import Footer from "@/components/Footer"
 import { EMAIL_HREF } from "@/lib/contact"
 
 export const metadata: Metadata = {
-  title: "Privacy | Backbone Labs",
-  description: "How Backbone handles your customer data and call information.",
+  title: "Privacy | RelayDesk",
+  description: "How RelayDesk handles your customer data and call information.",
 }
 
 export default function PrivacyPage() {
@@ -23,16 +23,16 @@ export default function PrivacyPage() {
           </p>
 
           <p className="text-[16px] text-slate-700 leading-[1.75]">
-            Backbone Labs respects your privacy and takes the protection of personal information seriously. We collect information to operate our AI phone agent service, support our customers, process payments securely, improve our systems, and communicate with users. If you are a Backbone customer, we collect information needed to manage your account and configure your AI phone agent. If you are calling a business that uses Backbone, we may record and transcribe your call so the AI agent can respond and the business owner can receive a summary of the interaction. We only collect information that is reasonably necessary for our services and handle it in line with the Australian Privacy Act 1988 and the Australian Privacy Principles (APPs).
+            RelayDesk respects your privacy and takes the protection of personal information seriously. We collect information to operate our phone agent service, support our customers, process payments securely, improve our systems, and communicate with users. If you are a RelayDesk customer, we collect information needed to manage your account and configure your phone agent. If you are calling a business that uses RelayDesk, we may record and transcribe your call so the agent can respond and the business owner can receive a summary of the interaction. We only collect information that is reasonably necessary for our services and handle it in line with the Australian Privacy Act 1988 and the Australian Privacy Principles (APPs).
           </p>
 
           <Section title="Who we are">
-            <p>Backbone Labs is operated by:</p>
+            <p>RelayDesk is operated by:</p>
             <ul>
               <li><strong>Entity name:</strong> Jon Lee Taylor</li>
               <li><strong>ABN:</strong> 50 154 134 393</li>
-              <li><strong>Website:</strong> backbonelabs.com.au</li>
-              <li><strong>Email:</strong> <a href={EMAIL_HREF}>hello@backbonelabs.com.au</a></li>
+              <li><strong>Website:</strong> relaydesk.com.au</li>
+              <li><strong>Email:</strong> <a href={EMAIL_HREF}>hello@relaydesk.com.au</a></li>
               <li><strong>Registered address:</strong> 10 Cutts Street, Barden Ridge, NSW 2234</li>
               <li><strong>Country:</strong> Australia</li>
             </ul>
@@ -42,15 +42,15 @@ export default function PrivacyPage() {
           <Section title="Who this policy applies to">
             <p>This policy applies to three groups:</p>
             <ol>
-              <li><strong>Backbone customers</strong> - Small business owners and organisations who sign up to use Backbone services.</li>
-              <li><strong>End callers</strong> - Members of the public who call a phone number managed by Backbone on behalf of one of our customers.</li>
-              <li><strong>Website visitors</strong> - People visiting backbonelabs.com.au or submitting forms through our website.</li>
+              <li><strong>RelayDesk customers</strong> - Small business owners and organisations who sign up to use RelayDesk services.</li>
+              <li><strong>End callers</strong> - Members of the public who call a phone number managed by RelayDesk on behalf of one of our customers.</li>
+              <li><strong>Website visitors</strong> - People visiting relaydesk.com.au or submitting forms through our website.</li>
             </ol>
           </Section>
 
           <Section title="Personal information we collect">
-            <SubSection title="Information collected from Backbone customers">
-              <p>When you sign up or use Backbone, we may collect:</p>
+            <SubSection title="Information collected from RelayDesk customers">
+              <p>When you sign up or use RelayDesk, we may collect:</p>
               <ul>
                 <li>Name</li>
                 <li>Email address</li>
@@ -59,7 +59,7 @@ export default function PrivacyPage() {
                 <li>Business address</li>
                 <li>ABN, if provided</li>
                 <li>Account login and activity information</li>
-                <li>AI phone agent configuration details, including business hours, services offered, FAQs, call transfer preferences, and order workflows</li>
+                <li>Phone agent configuration details, including business hours, services offered, FAQs, call transfer preferences, and order workflows</li>
                 <li>Customer support communications</li>
                 <li>Billing and subscription information</li>
               </ul>
@@ -67,7 +67,7 @@ export default function PrivacyPage() {
             </SubSection>
 
             <SubSection title="Information collected from end callers">
-              <p>When someone calls a Backbone-managed phone number, we may collect:</p>
+              <p>When someone calls a RelayDesk-managed phone number, we may collect:</p>
               <ul>
                 <li>Voice recordings of calls</li>
                 <li>Real-time call transcripts</li>
@@ -75,11 +75,11 @@ export default function PrivacyPage() {
                 <li>Information voluntarily provided during the call, including name, address, booking details, order details, delivery information, and messages for the business owner</li>
                 <li>Payment-related metadata if a payment link is used, including transaction ID, amount paid, and payment status</li>
               </ul>
-              <p>Payment card details are processed directly by the payment processor and do not pass through Backbone systems.</p>
+              <p>Payment card details are processed directly by the payment processor and do not pass through RelayDesk systems.</p>
             </SubSection>
 
             <SubSection title="Information collected from website visitors">
-              <p>When visiting backbonelabs.com.au, we may collect:</p>
+              <p>When visiting relaydesk.com.au, we may collect:</p>
               <ul>
                 <li>IP address</li>
                 <li>Browser type</li>
@@ -96,8 +96,8 @@ export default function PrivacyPage() {
           <Section title="How we collect information">
             <p>We collect information when:</p>
             <ul>
-              <li>A customer signs up for Backbone</li>
-              <li>Someone calls a Backbone-managed phone number</li>
+              <li>A customer signs up for RelayDesk</li>
+              <li>Someone calls a RelayDesk-managed phone number</li>
               <li>A user submits a form on our website</li>
               <li>A payment is made through a payment link</li>
               <li>Someone contacts our support team</li>
@@ -126,7 +126,7 @@ export default function PrivacyPage() {
 
           <Section title="Call recordings and AI processing">
             <p>
-              Backbone uses AI systems to process calls in real time. This allows the AI phone agent to understand requests, respond naturally, generate summaries, and route enquiries appropriately.
+              RelayDesk uses AI systems to process calls in real time. This allows the phone agent to understand requests, respond naturally, generate summaries, and route enquiries appropriately.
             </p>
             <p>
               Calls may be recorded and transcribed for service delivery, quality assurance, customer support, and training and improvement of our systems.
@@ -170,7 +170,7 @@ export default function PrivacyPage() {
                 <li><strong>Location:</strong> United States</li>
               </Provider>
               <p className="text-[15px] text-slate-600 leading-[1.7] mt-3 mb-4">
-                Payment card details are processed directly by Stripe and are not stored by Backbone.
+                Payment card details are processed directly by Stripe and are not stored by RelayDesk.
               </p>
               <Provider name="Vercel">
                 <li><strong>Purpose:</strong> Website hosting and infrastructure</li>
@@ -241,7 +241,7 @@ export default function PrivacyPage() {
             </p>
             <p>To make a request, contact:</p>
             <p>
-              <a href={EMAIL_HREF} className="font-semibold">hello@backbonelabs.com.au</a>
+              <a href={EMAIL_HREF} className="font-semibold">hello@relaydesk.com.au</a>
             </p>
             <p>We may need to verify your identity before processing requests.</p>
           </Section>
@@ -251,7 +251,7 @@ export default function PrivacyPage() {
               If you believe we have breached your privacy rights, please contact us first so we can investigate and attempt to resolve the issue.
             </p>
             <p>
-              Email: <a href={EMAIL_HREF} className="font-semibold">hello@backbonelabs.com.au</a>
+              Email: <a href={EMAIL_HREF} className="font-semibold">hello@relaydesk.com.au</a>
             </p>
             <p>
               Please include your contact details, a description of the issue, and any relevant supporting information. We will aim to respond within a reasonable timeframe.
@@ -272,7 +272,7 @@ export default function PrivacyPage() {
           </Section>
 
           <Section title="Children's privacy">
-            <p>Backbone services are not intended for individuals under 18 years of age.</p>
+            <p>RelayDesk services are not intended for individuals under 18 years of age.</p>
             <p>We do not knowingly collect personal information from children.</p>
           </Section>
 
@@ -286,7 +286,7 @@ export default function PrivacyPage() {
           <Section title="Contact us">
             <p>If you have questions about this Privacy Policy or our privacy practices, contact us at:</p>
             <p>
-              <a href={EMAIL_HREF} className="font-semibold">hello@backbonelabs.com.au</a>
+              <a href={EMAIL_HREF} className="font-semibold">hello@relaydesk.com.au</a>
             </p>
           </Section>
 
@@ -307,7 +307,7 @@ export default function PrivacyPage() {
             <p>We may also use similar technologies such as pixels, tags and local storage.</p>
           </Section>
 
-          <Section title="How Backbone Labs uses cookies">
+          <Section title="How RelayDesk uses cookies">
             <p>
               We use cookies to keep the website functioning correctly, remember user preferences, analyse website traffic and performance, improve user experience, measure marketing effectiveness, and protect website security.
             </p>
@@ -359,13 +359,13 @@ export default function PrivacyPage() {
             <p>
               We may update this Cookie Policy from time to time to reflect changes in technology, legislation or our services.
             </p>
-            <p>Updated versions will be published on backbonelabs.com.au.</p>
+            <p>Updated versions will be published on relaydesk.com.au.</p>
           </Section>
 
           <Section title="Contact us">
             <p>If you have questions about our use of cookies or privacy practices, contact:</p>
             <p>
-              <a href={EMAIL_HREF} className="font-semibold">hello@backbonelabs.com.au</a>
+              <a href={EMAIL_HREF} className="font-semibold">hello@relaydesk.com.au</a>
             </p>
           </Section>
 

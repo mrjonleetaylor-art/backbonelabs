@@ -7,19 +7,19 @@ const ease = [0.22, 1, 0.36, 1] as const
 const faqs = [
   {
     q: "What happens when someone calls?",
-    a: "Backbone answers in two rings, greets the caller using your shop name, and handles the conversation from there. It takes orders, answers common questions, collects contact details, and sends you a summary after every call. Callers get a natural, helpful experience - and you don't miss a thing.",
+    a: "RelayDesk answers in two rings, greets the caller using your shop name, and handles the conversation from there. It takes orders, answers common questions, collects contact details, and sends you a summary after every call. Callers get a natural, helpful experience - and you don't miss a thing.",
   },
   {
-    q: "What if Backbone doesn't know the answer to something?",
-    a: "During onboarding, we configure Backbone on everything specific to your shop - products, hours, delivery areas, pricing, and your most common questions. For anything outside that, the agent takes a clear message and flags it for you.",
+    q: "What if RelayDesk doesn't know the answer to something?",
+    a: "During onboarding, we configure RelayDesk on everything specific to your shop - products, hours, delivery areas, pricing, and your most common questions. For anything outside that, the agent takes a clear message and flags it for you.",
   },
   {
-    q: "Can I customise what Backbone says?",
-    a: "Absolutely. We configure Backbone with your shop name, products, hours, pricing, and FAQs. The setup takes about 30 minutes, and most clients are live within 48 hours.",
+    q: "Can I customise what RelayDesk says?",
+    a: "Absolutely. We configure RelayDesk with your shop name, products, hours, pricing, and FAQs. The setup takes about 30 minutes, and most clients are live within 48 hours.",
   },
   {
-    q: "Can Backbone take payment?",
-    a: "Yes. Backbone sends a secure SMS payment link to the caller's phone, processed with 3D Secure authentication. That's the same standard your bank uses for online card transactions. You can take full payment, a deposit, or split payments depending on what suits the order. Funds settle directly to your nominated account.",
+    q: "Can RelayDesk take payment?",
+    a: "Yes. RelayDesk sends a secure SMS payment link to the caller's phone, processed with 3D Secure authentication. That's the same standard your bank uses for online card transactions. You can take full payment, a deposit, or split payments depending on what suits the order. Funds settle directly to your nominated account.",
   },
   {
     q: "Can calls be transferred to my mobile?",

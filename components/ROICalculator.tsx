@@ -120,7 +120,7 @@ export default function ROICalculator() {
             <p className="text-[14px] text-slate-400 mt-0.5 mb-6">every month.</p>
 
             <p className="text-[14px] text-slate-500 leading-[1.6]">
-              Backbone Overflow gets these orders back for ${OVERFLOW_PRICE}/month.
+              RelayDesk Overflow gets these orders back for ${OVERFLOW_PRICE}/month.
             </p>
 
             <p className="text-[17px] font-bold tabular-nums mt-2 leading-snug" style={{ color: "#06B6D4" }}>
@@ -186,7 +186,7 @@ export default function ROICalculator() {
                     value={fmt(revenueAtRisk)}
                   />
                   <OutputCard
-                    label="Net monthly gain with Backbone Overflow"
+                    label="Net monthly gain with RelayDesk Overflow"
                     value={netGain >= 0 ? `+${fmt(netGain)}` : fmt(netGain)}
                     highlight={netGain >= 0}
                   />
