@@ -1,10 +1,16 @@
 // /api/book-meeting
 // Server tool endpoint called by Tom (ElevenLabs server tool) the moment a meeting is agreed.
-// Synchronous: writes lead + booking to Supabase, fires SMS to Jon, returns confirmation.
+// Synchronous: writes lead + booking to Supabase, fires email notification to Jon, returns confirmation.
 // Decoupled from call lifecycle: doesn't care whether the call ends cleanly afterwards.
+//
+// This file lives in the project as: app/api/book-meeting/route.ts (App Router)
+// Source canonical: ~/Projects/backbone-labs/agent/pipeline/book-meeting.ts
+//
+// Notification path: Resend email. SMS via Twilio is blocked because the current Twilio
+// AU number isn't SMS-enabled. Switching to SMS later means flipping the Resend block to Twilio.
 
 import { createClient } from '@supabase/supabase-js';
-import twilio from 'twilio';
+import { Resend } from 'resend';
 import { parse, format, addDays } from 'date-fns';
 
 type BookingRequest = {
@@ -77,10 +83,7 @@ export async function POST(req: Request) {
     process.env.SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
-  const twilioClient = twilio(
-    process.env.TWILIO_ACCOUNT_SID!,
-    process.env.TWILIO_AUTH_TOKEN!
-  );
+  const resend = new Resend(process.env.RESEND_API_KEY!);
 
   // Upsert lead by phone.
   const { data: lead, error: leadError } = await supabase
@@ -124,18 +127,31 @@ export async function POST(req: Request) {
     }, 500);
   }
 
-  // Fire SMS to Jon. Don't block on failure.
+  // Fire email notification to Jon. Don't block on failure.
+  // (Was Twilio SMS, but the current AU Twilio number isn't SMS-enabled. Switch back when it is.)
   try {
     const prettyDay = format(parse(day, 'yyyy-MM-dd', new Date()), 'EEEE d MMM');
     const halfWord = half === 'AM' ? 'morning' : 'afternoon';
-    await twilioClient.messages.create({
-      from: process.env.TWILIO_FROM_NUMBER!,
-      to: process.env.JON_MOBILE!,
-      body: `RelayDesk: Tom booked a meeting for ${prettyDay} ${halfWord} with ${caller_name ?? 'someone'} from ${business_name ?? 'an unknown business'}. Phone: ${caller_phone}`,
+    const summary = `${caller_name ?? 'someone'} from ${business_name ?? 'an unknown business'}`;
+    await resend.emails.send({
+      from: 'RelayDesk <hello@relaydesk.com.au>',
+      to: process.env.JON_EMAIL!,
+      subject: `Tom booked: ${prettyDay} ${halfWord}, ${summary}`,
+      html: `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.5; color: #222;">
+          <h2 style="margin: 0 0 12px 0; font-size: 16px;">New meeting booked</h2>
+          <p><strong>When:</strong> ${prettyDay} ${halfWord}</p>
+          <p><strong>Caller:</strong> ${caller_name ?? 'unknown name'}</p>
+          <p><strong>Business:</strong> ${business_name ?? 'unknown business'}</p>
+          <p><strong>Industry:</strong> ${industry ?? 'not captured'}</p>
+          <p><strong>Phone:</strong> ${caller_phone}</p>
+          <p><strong>What they're solving:</strong> ${what_theyre_solving ?? 'not captured'}</p>
+        </div>
+      `,
     });
-  } catch (smsErr) {
-    console.error('book_meeting: sms send error', smsErr);
-    // Don't fail the booking on SMS failure.
+  } catch (emailErr) {
+    console.error('book_meeting: email send error', emailErr);
+    // Don't fail the booking on email failure.
   }
 
   return jsonResponse({
@@ -166,7 +182,9 @@ function parseBookingDay(input: string): string | null {
   for (let i = 0; i < dayNames.length; i++) {
     if (lower.includes(dayNames[i])) {
       const today = new Date();
-      let daysAhead = i - today.getDay();
+      const targetDow = i;
+      const currentDow = today.getDay();
+      let daysAhead = targetDow - currentDow;
       if (daysAhead <= 0) daysAhead += 7;
       return format(addDays(today, daysAhead), 'yyyy-MM-dd');
     }
