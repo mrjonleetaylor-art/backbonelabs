@@ -1,8 +1,9 @@
 "use client"
 import { useRef, useState, useCallback } from "react"
 import { motion } from "framer-motion"
-import { PHONE_HREF, EMAIL_HREF } from "@/lib/contact"
+import { PHONE_HREF } from "@/lib/contact"
 import CallTranscript, { type CallTranscriptHandle } from "@/components/CallTranscript"
+import CallbackForm from "@/components/CallbackForm"
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -22,6 +23,7 @@ const summaryRows = [
 export default function Hero() {
   const [summaryVisible, setSummaryVisible] = useState(false)
   const [activeConv, setActiveConv] = useState(0)
+  const [callbackOpen, setCallbackOpen] = useState(false)
   const transcriptRef = useRef<CallTranscriptHandle>(null)
 
   const handleConvChange = useCallback((idx: number) => setActiveConv(idx), [])
@@ -69,8 +71,8 @@ export default function Hero() {
               {...slideUp(0.35)}
               className="text-[20px] text-slate-600 leading-[1.7] max-w-[460px] mb-9"
             >
-              RelayDesk answers your shop phone, captures order details, handles common questions, and
-              sends a clear summary after every call.
+              RelayDesk answers calls when you&apos;re busy, takes orders, handles questions, and emails
+              you the details.
             </motion.p>
 
             <motion.div {...slideUp(0.45)} className="flex flex-wrap gap-2.5 mb-11">
@@ -83,14 +85,14 @@ export default function Hero() {
                 <PhoneIcon />
                 Give us a call
               </motion.a>
-              <motion.a
-                href={EMAIL_HREF}
+              <motion.button
+                onClick={() => setCallbackOpen(true)}
                 whileHover={{ scale: 1.03, transition: { duration: 0.15 } }}
                 whileTap={{ scale: 0.97, transition: { duration: 0.1 } }}
                 className="inline-flex items-center text-[15px] font-medium text-slate-900 border border-slate-300 hover:border-slate-400 hover:bg-slate-50 rounded-full px-7 py-3.5 transition-all"
               >
                 Request a callback
-              </motion.a>
+              </motion.button>
             </motion.div>
 
             <motion.div {...slideUp(0.55)} className="flex flex-wrap gap-6">
@@ -205,6 +207,8 @@ export default function Hero() {
 
         </div>
       </div>
+
+      <CallbackForm isOpen={callbackOpen} onClose={() => setCallbackOpen(false)} />
     </section>
   )
 }

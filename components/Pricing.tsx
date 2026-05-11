@@ -1,5 +1,4 @@
 "use client"
-import { useState } from "react"
 import { motion } from "framer-motion"
 import { PHONE_HREF } from "@/lib/contact"
 
@@ -32,7 +31,7 @@ const tiers: Tier[] = [
       "Cancel any month",
     ],
     callsIncluded: "150 calls/month included",
-    goodFor: "Good for shops that miss calls occasionally, or want a safety net without changing anything.",
+    goodFor: "For when you miss a few calls a week.",
     variant: "light",
   },
   {
@@ -50,7 +49,7 @@ const tiers: Tier[] = [
       "Cancel any month",
     ],
     callsIncluded: "300 calls/month included",
-    goodFor: "Good for shops that want a full-time front desk without the hire.",
+    goodFor: "For when every call counts.",
     badge: "Most popular",
     variant: "violet",
   },
@@ -70,7 +69,7 @@ const tiers: Tier[] = [
       "Cancel any month",
     ],
     callsIncluded: "1,000 calls/month included",
-    goodFor: "Good for multi-location shops or high-volume operations that need full customer communication coverage.",
+    goodFor: "For teams that are scaling.",
     variant: "dark",
   },
 ]
@@ -103,8 +102,6 @@ function CheckIcon({ variant }: { variant: "light" | "violet" | "dark" }) {
 }
 
 function PricingCard({ tier }: { tier: Tier }) {
-  const [hovered, setHovered] = useState(false)
-
   const isLight = tier.variant === "light"
   const isViolet = tier.variant === "violet"
 
@@ -116,15 +113,12 @@ function PricingCard({ tier }: { tier: Tier }) {
   const badgeBg = isViolet ? "bg-white text-indigo-600" : ""
   const setupColor = isLight ? "text-slate-400" : "text-white/50"
   const goodForColor = isLight ? "text-slate-500" : isViolet ? "text-white/70" : "text-white/55"
-  const goodForBorder = isLight ? "border-slate-100" : "border-white/[0.12]"
   const callsColor = isLight ? "text-slate-400" : "text-white/45"
   const borderStyle = isLight ? "1px solid #E2E8F0" : "none"
 
   return (
     <motion.div
       variants={cardItem}
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
       whileHover={{
         y: isViolet ? -16 : -5,
         transition: { type: "spring", stiffness: 280, damping: 22 },
@@ -156,6 +150,7 @@ function PricingCard({ tier }: { tier: Tier }) {
           <span className={`text-[14px] ${textMuted}`}>/month</span>
         </div>
         <p className={`text-[12px] ${setupColor}`}>{tier.setup}</p>
+        <p className={`text-[12px] italic leading-[1.6] mt-3 ${goodForColor}`}>{tier.goodFor}</p>
       </div>
 
       {/* Features */}
@@ -168,16 +163,6 @@ function PricingCard({ tier }: { tier: Tier }) {
             </li>
           ))}
         </ul>
-      </div>
-
-      {/* Good for — always visible, full opacity on hover */}
-      <div
-        className={`border-t ${goodForBorder} transition-opacity duration-200`}
-        style={{ opacity: hovered ? 1 : 0.45 }}
-      >
-        <p className={`px-7 py-4 text-[12px] italic leading-[1.6] ${goodForColor}`}>
-          {tier.goodFor}
-        </p>
       </div>
 
       {/* Footer */}
