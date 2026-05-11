@@ -47,7 +47,7 @@ export default function Nav() {
         >
           <Link href="/" className="flex items-center gap-2 select-none">
             <Image
-              src="/backbone_labs_logo_assets/SVG/backbone-labs-mark.svg"
+              src="/relaydesk_logo_assets/SVG/relaydesk-mark.svg"
               alt="RelayDesk"
               width={32}
               height={32}

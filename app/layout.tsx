@@ -15,12 +15,12 @@ export const metadata: Metadata = {
     "RelayDesk answers every inbound call for your local business. No missed orders, no busy signals. Keep your existing number or get a new one.",
   icons: {
     icon: [
-      { url: "/backbone_labs_logo_assets/favicon/favicon-16.png", sizes: "16x16", type: "image/png" },
-      { url: "/backbone_labs_logo_assets/favicon/favicon-32.png", sizes: "32x32", type: "image/png" },
-      { url: "/backbone_labs_logo_assets/favicon/favicon-64.png", sizes: "64x64", type: "image/png" },
+      { url: "/relaydesk_logo_assets/favicon/favicon-16.png", sizes: "16x16", type: "image/png" },
+      { url: "/relaydesk_logo_assets/favicon/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/relaydesk_logo_assets/favicon/favicon-64.png", sizes: "64x64", type: "image/png" },
     ],
-    apple: "/backbone_labs_logo_assets/favicon/favicon-64.png",
-    shortcut: "/backbone_labs_logo_assets/favicon/favicon.ico",
+    apple: "/relaydesk_logo_assets/favicon/favicon-64.png",
+    shortcut: "/relaydesk_logo_assets/favicon/favicon.ico",
   },
   openGraph: {
     type: "website",
@@ -28,14 +28,14 @@ export const metadata: Metadata = {
     description:
       "RelayDesk answers every inbound call for your local business. No missed orders, no busy signals.",
     url: "https://relaydesk.com.au",
-    images: [{ url: "https://relaydesk.com.au/backbone_labs_logo_assets/OG/backbone-labs-og-1200x630.png" }],
+    images: [{ url: "https://relaydesk.com.au/relaydesk_logo_assets/OG/relaydesk-og-1200x630.png" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Phone answering for local business | RelayDesk",
     description:
       "RelayDesk answers every inbound call for your local business. No missed orders, no busy signals.",
-    images: ["https://relaydesk.com.au/backbone_labs_logo_assets/OG/backbone-labs-og-1200x630.png"],
+    images: ["https://relaydesk.com.au/relaydesk_logo_assets/OG/relaydesk-og-1200x630.png"],
   },
   alternates: {
     canonical: "https://relaydesk.com.au",
