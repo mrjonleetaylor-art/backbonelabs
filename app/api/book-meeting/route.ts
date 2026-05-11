@@ -162,13 +162,26 @@ export async function POST(req: Request) {
 }
 
 // Parse booking_day from whatever the LLM produced.
-// Prefer ISO YYYY-MM-DD, fall back to "12 May 2026" or bare day name.
+// Server-side date math is the source of truth. The LLM should pass raw phrases,
+// not pre-computed ISO dates, because LLMs are unreliable at calendar arithmetic.
+// Order: ISO date → "today"/"tomorrow" → full date string → day name → fail.
 function parseBookingDay(input: string): string | null {
   if (!input) return null;
+  const lower = input.toLowerCase().trim();
 
+  // ISO date already present. Trust it (LLM gave a specific calendar date).
   const isoMatch = input.match(/\d{4}-\d{2}-\d{2}/);
   if (isoMatch) return isoMatch[0];
 
+  // Relative: today, tomorrow.
+  if (/\btoday\b/.test(lower)) {
+    return format(new Date(), 'yyyy-MM-dd');
+  }
+  if (/\btomorrow\b/.test(lower)) {
+    return format(addDays(new Date(), 1), 'yyyy-MM-dd');
+  }
+
+  // Full date like "12 May 2026" or "Tuesday 12 May 2026".
   const fullMatch = input.match(/\d{1,2}\s+[A-Za-z]+\s+\d{4}/);
   if (fullMatch) {
     try {
@@ -177,8 +190,8 @@ function parseBookingDay(input: string): string | null {
     } catch { /* fall through */ }
   }
 
+  // Day of week ("monday", "next tuesday", etc.). Compute next occurrence.
   const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-  const lower = input.toLowerCase();
   for (let i = 0; i < dayNames.length; i++) {
     if (lower.includes(dayNames[i])) {
       const today = new Date();
