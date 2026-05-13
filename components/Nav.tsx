@@ -88,7 +88,7 @@ export default function Nav() {
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.15 }}
-              className="hidden sm:inline-flex text-[13px] font-medium text-slate-700 border border-slate-300 hover:border-slate-400 hover:bg-slate-50 rounded-full px-4 py-2 transition-all"
+              className="hidden sm:inline-flex whitespace-nowrap text-[13px] font-medium text-slate-700 border border-slate-300 hover:border-slate-400 hover:bg-slate-50 rounded-full px-4 py-2 transition-all"
             >
               Request a callback
             </motion.a>
