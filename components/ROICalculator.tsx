@@ -213,57 +213,67 @@ type SliderProps = {
 
 function SliderField({ id, label, value, min, max, step, display, onChange }: SliderProps) {
   const pct = ((value - min) / (max - min)) * 100
-  // Thumb/pill centre: compensates for native thumb radius at track edges
-  const thumbCenter = `calc(${pct}% + ${(8 - pct * 0.16).toFixed(2)}px)`
+  // Fader is 56px wide (28px half-width). Compensation shifts +28px at min → -28px at max
+  // so the fader stays within the track bounds at both extremes.
+  const faderLeft = `calc(${pct}% + ${(28 - pct * 0.56).toFixed(1)}px)`
 
   return (
     <div>
-      <label htmlFor={id} className="block text-[13px] font-medium text-slate-700 mb-2">
+      <label htmlFor={id} className="block text-[13px] font-medium text-slate-700 mb-3">
         {label}
       </label>
-      <div className="relative" style={{ paddingTop: "30px" }}>
-        {/* Floating value pill */}
+      <div className="relative" style={{ height: "52px" }}>
+        {/* Track — vertically centred */}
         <div
-          className="absolute top-0 pointer-events-none z-10"
-          style={{ left: thumbCenter, transform: "translateX(-50%)" }}
+          className="absolute inset-x-0 rounded-full bg-slate-200 pointer-events-none"
+          style={{ top: "50%", transform: "translateY(-50%)", height: "10px" }}
         >
-          <span
-            className="inline-block bg-white text-slate-900 text-[12px] font-bold rounded px-2 py-0.5 whitespace-nowrap"
-            style={{ boxShadow: "0 1px 4px rgba(15,23,42,0.12), 0 0 0 1px rgba(15,23,42,0.06)" }}
-          >
-            {display}
-          </span>
+          <div className="h-full rounded-full bg-cyan-400" style={{ width: `${pct}%` }} />
         </div>
 
-        {/* Custom track + thumb */}
-        <div className="relative flex items-center h-5">
-          {/* Track */}
-          <div className="absolute inset-x-0 h-[6px] rounded-full bg-slate-200 pointer-events-none">
-            <div className="h-full rounded-full bg-cyan-400" style={{ width: `${pct}%` }} />
-          </div>
-          {/* Thumb */}
+        {/* Fader grip — value label + grip lines */}
+        <div
+          className="absolute pointer-events-none z-10"
+          style={{ left: faderLeft, top: "50%", transform: "translate(-50%, -50%)" }}
+        >
           <div
-            className="absolute w-5 h-5 rounded-full bg-indigo-500 pointer-events-none z-10"
             style={{
-              left: thumbCenter,
-              transform: "translateX(-50%)",
-              boxShadow: "0 0 0 3px rgba(99,102,241,0.22), 0 1px 4px rgba(15,23,42,0.18)",
+              width: "56px",
+              height: "46px",
+              background: "#6366F1",
+              borderRadius: "10px",
+              boxShadow: "0 0 0 3px rgba(99,102,241,0.22), 0 6px 18px rgba(99,102,241,0.38)",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "5px",
             }}
-          />
-          {/* Native input — invisible, sits on top for full a11y */}
-          <input
-            id={id}
-            type="range"
-            min={min}
-            max={max}
-            step={step}
-            value={value}
-            onChange={(e) => onChange(Number(e.target.value))}
-            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer appearance-none z-20"
-          />
+          >
+            <span style={{ color: "white", fontSize: "13px", fontWeight: 700, fontVariantNumeric: "tabular-nums", lineHeight: 1, whiteSpace: "nowrap" }}>
+              {display}
+            </span>
+            <div style={{ display: "flex", gap: "3.5px", alignItems: "center" }}>
+              {[0, 1, 2].map(i => (
+                <div key={i} style={{ width: "2px", height: "7px", background: "rgba(255,255,255,0.32)", borderRadius: "1px" }} />
+              ))}
+            </div>
+          </div>
         </div>
+
+        {/* Native input — invisible, full a11y */}
+        <input
+          id={id}
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={(e) => onChange(Number(e.target.value))}
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer appearance-none z-20"
+        />
       </div>
-      <div className="flex justify-between text-[11px] text-slate-400 mt-1">
+      <div className="flex justify-between text-[11px] text-slate-400 mt-1.5">
         <span>{min}</span>
         <span>{max}</span>
       </div>
