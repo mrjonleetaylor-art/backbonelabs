@@ -95,8 +95,8 @@ export default function Problem() {
             sizes="100vw"
           />
         </motion.div>
-        {/* Dark overlay */}
-        <div className="absolute inset-0" style={{ background: "rgba(10, 15, 30, 0.65)" }} />
+        {/* Vignette */}
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 55%, rgba(10,15,30,0.08) 0%, rgba(10,15,30,0.62) 100%)" }} />
         {/* White gradient bleed from above */}
         <div
           className="absolute top-0 inset-x-0 pointer-events-none z-10"
