@@ -26,19 +26,6 @@ export default function PrivacyPage() {
             RelayDesk respects your privacy and takes the protection of personal information seriously. We collect information to operate our phone agent service, support our customers, process payments securely, improve our systems, and communicate with users. If you are a RelayDesk customer, we collect information needed to manage your account and configure your phone agent. If you are calling a business that uses RelayDesk, we may record and transcribe your call so the agent can respond and the business owner can receive a summary of the interaction. We only collect information that is reasonably necessary for our services and handle it in line with the Australian Privacy Act 1988 and the Australian Privacy Principles (APPs).
           </p>
 
-          <Section title="Who we are">
-            <p>RelayDesk is operated by:</p>
-            <ul>
-              <li><strong>Entity name:</strong> Jon Lee Taylor</li>
-              <li><strong>ABN:</strong> 50 154 134 393</li>
-              <li><strong>Website:</strong> relaydesk.com.au</li>
-              <li><strong>Email:</strong> <a href={EMAIL_HREF}>hello@relaydesk.com.au</a></li>
-              <li><strong>Registered address:</strong> 10 Cutts Street, Barden Ridge, NSW 2234</li>
-              <li><strong>Country:</strong> Australia</li>
-            </ul>
-            <p>This Privacy Policy explains how we collect, use, disclose and store personal information.</p>
-          </Section>
-
           <Section title="Who this policy applies to">
             <p>This policy applies to three groups:</p>
             <ol>
@@ -284,6 +271,7 @@ export default function PrivacyPage() {
           </Section>
 
           <Section title="Contact us">
+            <p>RelayDesk is operated by Jon Lee Taylor (ABN 50 154 134 393), based in Australia.</p>
             <p>If you have questions about this Privacy Policy or our privacy practices, contact us at:</p>
             <p>
               <a href={EMAIL_HREF} className="font-semibold">hello@relaydesk.com.au</a>
