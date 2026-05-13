@@ -3,6 +3,12 @@
 //   - Tom (sales agent)        -> sales_calls / leads / bookings, Twilio SMS to Jon
 //   - Customer-facing agents   -> calls / actions / messages, Resend email to the owner
 //
+// ElevenLabs post-call webhook payload shape (per
+// https://elevenlabs.io/docs/eleven-agents/workflows/post-call-webhooks):
+// { type, event_timestamp, data: { agent_id, conversation_id, transcript[],
+//   metadata: { call_duration_secs, ... }, analysis: { data_collection_results,
+//   transcript_summary, ... }, ... } }
+//
 // Customer dispatch resolves the agent via customers.elevenlabs_agent_id.
 // If no customer matches, the call is logged and skipped.
 
@@ -13,6 +19,16 @@ import { parse, addDays, format } from 'date-fns';
 import crypto from 'crypto';
 
 // ===== Types =====
+
+// ElevenLabs sends data_collection_results as a map of variable name to either
+// a raw value or an object with { value, rationale, ... }. Normalise both shapes
+// down to a flat Collected map.
+type RawCollectedValue =
+  | string
+  | number
+  | boolean
+  | null
+  | { value?: unknown; rationale?: string; data_collection_id?: string };
 
 type Collected = {
   // Common fields
@@ -50,19 +66,36 @@ type Collected = {
   escalation_needed?: boolean;
 };
 
-type WebhookPayload = {
-  conversation_id?: string;
-  conversationId?: string;
+type WebhookData = {
   agent_id?: string;
-  agentId?: string;
-  caller_phone?: string;
-  duration_seconds?: number;
-  duration?: number;
-  transcript?: string | unknown;
-  collected_data?: Collected;
-  data_collection_results?: Collected;
-  analysis?: { data_collection_results?: Collected };
-  metadata?: { caller_phone?: string };
+  conversation_id?: string;
+  status?: string;
+  transcript?: unknown;
+  metadata?: {
+    start_time_unix_secs?: number;
+    call_duration_secs?: number;
+    phone_call?: {
+      external_number?: string;
+      direction?: string;
+    };
+    [key: string]: unknown;
+  };
+  analysis?: {
+    data_collection_results?: Record<string, RawCollectedValue>;
+    transcript_summary?: string;
+    call_successful?: string;
+    evaluation_criteria_results?: Record<string, unknown>;
+  };
+  conversation_initiation_client_data?: {
+    dynamic_variables?: Record<string, unknown>;
+  };
+  [key: string]: unknown;
+};
+
+type WebhookPayload = {
+  type?: string;
+  event_timestamp?: number;
+  data?: WebhookData;
 };
 
 type Customer = {
@@ -98,7 +131,7 @@ function parseSignatureHeader(header: string | null): { timestamp: string; signa
 function verifySignature(timestamp: string, rawBody: string, signature: string): boolean {
   if (!process.env.ELEVENLABS_WEBHOOK_SECRET) return false;
   const age = Math.abs(Date.now() / 1000 - Number(timestamp));
-  if (!Number.isFinite(age) || age > 300) return false;
+  if (!Number.isFinite(age) || age > 1800) return false; // 30 min window
   const expected = crypto
     .createHmac('sha256', process.env.ELEVENLABS_WEBHOOK_SECRET)
     .update(`${timestamp}.${rawBody}`)
@@ -110,17 +143,38 @@ function verifySignature(timestamp: string, rawBody: string, signature: string):
   }
 }
 
-function getCollected(payload: WebhookPayload): Collected {
-  return (
-    payload.collected_data ??
-    payload.data_collection_results ??
-    payload.analysis?.data_collection_results ??
-    {}
-  );
+// Flatten data_collection_results: each entry can be a raw value or
+// { value, rationale, data_collection_id }. We only care about value.
+function flattenCollected(raw: Record<string, RawCollectedValue> | undefined): Collected {
+  if (!raw) return {};
+  const out: Record<string, unknown> = {};
+  for (const [key, val] of Object.entries(raw)) {
+    if (val !== null && typeof val === 'object' && 'value' in val) {
+      out[key] = (val as { value?: unknown }).value;
+    } else {
+      out[key] = val;
+    }
+  }
+  return out as Collected;
 }
 
-function getCallerPhone(payload: WebhookPayload, collected: Collected): string | null {
-  return collected.caller_phone ?? payload.caller_phone ?? payload.metadata?.caller_phone ?? null;
+function getCollected(data: WebhookData): Collected {
+  return flattenCollected(data.analysis?.data_collection_results);
+}
+
+function getCallerPhone(data: WebhookData, collected: Collected): string | null {
+  // 1. From the LLM's data collection extraction.
+  if (collected.caller_phone) return String(collected.caller_phone);
+  // 2. From Twilio metadata (inbound caller's external number).
+  const ext = data.metadata?.phone_call?.external_number;
+  if (typeof ext === 'string' && ext.length > 0) return ext;
+  // 3. Dynamic variables passed in at conversation start.
+  const dyn = data.conversation_initiation_client_data?.dynamic_variables;
+  if (dyn && typeof dyn === 'object') {
+    const candidate = (dyn as Record<string, unknown>).system__caller_id;
+    if (typeof candidate === 'string' && /\d/.test(candidate)) return candidate;
+  }
+  return null;
 }
 
 function transcriptToString(t: unknown): string | null {
@@ -130,7 +184,6 @@ function transcriptToString(t: unknown): string | null {
 }
 
 function esc(value: unknown): string {
-  // Minimal HTML escape for email bodies. Prevents injection via user fields.
   const s = value == null ? '' : String(value);
   return s
     .replace(/&/g, '&amp;')
@@ -140,7 +193,6 @@ function esc(value: unknown): string {
     .replace(/'/g, '&#39;');
 }
 
-// Parse a relative date phrase to ISO YYYY-MM-DD. Best-effort; returns null on failure.
 function parseRelativeDay(input: string | null | undefined): string | null {
   if (!input) return null;
   const lower = input.toLowerCase().trim();
@@ -167,7 +219,6 @@ function parseRelativeDay(input: string | null | undefined): string | null {
       const today = new Date();
       let daysAhead = i - today.getDay();
       if (daysAhead <= 0) daysAhead += 7;
-      // If the phrase mentions "next" or "after next", push out further
       if (/\bafter next\b/.test(lower)) daysAhead += 7;
       else if (/\bnext\b/.test(lower) && daysAhead < 7) daysAhead += 7;
       return format(addDays(today, daysAhead), 'yyyy-MM-dd');
@@ -176,10 +227,6 @@ function parseRelativeDay(input: string | null | undefined): string | null {
   return null;
 }
 
-// Map Ava's outcome enum into the database call_outcome enum + an action type.
-// Ava outcomes: order_captured | callback_booked | enquiry_only | escalated | no_contact_captured | hung_up
-// DB call_outcome: order | info | transfer | complaint | other
-// DB action_type:  order | callback | quote | complaint | info | other
 function mapCustomerOutcome(
   collected: Collected
 ): { call_outcome: string | null; action_type: string | null } {
@@ -189,7 +236,6 @@ function mapCustomerOutcome(
   if (o === 'escalated') return { call_outcome: 'transfer', action_type: 'info' };
   if (o === 'enquiry_only') return { call_outcome: 'info', action_type: null };
   if (o === 'no_contact_captured' || o === 'hung_up') return { call_outcome: 'other', action_type: null };
-  // Sympathy/funeral isn't a separate outcome, it's a flag. Complaint isn't in the Ava outcome list yet.
   return { call_outcome: null, action_type: null };
 }
 
@@ -198,10 +244,10 @@ function mapCustomerOutcome(
 async function handleTomCall(
   supabase: SupabaseClient,
   twilioClient: ReturnType<typeof twilio>,
-  payload: WebhookPayload,
+  data: WebhookData,
+  rawPayload: WebhookPayload,
   conversationId: string
 ): Promise<Response> {
-  // Idempotency on sales_calls.
   const { data: existing } = await supabase
     .from('sales_calls')
     .select('id')
@@ -209,18 +255,18 @@ async function handleTomCall(
     .maybeSingle();
   if (existing) return json({ ok: true, deduped: true });
 
-  const collected = getCollected(payload);
-  const callerPhone = getCallerPhone(payload, collected);
+  const collected = getCollected(data);
+  const callerPhone = getCallerPhone(data, collected);
 
   const { data: callRow, error: callError } = await supabase
     .from('sales_calls')
     .insert({
       elevenlabs_conversation_id: conversationId,
       caller_phone: callerPhone,
-      duration_seconds: payload.duration_seconds ?? payload.duration ?? null,
-      transcript: transcriptToString(payload.transcript),
+      duration_seconds: data.metadata?.call_duration_secs ?? null,
+      transcript: transcriptToString(data.transcript),
       outcome: collected.outcome ?? null,
-      raw_payload: payload,
+      raw_payload: rawPayload,
     })
     .select()
     .single();
@@ -324,10 +370,10 @@ async function handleCustomerCall(
   supabase: SupabaseClient,
   resend: Resend,
   customer: Customer,
-  payload: WebhookPayload,
+  data: WebhookData,
+  rawPayload: WebhookPayload,
   conversationId: string
 ): Promise<Response> {
-  // Idempotency on calls.elevenlabs_call_id.
   const { data: existing } = await supabase
     .from('calls')
     .select('id')
@@ -335,9 +381,17 @@ async function handleCustomerCall(
     .maybeSingle();
   if (existing) return json({ ok: true, deduped: true });
 
-  const collected = getCollected(payload);
-  const callerPhone = getCallerPhone(payload, collected);
+  const collected = getCollected(data);
+  const callerPhone = getCallerPhone(data, collected);
   const mapped = mapCustomerOutcome(collected);
+
+  // Prefer Ava's notes field for the summary, fall back to the LLM's transcript summary.
+  const summary = collected.notes ?? data.analysis?.transcript_summary ?? null;
+
+  // Compute started_at from unix timestamp if present.
+  const startedAt = data.metadata?.start_time_unix_secs
+    ? new Date(data.metadata.start_time_unix_secs * 1000).toISOString()
+    : null;
 
   const { data: callRow, error: callError } = await supabase
     .from('calls')
@@ -345,11 +399,12 @@ async function handleCustomerCall(
       customer_id: customer.id,
       elevenlabs_call_id: conversationId,
       caller_phone: callerPhone,
-      duration_s: payload.duration_seconds ?? payload.duration ?? null,
-      transcript: transcriptToString(payload.transcript),
-      summary: collected.notes ?? null,
+      started_at: startedAt,
+      duration_s: data.metadata?.call_duration_secs ?? null,
+      transcript: transcriptToString(data.transcript),
+      summary,
       outcome: mapped.call_outcome,
-      raw_webhook: payload as unknown as Record<string, unknown>,
+      raw_webhook: rawPayload as unknown as Record<string, unknown>,
     })
     .select('id')
     .single<CallRow>();
@@ -359,7 +414,6 @@ async function handleCustomerCall(
     return json({ error: callError?.message ?? 'call insert failed' }, 500);
   }
 
-  // Create the relevant action row.
   let actionType: string | null = mapped.action_type;
   if (!actionType && collected.escalation_needed) {
     actionType = 'info';
@@ -386,7 +440,7 @@ async function handleCustomerCall(
         card_message: collected.card_message ?? null,
         is_sympathy_or_funeral: collected.is_sympathy_or_funeral ?? false,
       },
-      due_at: dueAt ? `${dueAt}T07:00:00+10:00` : null, // 5pm AEST as a soft due time
+      due_at: dueAt ? `${dueAt}T07:00:00+10:00` : null,
     });
   } else if (actionType === 'callback') {
     const callbackDate = parseRelativeDay(collected.callback_day) ?? null;
@@ -420,7 +474,6 @@ async function handleCustomerCall(
     });
   }
 
-  // Fire owner notification (email).
   await sendOwnerEmail({
     supabase,
     resend,
@@ -429,7 +482,7 @@ async function handleCustomerCall(
     callerPhone,
     actionType,
     collected,
-    transcript: transcriptToString(payload.transcript),
+    transcript: transcriptToString(data.transcript),
   });
 
   return json({ ok: true, pipeline: 'customer', customer_id: customer.id });
@@ -455,7 +508,6 @@ async function sendOwnerEmail(args: {
 
   const { subject, html } = renderOwnerEmail(args);
 
-  // Pre-insert the messages row so we have an id to track status on.
   const { data: msgRow, error: msgError } = await args.supabase
     .from('messages')
     .insert({
@@ -472,7 +524,6 @@ async function sendOwnerEmail(args: {
 
   if (msgError) {
     console.error('messages insert error', msgError);
-    // Still try to send.
   }
 
   try {
@@ -630,22 +681,33 @@ export async function POST(req: Request) {
     return json({ error: 'invalid json' }, 400);
   }
 
-  const conversationId = payload.conversation_id ?? payload.conversationId;
+  // Only handle post_call_transcription events. Skip post_call_audio and
+  // call_initiation_failure events (return 200 so ElevenLabs doesn't retry).
+  const eventType = payload.type;
+  if (eventType !== 'post_call_transcription') {
+    return json({ ok: true, skipped: 'event_type', event_type: eventType ?? null });
+  }
+
+  const data = payload.data;
+  if (!data) {
+    return json({ error: 'missing data object' }, 400);
+  }
+
+  const conversationId = data.conversation_id;
   if (!conversationId) return json({ error: 'missing conversation_id' }, 400);
 
-  const agentId = payload.agent_id ?? payload.agentId;
+  const agentId = data.agent_id;
   if (!agentId) return json({ error: 'missing agent_id' }, 400);
 
-  // Dispatch: Tom or customer-facing.
   if (agentId === process.env.TOM_AGENT_ID) {
-    return handleTomCall(supabase, twilioClient, payload, conversationId);
+    return handleTomCall(supabase, twilioClient, data, payload, conversationId);
   }
 
   const { data: customer, error: customerError } = await supabase
     .from('customers')
     .select('id, business_name, owner_name, owner_email, elevenlabs_agent_id')
     .eq('elevenlabs_agent_id', agentId)
-    .in('status', ['pilot', 'paying']) // skip churned; treat pilot and paying the same operationally
+    .in('status', ['pilot', 'paying'])
     .maybeSingle<Customer>();
 
   if (customerError) {
@@ -658,5 +720,5 @@ export async function POST(req: Request) {
     return json({ ok: true, skipped: 'no_customer_match' });
   }
 
-  return handleCustomerCall(supabase, resend, customer, payload, conversationId);
+  return handleCustomerCall(supabase, resend, customer, data, payload, conversationId);
 }
