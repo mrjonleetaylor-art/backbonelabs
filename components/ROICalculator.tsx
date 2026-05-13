@@ -213,9 +213,10 @@ type SliderProps = {
 
 function SliderField({ id, label, value, min, max, step, display, onChange }: SliderProps) {
   const pct = ((value - min) / (max - min)) * 100
-  // Fader is 56px wide (28px half-width). Compensation shifts +28px at min → -28px at max
-  // so the fader stays within the track bounds at both extremes.
-  const faderLeft = `calc(${pct}% + ${(28 - pct * 0.56).toFixed(1)}px)`
+  // Match the native browser thumb's compensation (8px radius) so the invisible
+  // input thumb and our visual fader are exactly co-located. The wider fader
+  // hangs over the track edges slightly — that's fine given the card's px-8 padding.
+  const faderLeft = `calc(${pct}% + ${(8 - pct * 0.16).toFixed(2)}px)`
 
   return (
     <div>
