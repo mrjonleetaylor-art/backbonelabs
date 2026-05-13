@@ -1,5 +1,4 @@
 "use client"
-import { EMAIL_HREF, PHONE_DISPLAY, PHONE_HREF } from "@/lib/contact"
 
 export default function Footer() {
   function openCookieBanner() {
@@ -7,40 +6,22 @@ export default function Footer() {
   }
 
   return (
-    <footer className="border-t border-white/[0.06] py-7" style={{ background: "#0A0F1E" }}>
-      <div className="max-w-[1100px] mx-auto px-6 lg:px-12 flex flex-wrap items-center justify-between gap-4">
-        <div className="text-[14px] font-bold tracking-[-0.02em] text-white/60">
+    <footer className="border-t border-white/[0.06] py-5" style={{ background: "#0A0F1E" }}>
+      <div className="max-w-[1100px] mx-auto px-6 lg:px-12 flex items-center justify-between gap-6">
+        <span className="text-[14px] font-bold tracking-[-0.02em] text-white/55 flex-shrink-0">
           Relay<span className="text-indigo-400">Desk</span>
-        </div>
-        <div className="flex flex-wrap gap-6">
-          <a
-            href={PHONE_HREF}
-            className="text-[12px] text-white/30 hover:text-white/65 transition-colors"
-          >
-            {PHONE_DISPLAY}
+        </span>
+        <div className="flex items-center gap-5">
+          <a href="/privacy" className="text-[12px] text-white/30 hover:text-white/60 transition-colors whitespace-nowrap">
+            Privacy
           </a>
-          <a
-            href={EMAIL_HREF}
-            className="text-[12px] text-white/30 hover:text-white/65 transition-colors"
-          >
-            hello@relaydesk.com.au
-          </a>
-          <a
-            href="/privacy"
-            className="text-[12px] text-white/30 hover:text-white/65 transition-colors"
-          >
-            Privacy Policy
-          </a>
-          <button
-            onClick={openCookieBanner}
-            className="text-[12px] text-white/30 hover:text-white/65 transition-colors"
-          >
-            Cookie preferences
+          <button onClick={openCookieBanner} className="text-[12px] text-white/30 hover:text-white/60 transition-colors whitespace-nowrap">
+            Cookies
           </button>
+          <span className="text-[12px] text-white/20 whitespace-nowrap">
+            © {new Date().getFullYear()} RelayDesk
+          </span>
         </div>
-        <p className="text-[12px] text-white/22">
-          © {new Date().getFullYear()} RelayDesk. All rights reserved.
-        </p>
       </div>
     </footer>
   )
