@@ -213,40 +213,55 @@ type SliderProps = {
 
 function SliderField({ id, label, value, min, max, step, display, onChange }: SliderProps) {
   const pct = ((value - min) / (max - min)) * 100
-  // Compensate for thumb radius (~8px) so pill tracks the thumb centre at edges
-  const pillLeft = `calc(${pct}% + ${(8 - pct * 0.16).toFixed(2)}px)`
+  // Thumb/pill centre: compensates for native thumb radius at track edges
+  const thumbCenter = `calc(${pct}% + ${(8 - pct * 0.16).toFixed(2)}px)`
 
   return (
     <div>
       <label htmlFor={id} className="block text-[13px] font-medium text-slate-700 mb-2">
         {label}
       </label>
-      {/* Wrapper with top padding to make room for the floating pill */}
       <div className="relative" style={{ paddingTop: "30px" }}>
-        {/* Floating value pill — always visible, tracks thumb */}
+        {/* Floating value pill */}
         <div
-          className="absolute top-0 pointer-events-none"
-          style={{ left: pillLeft, transform: "translateX(-50%)" }}
+          className="absolute top-0 pointer-events-none z-10"
+          style={{ left: thumbCenter, transform: "translateX(-50%)" }}
         >
           <span
             className="inline-block bg-white text-slate-900 text-[12px] font-bold rounded px-2 py-0.5 whitespace-nowrap"
-            style={{
-              boxShadow: "0 1px 4px rgba(15,23,42,0.12), 0 0 0 1px rgba(15,23,42,0.06)",
-            }}
+            style={{ boxShadow: "0 1px 4px rgba(15,23,42,0.12), 0 0 0 1px rgba(15,23,42,0.06)" }}
           >
             {display}
           </span>
         </div>
-        <input
-          id={id}
-          type="range"
-          min={min}
-          max={max}
-          step={step}
-          value={value}
-          onChange={(e) => onChange(Number(e.target.value))}
-          className="w-full accent-indigo-500"
-        />
+
+        {/* Custom track + thumb */}
+        <div className="relative flex items-center h-5">
+          {/* Track */}
+          <div className="absolute inset-x-0 h-[6px] rounded-full bg-slate-200 pointer-events-none">
+            <div className="h-full rounded-full bg-cyan-400" style={{ width: `${pct}%` }} />
+          </div>
+          {/* Thumb */}
+          <div
+            className="absolute w-5 h-5 rounded-full bg-indigo-500 pointer-events-none z-10"
+            style={{
+              left: thumbCenter,
+              transform: "translateX(-50%)",
+              boxShadow: "0 0 0 3px rgba(99,102,241,0.22), 0 1px 4px rgba(15,23,42,0.18)",
+            }}
+          />
+          {/* Native input — invisible, sits on top for full a11y */}
+          <input
+            id={id}
+            type="range"
+            min={min}
+            max={max}
+            step={step}
+            value={value}
+            onChange={(e) => onChange(Number(e.target.value))}
+            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer appearance-none z-20"
+          />
+        </div>
       </div>
       <div className="flex justify-between text-[11px] text-slate-400 mt-1">
         <span>{min}</span>
