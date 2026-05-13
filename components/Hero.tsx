@@ -13,15 +13,7 @@ const slideUp = (delay: number) => ({
   transition: { duration: 0.6, ease, delay },
 })
 
-const summaryRows = [
-  { label: "Caller",   value: "Emma R." },
-  { label: "Request",  value: "Custom arrangement, delivery at 12" },
-  { label: "Contact",  value: "0411 XXX XXX" },
-  { label: "Status",   value: "Booking made for tomorrow at 12. $100 deposit received.", highlight: true },
-]
-
 export default function Hero() {
-  const [summaryVisible, setSummaryVisible] = useState(false)
   const [activeConv, setActiveConv] = useState(0)
   const [callbackOpen, setCallbackOpen] = useState(false)
   const transcriptRef = useRef<CallTranscriptHandle>(null)
@@ -113,7 +105,7 @@ export default function Hero() {
           {/* Right: iMessage widget + dots + summary */}
           <motion.div {...slideUp(0.2)} className="hidden lg:block">
             <div
-              className="relative h-[400px] bg-slate-900 rounded-[20px] overflow-hidden"
+              className="relative h-[360px] bg-slate-900 rounded-[20px] overflow-hidden"
               style={{ boxShadow: "0 8px 16px rgba(15,23,42,0.06), 0 24px 64px rgba(15,23,42,0.08)" }}
             >
               <div
@@ -149,7 +141,6 @@ export default function Hero() {
               />
               <CallTranscript
                 ref={transcriptRef}
-                onComplete={() => setSummaryVisible(true)}
                 onConvChange={handleConvChange}
               />
             </div>
@@ -170,39 +161,6 @@ export default function Hero() {
               ))}
             </div>
 
-            {/* Call summary card */}
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={summaryVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-              transition={{ duration: 0.5, ease }}
-              className="mx-5 relative z-10 bg-white rounded-xl px-5 py-4 border-l-4 border-cyan-400"
-              style={{ boxShadow: "0 4px 6px rgba(15,23,42,0.05), 0 10px 28px rgba(15,23,42,0.08)" }}
-            >
-              <div className="text-[10px] font-semibold uppercase tracking-[0.09em] text-slate-400 mb-3">
-                Call summary, 2 mins ago
-              </div>
-              <div className="space-y-1">
-                {summaryRows.map(({ label, value, highlight }, i) => (
-                  <motion.div
-                    key={label}
-                    initial={{ opacity: 0, x: -8 }}
-                    animate={summaryVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: -8 }}
-                    transition={{ duration: 0.3, delay: summaryVisible ? i * 0.1 : 0, ease }}
-                    className="text-[12px]"
-                  >
-                    <span className="text-slate-400">{label}: </span>
-                    {highlight ? (
-                      <span className="inline-flex items-center gap-1.5 font-semibold" style={{ color: "#06B6D4" }}>
-                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 flex-shrink-0" />
-                        {value}
-                      </span>
-                    ) : (
-                      <span className="text-slate-700">{value}</span>
-                    )}
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
           </motion.div>
 
         </div>

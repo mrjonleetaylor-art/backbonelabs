@@ -12,9 +12,7 @@ const CONVERSATIONS: { label: string; messages: Message[] }[] = [
       { speaker: "Caller",   text: "Hi, I'd like a custom arrangement for delivery tomorrow around midday. It's for an anniversary." },
       { speaker: "Reception", text: "Lovely. What's your budget, and any preference on colours?" },
       { speaker: "Caller",   text: "Around $100 - reds and whites." },
-      { speaker: "Reception", text: "Perfect. To lock that in, I'll send a secure payment link to your phone now for a $100 deposit." },
-      { speaker: "Caller",   text: "Done, just paid." },
-      { speaker: "Reception", text: "Confirmed. Custom arrangement for tomorrow at 12. We'll call you this afternoon to confirm the delivery address." },
+      { speaker: "Reception", text: "Perfect. I'll send a secure payment link to your phone now for a $100 deposit to lock that in." },
     ],
   },
   {
@@ -24,8 +22,6 @@ const CONVERSATIONS: { label: string; messages: Message[] }[] = [
       { speaker: "Reception", text: "We do - are you after a bunch or an arrangement?" },
       { speaker: "Caller",   text: "Just a bunch, it's for a birthday." },
       { speaker: "Reception", text: "Perfect. What's your budget roughly?" },
-      { speaker: "Caller",   text: "Around $60-80" },
-      { speaker: "Reception", text: "Great. Can I grab your name and best number to confirm the order?" },
     ],
   },
   {
@@ -35,8 +31,6 @@ const CONVERSATIONS: { label: string; messages: Message[] }[] = [
       { speaker: "Reception", text: "Of course, I'm sorry for your loss. What time is the service?" },
       { speaker: "Caller",   text: "11am at the church in Parramatta." },
       { speaker: "Reception", text: "We can have an arrangement ready for collection by 9am. Would white lilies work?" },
-      { speaker: "Caller",   text: "That would be perfect." },
-      { speaker: "Reception", text: "I'll pass this to the team now. Can I take your name?" },
     ],
   },
 ]
