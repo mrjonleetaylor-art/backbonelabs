@@ -110,9 +110,9 @@ export default function HowItWorks() {
         <div ref={sectionRef} className="relative">
 
           {/* Vertical connecting line — desktop only */}
-          <div className="absolute left-1/2 top-6 bottom-6 w-px bg-slate-200 -translate-x-1/2 hidden lg:block overflow-hidden origin-top">
+          <div className="absolute left-1/2 top-6 bottom-6 w-0.5 bg-slate-300 -translate-x-1/2 hidden lg:block overflow-hidden origin-top">
             <motion.div
-              className="w-full bg-indigo-300 origin-top"
+              className="w-full bg-indigo-400 origin-top"
               style={{ scaleY: lineScaleY, height: "100%" }}
             />
           </div>
@@ -123,7 +123,7 @@ export default function HowItWorks() {
               const circleColor = isLeft ? "#6366F1" : "#06B6D4"
 
               return (
-                <div key={step.number} className="lg:grid lg:grid-cols-[1fr_80px_1fr] lg:gap-8 lg:items-center lg:mb-4">
+                <div key={step.number} className="lg:grid lg:grid-cols-[1fr_64px_1fr] lg:gap-4 lg:items-center lg:mb-4">
 
                   {/* Left column */}
                   <div className={`${!isLeft ? "hidden lg:block" : ""}`}>
