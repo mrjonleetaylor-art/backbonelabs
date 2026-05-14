@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
-import Image from "next/image"
 import { PHONE_DISPLAY, PHONE_HREF, EMAIL_HREF } from "@/lib/contact"
 
 const NAV_LINKS = [
@@ -45,19 +44,10 @@ export default function Nav() {
               : "bg-white/[0.88] backdrop-blur-2xl shadow-[0_1px_2px_rgba(15,23,42,0.04),0_6px_24px_rgba(15,23,42,0.06)]"
           }`}
         >
-          <Link href="/" className="flex items-center gap-2 select-none">
-            <Image
-              src="/relaydesk_logo_assets/SVG/relaydesk-mark.svg"
-              alt="RelayDesk"
-              width={32}
-              height={32}
-              className="h-8 w-auto"
-              unoptimized
-              priority
-            />
-            <span className="hidden sm:inline text-[17px] font-bold tracking-[-0.025em]">
-              <span className="text-slate-900">Relay</span>
-              <span className="text-indigo-500">Desk</span>
+          <Link href="/" className="flex items-center select-none">
+            <span className="text-[17px] font-bold tracking-[-0.025em]">
+              <span className="text-cyan-500">Relay</span>
+              <span className="text-slate-900">Desk</span>
             </span>
           </Link>
 

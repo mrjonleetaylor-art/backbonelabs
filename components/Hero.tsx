@@ -46,16 +46,16 @@ export default function Hero() {
             >
               <span className="w-1.5 h-1.5 rounded-full bg-white/60 flex-shrink-0" />
               <span className="text-[12px] font-semibold text-white tracking-[-0.005em]">
-                Call handling for local businesses
+                Meet your AI phone agent.
               </span>
             </motion.div>
 
-            <h1 className="text-[clamp(44px,5.5vw,72px)] font-extrabold leading-[1.04] tracking-[-0.032em] text-slate-900 mb-5">
+            <h1 className="text-[clamp(40px,5vw,68px)] font-extrabold leading-[1.04] tracking-[-0.032em] text-slate-900 mb-5">
               <motion.span {...slideUp(0.1)} className="block">
-                Every call answered.
+                Run your business,
               </motion.span>
               <motion.span {...slideUp(0.2)} className="block">
-                Every order captured.
+                not your phone.
               </motion.span>
             </h1>
 
@@ -63,8 +63,8 @@ export default function Hero() {
               {...slideUp(0.35)}
               className="text-[20px] text-slate-600 leading-[1.7] max-w-[460px] mb-9"
             >
-              RelayDesk answers calls when you&apos;re busy, takes orders, handles questions, and emails
-              you the details.
+              An AI phone agent for Australian local businesses that answers calls, captures orders,
+              and books callbacks.
             </motion.p>
 
             <motion.div {...slideUp(0.45)} className="flex flex-wrap gap-2.5 mb-11">

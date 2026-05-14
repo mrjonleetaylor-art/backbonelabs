@@ -1,4 +1,4 @@
-type Variant = 'order' | 'callback' | 'question' | 'transfer' | 'voicemail' | 'complaint' | 'other'
+export type Variant = 'order' | 'callback' | 'question' | 'transfer' | 'voicemail' | 'complaint' | 'other'
 
 const CONFIG: Record<Variant, { label: string; bg: string; color: string }> = {
   order:     { label: 'Order taken',         bg: '#DCFCE7', color: '#15803D' },

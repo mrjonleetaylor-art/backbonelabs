@@ -1,8 +1,16 @@
 'use client'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { saveProfile } from './actions'
 
 type Customer = { owner_name: string | null; owner_email: string; owner_phone: string | null }
+
+function CheckIcon() {
+  return (
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  )
+}
 
 function AutoSaveField({
   label,
@@ -12,35 +20,55 @@ function AutoSaveField({
   readOnly,
 }: {
   label: string
-  field: 'owner_name' | 'owner_phone'
+  field?: 'owner_name' | 'owner_phone'
   defaultValue: string
   hint?: React.ReactNode
   readOnly?: boolean
 }) {
   const [status, setStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
-  const [error, setError] = useState('')
+  const [errorMsg, setErrorMsg] = useState('')
+  const [fadeOut, setFadeOut] = useState(false)
+  const savedValue = useRef(defaultValue)
+  const fadeTimers = useRef<ReturnType<typeof setTimeout>[]>([])
 
   async function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
     const value = e.target.value
-    if (value === defaultValue) return
+    if (value === savedValue.current || !field) return
+    fadeTimers.current.forEach(clearTimeout)
     setStatus('saving')
+    setFadeOut(false)
     const result = await saveProfile(field, value)
     if (result.ok) {
+      savedValue.current = value
       setStatus('saved')
-      setTimeout(() => setStatus('idle'), 2000)
+      setFadeOut(false)
+      const t1 = setTimeout(() => setFadeOut(true), 2000)
+      const t2 = setTimeout(() => { setStatus('idle'); setFadeOut(false) }, 2600)
+      fadeTimers.current = [t1, t2]
     } else {
       setStatus('error')
-      setError(result.error ?? 'Failed to save.')
+      setErrorMsg(result.error ?? "Couldn't save.")
     }
   }
+
+  const hasStatus = status !== 'idle'
 
   return (
     <div className="space-y-1.5">
       <div className="flex items-center justify-between">
         <label className="text-[13px] font-medium text-slate-700">{label}</label>
-        {status === 'saved' && <span className="text-[11px] text-emerald-600 font-medium">Saved</span>}
-        {status === 'saving' && <span className="text-[11px] text-slate-400">Saving…</span>}
-        {status === 'error' && <span className="text-[11px] text-red-500">{error}</span>}
+        <span
+          className={`flex items-center gap-1 text-[11px] font-medium transition-opacity duration-500 ${
+            hasStatus ? (fadeOut ? 'opacity-0' : 'opacity-100') : 'opacity-0'
+          } ${
+            status === 'saved' ? 'text-indigo-500' :
+            status === 'saving' ? 'text-slate-400' :
+            'text-red-500'
+          }`}
+        >
+          {status === 'saved' && <CheckIcon />}
+          {status === 'saved' ? 'Saved' : status === 'saving' ? 'Saving…' : errorMsg}
+        </span>
       </div>
       <input
         type="text"
@@ -64,7 +92,6 @@ export default function ProfileForm({ customer }: { customer: Customer }) {
       />
       <AutoSaveField
         label="Email"
-        field="owner_name"
         defaultValue={customer.owner_email}
         readOnly
         hint={

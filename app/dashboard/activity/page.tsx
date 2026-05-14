@@ -1,11 +1,10 @@
 import { redirect } from 'next/navigation'
-import Link from 'next/link'
 import { createClient as createServiceClient } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/server'
-import Avatar, { initialsFrom } from '../_components/Avatar'
-import Badge, { badgeVariant } from '../_components/Badge'
-import { formatCallTime, formatDuration } from '@/lib/formatTime'
+import { badgeVariant } from '../_components/Badge'
 import ActivityFilters from './ActivityFilters'
+import ActivityTable from './ActivityTable'
+import type { TableRow } from './ActivityTable'
 
 const PAGE_SIZE = 25
 
@@ -14,6 +13,7 @@ type SearchParams = {
   search?: string
   since?: string
   page?: string
+  open?: string
 }
 
 export default async function ActivityPage({
@@ -46,6 +46,7 @@ export default async function ActivityPage({
     const d = new Date(); d.setDate(d.getDate() - 7); return d.toISOString().slice(0, 10)
   })()
   const sinceDate = new Date(since)
+  const initialExpandedId = params.open ?? null
 
   // Build calls query
   let callsQuery = admin
@@ -59,7 +60,6 @@ export default async function ActivityPage({
   else if (outcomeFilter === 'transfer') callsQuery = callsQuery.eq('outcome', 'transfer')
   else if (outcomeFilter === 'complaint') callsQuery = callsQuery.eq('outcome', 'complaint')
   else if (outcomeFilter === 'callback' || outcomeFilter === 'question') callsQuery = callsQuery.eq('outcome', 'info')
-  // voicemail filter: no calls, handled below
 
   const showVoicemails = outcomeFilter === 'all' || outcomeFilter === 'voicemail'
   const showCalls = outcomeFilter !== 'voicemail'
@@ -77,29 +77,23 @@ export default async function ActivityPage({
   const calls = (callsResult.data ?? []) as CallRow[]
   const voicemails = (voicemailsResult.data ?? []) as VoicemailRow[]
 
-  // Pending callback actions for badge resolution
   const allCallIds = calls.map(c => c.id)
   const { data: callbackActions } = allCallIds.length > 0
     ? await admin.from('actions').select('call_id').in('call_id', allCallIds).eq('type', 'callback').eq('status', 'pending')
     : { data: [] }
   const callbackSet = new Set((callbackActions ?? []).map(a => a.call_id))
 
-  // Merge and sort
-  type Row =
+  type MergedRow =
     | { kind: 'call'; id: string; phone: string | null; at: string; duration: number | null; outcome: string | null }
     | { kind: 'voicemail'; id: string; phone: string | null; at: string; duration: number | null }
 
-  const rows: Row[] = [
+  const merged: MergedRow[] = [
     ...calls.map(c => ({ kind: 'call' as const, id: c.id, phone: c.caller_phone, at: c.started_at, duration: c.duration_s, outcome: c.outcome })),
     ...voicemails.map(v => ({ kind: 'voicemail' as const, id: v.id, phone: v.twilio_from_number, at: v.created_at, duration: v.duration_seconds })),
   ].sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime())
 
-  // Search filter (applied after merge since it's on caller name/phone — we only have phone here)
-  const filtered = search
-    ? rows.filter(r => r.phone?.includes(search))
-    : rows
+  const filtered = search ? merged.filter(r => r.phone?.includes(search)) : merged
 
-  // Additional callback/question filter — applied after merge
   const finalRows = outcomeFilter === 'callback'
     ? filtered.filter(r => r.kind === 'call' && callbackSet.has(r.id))
     : outcomeFilter === 'question'
@@ -110,6 +104,17 @@ export default async function ActivityPage({
   const pageRows = finalRows.slice(offset, offset + PAGE_SIZE)
   const hasMore = finalRows.length > offset + PAGE_SIZE
 
+  const tableRows: TableRow[] = pageRows.map(row => ({
+    kind: row.kind,
+    id: row.id,
+    phone: row.phone,
+    at: row.at,
+    duration: row.duration,
+    variant: row.kind === 'voicemail'
+      ? 'voicemail'
+      : badgeVariant(row.outcome ?? null, callbackSet.has(row.id)),
+  }))
+
   return (
     <div className="p-8 max-w-[1200px] mx-auto">
       <div className="mb-6">
@@ -119,67 +124,15 @@ export default async function ActivityPage({
 
       <ActivityFilters current={{ outcome: outcomeFilter, search, since }} />
 
-      <div className="mt-5 bg-white rounded-2xl border border-slate-200 overflow-hidden" style={{ boxShadow: '0 1px 4px rgba(15,23,42,0.05)' }}>
-        <div className="overflow-x-auto">
-          <table className="w-full text-[13px]">
-            <thead>
-              <tr className="border-b border-slate-100">
-                {['Time', 'Caller', 'Duration', 'Type', ''].map((h, i) => (
-                  <th key={i} className="px-6 py-3 text-left text-[11px] font-semibold text-slate-400 uppercase tracking-wider whitespace-nowrap">{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {pageRows.length > 0 ? pageRows.map(row => {
-                const variant = row.kind === 'voicemail'
-                  ? 'voicemail'
-                  : badgeVariant(row.outcome, callbackSet.has(row.id))
-                const caller = row.phone ?? 'Unknown'
-                const initials = initialsFrom(null, caller)
-                const href = row.kind === 'call' ? `/dashboard/activity/${row.id}` : undefined
-
-                return (
-                  <tr key={`${row.kind}-${row.id}`} className="border-b border-slate-50 hover:bg-slate-50/60 transition-colors">
-                    <td className="px-6 py-3.5 whitespace-nowrap text-slate-600">{formatCallTime(row.at)}</td>
-                    <td className="px-6 py-3.5">
-                      <div className="flex items-center gap-2.5">
-                        <Avatar initials={initials} size={28} />
-                        <span className="text-slate-700">{caller}</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-3.5 tabular-nums text-slate-500">{formatDuration(row.duration)}</td>
-                    <td className="px-6 py-3.5"><Badge variant={variant} /></td>
-                    <td className="px-6 py-3.5 text-right">
-                      {href ? (
-                        <Link href={href} className="text-[12px] font-medium text-indigo-500 hover:text-indigo-700 transition-colors">
-                          View
-                        </Link>
-                      ) : null}
-                    </td>
-                  </tr>
-                )
-              }) : (
-                <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-[13px] text-slate-400">
-                    No calls match these filters.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        {hasMore && (
-          <div className="px-6 py-4 border-t border-slate-100 flex justify-center">
-            <Link
-              href={`/dashboard/activity?outcome=${outcomeFilter}&since=${since}&search=${search}&page=${page + 1}`}
-              className="text-[13px] font-medium text-indigo-500 hover:text-indigo-700 transition-colors"
-            >
-              Load more
-            </Link>
-          </div>
-        )}
-      </div>
+      <ActivityTable
+        rows={tableRows}
+        initialExpandedId={initialExpandedId}
+        hasMore={hasMore}
+        page={page}
+        outcomeFilter={outcomeFilter}
+        since={since}
+        search={search}
+      />
     </div>
   )
 }

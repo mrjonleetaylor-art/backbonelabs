@@ -212,19 +212,64 @@ type SliderProps = {
 }
 
 function SliderField({ id, label, value, min, max, step, display, onChange }: SliderProps) {
+  const trackRef = useRef<HTMLDivElement>(null)
+  const dragging = useRef(false)
   const pct = ((value - min) / (max - min)) * 100
-  // Match the native browser thumb's compensation (8px radius) so the invisible
-  // input thumb and our visual fader are exactly co-located. The wider fader
-  // hangs over the track edges slightly — that's fine given the card's px-8 padding.
-  const faderLeft = `calc(${pct}% + ${(8 - pct * 0.16).toFixed(2)}px)`
+
+  function valueFromClientX(clientX: number) {
+    const rect = trackRef.current!.getBoundingClientRect()
+    const raw = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width))
+    const stepped = Math.round((min + raw * (max - min)) / step) * step
+    return Math.max(min, Math.min(max, stepped))
+  }
+
+  function onPointerDown(e: React.PointerEvent<HTMLDivElement>) {
+    e.currentTarget.setPointerCapture(e.pointerId)
+    dragging.current = true
+    onChange(valueFromClientX(e.clientX))
+  }
+
+  function onPointerMove(e: React.PointerEvent<HTMLDivElement>) {
+    if (!dragging.current) return
+    onChange(valueFromClientX(e.clientX))
+  }
+
+  function onPointerUp(e: React.PointerEvent<HTMLDivElement>) {
+    dragging.current = false
+    e.currentTarget.releasePointerCapture(e.pointerId)
+  }
+
+  function onKeyDown(e: React.KeyboardEvent) {
+    if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
+      e.preventDefault()
+      onChange(Math.max(min, value - step))
+    } else if (e.key === "ArrowRight" || e.key === "ArrowUp") {
+      e.preventDefault()
+      onChange(Math.min(max, value + step))
+    }
+  }
 
   return (
     <div>
-      <label htmlFor={id} className="block text-[13px] font-medium text-slate-700 mb-3">
-        {label}
-      </label>
-      <div className="relative" style={{ height: "52px" }}>
-        {/* Track — vertically centred */}
+      <p className="block text-[13px] font-medium text-slate-700 mb-3">{label}</p>
+      <div
+        id={id}
+        ref={trackRef}
+        role="slider"
+        aria-label={label}
+        aria-valuemin={min}
+        aria-valuemax={max}
+        aria-valuenow={value}
+        tabIndex={0}
+        className="relative cursor-pointer select-none focus:outline-none"
+        style={{ height: "52px" }}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        onKeyDown={onKeyDown}
+      >
+        {/* Track */}
         <div
           className="absolute inset-x-0 rounded-full bg-slate-200 pointer-events-none"
           style={{ top: "50%", transform: "translateY(-50%)", height: "10px" }}
@@ -232,10 +277,10 @@ function SliderField({ id, label, value, min, max, step, display, onChange }: Sl
           <div className="h-full rounded-full bg-cyan-400" style={{ width: `${pct}%` }} />
         </div>
 
-        {/* Fader grip — value label + grip lines */}
+        {/* Fader grip */}
         <div
-          className="absolute pointer-events-none z-10"
-          style={{ left: faderLeft, top: "50%", transform: "translate(-50%, -50%)" }}
+          className="absolute pointer-events-none"
+          style={{ left: `${pct}%`, top: "50%", transform: "translate(-50%, -50%)" }}
         >
           <div
             style={{
@@ -261,18 +306,6 @@ function SliderField({ id, label, value, min, max, step, display, onChange }: Sl
             </div>
           </div>
         </div>
-
-        {/* Native input — invisible, full a11y */}
-        <input
-          id={id}
-          type="range"
-          min={min}
-          max={max}
-          step={step}
-          value={value}
-          onChange={(e) => onChange(Number(e.target.value))}
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer appearance-none z-20"
-        />
       </div>
       <div className="flex justify-between text-[11px] text-slate-400 mt-1.5">
         <span>{min}</span>

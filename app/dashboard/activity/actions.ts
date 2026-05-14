@@ -3,6 +3,87 @@ import { createClient as createServiceClient } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/server'
 import { Resend } from 'resend'
 
+export type CallDetail = {
+  callId: string
+  turns: Array<{ role: string; message: string }> | null
+  rawTranscript: string | null
+  summaryFields: Array<{ label: string; value: string }>
+}
+
+const FIELD_LABELS: Record<string, string> = {
+  recipient_name: 'Recipient',
+  order_type: 'Item',
+  delivery_address: 'Delivery address',
+  pickup_time: 'Pickup time',
+  delivery_date: 'Delivery date',
+  delivery_window: 'Delivery window',
+  occasion: 'Occasion',
+  budget: 'Budget',
+  card_message: 'Card message',
+  caller_name: 'Caller name',
+  caller_phone: 'Caller phone',
+  callback_day: 'Callback day',
+  callback_half: 'Time',
+  callback_reason: 'Reason',
+}
+
+export async function getCallDetail(callId: string): Promise<CallDetail | { error: string }> {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Not signed in.' }
+
+  const admin = createServiceClient(
+    process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+
+  const { data: customer } = await admin
+    .from('customers')
+    .select('id')
+    .eq('auth_user_id', user.id)
+    .maybeSingle<{ id: string }>()
+  if (!customer) return { error: 'Customer not found.' }
+
+  const { data: call } = await admin
+    .from('calls')
+    .select('id, transcript')
+    .eq('id', callId)
+    .eq('customer_id', customer.id)
+    .maybeSingle<{ id: string; transcript: string | null }>()
+  if (!call) return { error: 'Call not found.' }
+
+  const { data: action } = await admin
+    .from('actions')
+    .select('type, payload')
+    .eq('call_id', callId)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle<{ type: string; payload: Record<string, unknown> }>()
+
+  let turns: Array<{ role: string; message: string }> | null = null
+  let rawTranscript: string | null = null
+  if (call.transcript) {
+    try {
+      const parsed = JSON.parse(call.transcript)
+      if (Array.isArray(parsed)) turns = parsed
+      else rawTranscript = call.transcript
+    } catch {
+      rawTranscript = call.transcript
+    }
+  }
+
+  const summaryFields = action?.payload
+    ? Object.entries(FIELD_LABELS)
+        .filter(([key]) => {
+          const v = action.payload[key]
+          return v != null && v !== '' && v !== false
+        })
+        .map(([key, label]) => ({ label, value: String(action.payload[key]) }))
+    : []
+
+  return { callId, turns, rawTranscript, summaryFields }
+}
+
 function esc(v: unknown): string {
   return String(v ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 }

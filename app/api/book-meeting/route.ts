@@ -4,7 +4,7 @@
 // Decoupled from call lifecycle: doesn't care whether the call ends cleanly afterwards.
 //
 // This file lives in the project as: app/api/book-meeting/route.ts (App Router)
-// Source canonical: ~/Projects/backbone-labs/agent/pipeline/book-meeting.ts
+// Source canonical: vault — agent/pipeline/book-meeting.ts
 //
 // Notification path: Resend email. SMS via Twilio is blocked because the current Twilio
 // AU number isn't SMS-enabled. Switching to SMS later means flipping the Resend block to Twilio.

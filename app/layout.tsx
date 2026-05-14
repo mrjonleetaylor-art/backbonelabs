@@ -10,35 +10,27 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Phone answering for local business | RelayDesk",
-  description:
-    "RelayDesk answers every inbound call for your local business. No missed orders, no busy signals. Keep your existing number or get a new one.",
-  icons: {
-    icon: [
-      { url: "/relaydesk_logo_assets/favicon/favicon-16.png", sizes: "16x16", type: "image/png" },
-      { url: "/relaydesk_logo_assets/favicon/favicon-32.png", sizes: "32x32", type: "image/png" },
-      { url: "/relaydesk_logo_assets/favicon/favicon-64.png", sizes: "64x64", type: "image/png" },
-    ],
-    apple: "/relaydesk_logo_assets/favicon/favicon-64.png",
-    shortcut: "/relaydesk_logo_assets/favicon/favicon.ico",
+  metadataBase: new URL('https://www.relaydesk.com.au'),
+  title: {
+    default: 'RelayDesk',
+    template: '%s · RelayDesk',
   },
+  description: 'RelayDesk is an AI phone agent for Australian local businesses. Run your business, not your phone.',
   openGraph: {
-    type: "website",
-    title: "Phone answering for local business | RelayDesk",
-    description:
-      "RelayDesk answers every inbound call for your local business. No missed orders, no busy signals.",
-    url: "https://relaydesk.com.au",
-    images: [{ url: "https://relaydesk.com.au/relaydesk_logo_assets/OG/relaydesk-og-1200x630.png" }],
+    title: 'RelayDesk',
+    description: 'Run your business, not your phone. Meet your AI phone agent.',
+    url: 'https://www.relaydesk.com.au',
+    siteName: 'RelayDesk',
+    locale: 'en_AU',
+    type: 'website',
   },
   twitter: {
-    card: "summary_large_image",
-    title: "Phone answering for local business | RelayDesk",
-    description:
-      "RelayDesk answers every inbound call for your local business. No missed orders, no busy signals.",
-    images: ["https://relaydesk.com.au/relaydesk_logo_assets/OG/relaydesk-og-1200x630.png"],
+    card: 'summary_large_image',
+    title: 'RelayDesk',
+    description: 'Run your business, not your phone. Meet your AI phone agent.',
   },
   alternates: {
-    canonical: "https://relaydesk.com.au",
+    canonical: 'https://www.relaydesk.com.au',
   },
   robots: {
     index: true,
