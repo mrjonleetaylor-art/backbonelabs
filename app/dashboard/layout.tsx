@@ -23,13 +23,17 @@ export default async function DashboardLayout({ children }: { children: React.Re
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   )
 
-  const { data: customer } = await admin
+  const { data: customer, error: customerError } = await admin
     .from('customers')
     .select('id, business_name, owner_name, owner_email, owner_phone, industry')
     .eq('auth_user_id', user.id)
     .maybeSingle<Customer>()
 
-  if (!customer) redirect('/auth/error')
+  if (customerError) console.error('[dashboard] customer lookup error:', customerError)
+  if (!customer) {
+    console.error('[dashboard] no customer for user.id:', user.id, '| SERVICE_ROLE_KEY set:', !!process.env.SUPABASE_SERVICE_ROLE_KEY)
+    redirect('/auth/error')
+  }
 
   // Pending actions count for sidebar badge
   const { count: pendingCount } = await admin

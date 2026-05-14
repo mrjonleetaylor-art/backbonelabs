@@ -54,8 +54,8 @@ export async function GET(request: Request) {
     return NextResponse.redirect(`${origin}/auth/error`)
   }
 
-  // Link auth_user_id on first login
-  if (!customer.auth_user_id) {
+  // Sync auth_user_id on every login — covers first-time and re-linked auth users
+  if (customer.auth_user_id !== user.id) {
     await admin
       .from('customers')
       .update({ auth_user_id: user.id })
