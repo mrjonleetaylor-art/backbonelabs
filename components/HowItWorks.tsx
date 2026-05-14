@@ -126,7 +126,7 @@ export default function HowItWorks() {
                 <div key={step.number} className="lg:grid lg:grid-cols-[1fr_64px_1fr] lg:gap-4 lg:items-center lg:mb-4">
 
                   {/* Left column */}
-                  <div className={`${!isLeft ? "hidden lg:block" : ""}`}>
+                  <div className="hidden lg:block">
                     {isLeft && (
                       <StepCard step={step} example={step.example} fromLeft delay={0.1} />
                     )}
@@ -149,7 +149,7 @@ export default function HowItWorks() {
                   </div>
 
                   {/* Right column */}
-                  <div className={`${isLeft ? "hidden lg:block" : ""}`}>
+                  <div className="hidden lg:block">
                     {!isLeft && (
                       <StepCard step={step} example={step.example} fromLeft={false} delay={0.1} />
                     )}
