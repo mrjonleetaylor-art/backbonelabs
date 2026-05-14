@@ -6,6 +6,7 @@ import Badge from '../_components/Badge'
 import { formatCallTime, formatDuration } from '@/lib/formatTime'
 import { getCallDetail } from './actions'
 import ExpandedCallRow from './ExpandedCallRow'
+import ExpandedVoicemailRow from './ExpandedVoicemailRow'
 import type { CallDetail } from './actions'
 import type { Variant } from '../_components/Badge'
 
@@ -16,6 +17,7 @@ export type TableRow = {
   at: string
   duration: number | null
   variant: Variant
+  recordingSid?: string | null
 }
 
 type Props = {
@@ -39,10 +41,16 @@ export default function ActivityTable({
 }: Props) {
   const [expandedId, setExpandedId] = useState<string | null>(initialExpandedId)
   const [detailMap, setDetailMap] = useState<Record<string, CallDetail>>({})
-  const [loadingId, setLoadingId] = useState<string | null>(initialExpandedId)
+  // Only show loading spinner for initial call rows — voicemails need no fetch
+  const initialIsCall = initialExpandedId
+    ? rows.find(r => r.id === initialExpandedId)?.kind !== 'voicemail'
+    : false
+  const [loadingId, setLoadingId] = useState<string | null>(initialIsCall ? initialExpandedId : null)
 
   useEffect(() => {
     if (!initialExpandedId) return
+    const initialRow = rows.find(r => r.id === initialExpandedId)
+    if (initialRow?.kind === 'voicemail') return
     getCallDetail(initialExpandedId).then(result => {
       setLoadingId(null)
       if ('error' in result) return
@@ -52,13 +60,13 @@ export default function ActivityTable({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  async function toggle(id: string) {
+  async function toggle(id: string, kind: 'call' | 'voicemail') {
     if (expandedId === id) {
       setExpandedId(null)
-      window.history.pushState({}, '', '/dashboard/activity')
+      if (kind === 'call') window.history.pushState({}, '', '/dashboard/activity')
       return
     }
-    if (!detailMap[id]) {
+    if (kind === 'call' && !detailMap[id]) {
       setLoadingId(id)
       const result = await getCallDetail(id)
       setLoadingId(null)
@@ -67,7 +75,7 @@ export default function ActivityTable({
       }
     }
     setExpandedId(id)
-    window.history.pushState({}, '', `/dashboard/activity/${id}`)
+    if (kind === 'call') window.history.pushState({}, '', `/dashboard/activity/${id}`)
   }
 
   return (
@@ -101,37 +109,44 @@ export default function ActivityTable({
                     <td className="px-6 py-3.5 tabular-nums text-slate-500">{formatDuration(row.duration)}</td>
                     <td className="px-6 py-3.5"><Badge variant={row.variant} /></td>
                     <td className="px-6 py-3.5 text-right">
-                      {row.kind === 'call' && (
-                        <button
-                          onClick={() => toggle(row.id)}
-                          className="inline-flex items-center gap-1 text-[12px] font-medium text-slate-500 hover:text-indigo-500 transition-colors"
-                          aria-expanded={isExpanded}
-                        >
-                          {isLoading ? (
-                            <span className="text-slate-400">Loading…</span>
-                          ) : (
-                            <>
-                              {isExpanded ? 'Close' : 'View'}
-                              <svg
-                                width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                                className={`transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
-                              >
-                                <polyline points="6 9 12 15 18 9" />
-                              </svg>
-                            </>
-                          )}
-                        </button>
-                      )}
+                      <button
+                        onClick={() => toggle(row.id, row.kind)}
+                        className="inline-flex items-center gap-1 text-[12px] font-medium text-slate-500 hover:text-indigo-500 transition-colors"
+                        aria-expanded={isExpanded}
+                      >
+                        {isLoading ? (
+                          <span className="text-slate-400">Loading…</span>
+                        ) : (
+                          <>
+                            {isExpanded ? 'Close' : 'View'}
+                            <svg
+                              width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                              className={`transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
+                            >
+                              <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                          </>
+                        )}
+                      </button>
                     </td>
                   </tr>
                   {isExpanded && (
                     <tr className="border-b border-slate-100">
                       <td colSpan={5} className="p-0">
-                        <ExpandedCallRow
-                          detail={detailMap[row.id] ?? null}
-                          callId={row.id}
-                          loading={isLoading}
-                        />
+                        {row.kind === 'voicemail' ? (
+                          <ExpandedVoicemailRow
+                            phone={row.phone}
+                            at={row.at}
+                            duration={row.duration}
+                            recordingSid={row.recordingSid ?? null}
+                          />
+                        ) : (
+                          <ExpandedCallRow
+                            detail={detailMap[row.id] ?? null}
+                            callId={row.id}
+                            loading={isLoading}
+                          />
+                        )}
                       </td>
                     </tr>
                   )}

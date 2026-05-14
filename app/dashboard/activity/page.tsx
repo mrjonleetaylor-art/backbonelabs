@@ -66,12 +66,12 @@ export default async function ActivityPage({
   const [callsResult, voicemailsResult] = await Promise.all([
     showCalls ? callsQuery : Promise.resolve({ data: [] }),
     showVoicemails
-      ? admin.from('voicemails').select('id, twilio_from_number, created_at, duration_seconds').eq('customer_id', customer.id).gte('created_at', sinceDate.toISOString()).order('created_at', { ascending: false })
+      ? admin.from('voicemails').select('id, twilio_from_number, created_at, duration_seconds, twilio_recording_sid').eq('customer_id', customer.id).gte('created_at', sinceDate.toISOString()).order('created_at', { ascending: false })
       : Promise.resolve({ data: [] }),
   ])
 
   type CallRow = { id: string; caller_phone: string | null; started_at: string; duration_s: number | null; outcome: string | null }
-  type VoicemailRow = { id: string; twilio_from_number: string | null; created_at: string; duration_seconds: number | null }
+  type VoicemailRow = { id: string; twilio_from_number: string | null; created_at: string; duration_seconds: number | null; twilio_recording_sid: string | null }
 
   const calls = (callsResult.data ?? []) as CallRow[]
   const voicemails = (voicemailsResult.data ?? []) as VoicemailRow[]
@@ -84,11 +84,11 @@ export default async function ActivityPage({
 
   type MergedRow =
     | { kind: 'call'; id: string; phone: string | null; at: string; duration: number | null; outcome: string | null }
-    | { kind: 'voicemail'; id: string; phone: string | null; at: string; duration: number | null }
+    | { kind: 'voicemail'; id: string; phone: string | null; at: string; duration: number | null; recordingSid: string | null }
 
   const merged: MergedRow[] = [
     ...calls.map(c => ({ kind: 'call' as const, id: c.id, phone: c.caller_phone, at: c.started_at, duration: c.duration_s, outcome: c.outcome })),
-    ...voicemails.map(v => ({ kind: 'voicemail' as const, id: v.id, phone: v.twilio_from_number, at: v.created_at, duration: v.duration_seconds })),
+    ...voicemails.map(v => ({ kind: 'voicemail' as const, id: v.id, phone: v.twilio_from_number, at: v.created_at, duration: v.duration_seconds, recordingSid: v.twilio_recording_sid })),
   ].sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime())
 
   const filtered = search ? merged.filter(r => r.phone?.includes(search)) : merged
@@ -112,6 +112,7 @@ export default async function ActivityPage({
     variant: row.kind === 'voicemail'
       ? 'voicemail'
       : badgeVariant(row.outcome ?? null, callbackSet.has(row.id)),
+    recordingSid: row.kind === 'voicemail' ? row.recordingSid : undefined,
   }))
 
   return (
