@@ -59,13 +59,10 @@ export default function Hero() {
               </motion.span>
             </h1>
 
-            <motion.p
-              {...slideUp(0.35)}
-              className="text-[20px] text-slate-600 leading-[1.7] max-w-[460px] mb-9"
-            >
+            <p className="text-[20px] text-slate-600 leading-[1.7] max-w-[460px] mb-9">
               An AI phone agent for Australian local businesses that answers calls, captures orders,
               and books callbacks.
-            </motion.p>
+            </p>
 
             <motion.div {...slideUp(0.45)} className="flex flex-wrap gap-2.5 mb-11">
               <motion.a

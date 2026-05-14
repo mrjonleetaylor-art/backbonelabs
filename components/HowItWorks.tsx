@@ -184,25 +184,29 @@ export default function HowItWorks() {
                     </div>
                   </div>
 
-                  {/* Diagonal dashed connector to next step's badge */}
+                  {/* Diagonal dashed connector to next step's badge.
+                      The wrapper is offset by 20px (half badge width w-10=40px) and
+                      shrunk by 40px total so 0% / 100% land exactly on badge centres. */}
                   {i < steps.length - 1 && (
-                    <svg
-                      width="100%"
-                      height="44"
-                      aria-hidden="true"
-                      className="block overflow-visible"
-                    >
-                      <line
-                        x1={isLeft ? "6.5%" : "93.5%"}
-                        y1="6"
-                        x2={isLeft ? "93.5%" : "6.5%"}
-                        y2="38"
-                        stroke="#CBD5E1"
-                        strokeWidth="1.5"
-                        strokeDasharray="4 3"
-                        strokeLinecap="round"
-                      />
-                    </svg>
+                    <div style={{ marginLeft: "20px", width: "calc(100% - 40px)" }}>
+                      <svg
+                        width="100%"
+                        height="44"
+                        aria-hidden="true"
+                        className="block overflow-visible"
+                      >
+                        <line
+                          x1={isLeft ? "0%" : "100%"}
+                          y1="6"
+                          x2={isLeft ? "100%" : "0%"}
+                          y2="38"
+                          stroke="#CBD5E1"
+                          strokeWidth="1.5"
+                          strokeDasharray="4 3"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </div>
                   )}
                 </div>
               )

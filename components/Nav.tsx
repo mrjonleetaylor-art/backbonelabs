@@ -46,8 +46,8 @@ export default function Nav() {
         >
           <Link href="/" className="flex items-center select-none">
             <span className="text-[17px] font-bold tracking-[-0.025em]">
-              <span className="text-cyan-500">Relay</span>
-              <span className="text-slate-900">Desk</span>
+              <span className="text-indigo-500">Relay</span>
+              <span className="text-cyan-500">Desk</span>
             </span>
           </Link>
 
