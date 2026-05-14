@@ -20,9 +20,9 @@ const callNotes = [
 ]
 
 const ownerNotes = [
-  "Hands busy at the bench",
-  "Phone answered in two rings",
-  "Order summary in your inbox",
+  { caption: "Hands busy at the bench", objectPosition: "20% center" },
+  { caption: "Phone answered in two rings", objectPosition: "50% center" },
+  { caption: "Order summary in your inbox", objectPosition: "80% center" },
 ]
 
 export default function LocalBusinessProof() {
@@ -51,14 +51,24 @@ export default function LocalBusinessProof() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {ownerNotes.map((note, i) => (
                 <motion.div
-                  key={note}
+                  key={note.caption}
                   initial={{ opacity: 0, y: 18 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.45, ease, delay: 0.08 + i * 0.06 }}
-                  className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
+                  className="rounded-xl border border-slate-200 bg-slate-50 overflow-hidden"
                 >
-                  <p className="text-[13px] font-semibold text-slate-700 leading-[1.45]">{note}</p>
+                  <div className="relative aspect-[3/2]">
+                    <Image
+                      src="/florist-counter-work.jpg"
+                      alt={note.caption}
+                      fill
+                      className="object-cover"
+                      style={{ objectPosition: note.objectPosition }}
+                      sizes="(min-width: 1024px) 200px, 50vw"
+                    />
+                  </div>
+                  <p className="text-[13px] font-semibold text-slate-700 leading-[1.45] px-4 py-3">{note.caption}</p>
                 </motion.div>
               ))}
             </div>

@@ -1,7 +1,7 @@
 "use client"
 import { useRef, useState, useCallback } from "react"
 import { motion } from "framer-motion"
-import { PHONE_HREF } from "@/lib/contact"
+import { PHONE_DISPLAY, PHONE_HREF } from "@/lib/contact"
 import CallTranscript, { type CallTranscriptHandle } from "@/components/CallTranscript"
 import CallbackForm from "@/components/CallbackForm"
 
@@ -75,7 +75,8 @@ export default function Hero() {
                 className="inline-flex items-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white text-[15px] font-semibold rounded-full px-7 py-3.5 transition-colors"
               >
                 <PhoneIcon />
-                Give us a call
+                <span className="sm:hidden">Call {PHONE_DISPLAY}</span>
+                <span className="hidden sm:inline">Give us a call</span>
               </motion.a>
               <motion.button
                 onClick={() => setCallbackOpen(true)}

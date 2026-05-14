@@ -19,70 +19,56 @@ export default function DemoCall() {
       <div className="max-w-[1100px] mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center">
 
-          {/* Left: headline + CTA */}
+          {/* Left: headline + number CTA */}
           <div>
-            <motion.h2
-              initial={{ opacity: 0, y: 32 }}
+            <motion.p
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, ease }}
-              className="font-extrabold text-white leading-[1.06] tracking-[-0.03em] mb-5"
-              style={{ fontSize: "clamp(36px, 4.5vw, 58px)" }}
+              transition={{ duration: 0.5, ease }}
+              className="text-[13px] font-semibold uppercase tracking-[0.09em] text-white/70 mb-4"
             >
-              Before you scroll,
-              <br />
-              give us a call.
-            </motion.h2>
+              Before you scroll, give us a call
+            </motion.p>
+
+            <motion.a
+              href={PHONE_HREF}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ opacity: 0.85, transition: { duration: 0.15 } }}
+              whileTap={{ scale: 0.98, transition: { duration: 0.1 } }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.55, ease, delay: 0.08 }}
+              className="block font-extrabold text-white leading-none tracking-[-0.035em] mb-3"
+              style={{ fontSize: "clamp(44px, 7vw, 72px)" }}
+            >
+              {PHONE_DISPLAY}
+            </motion.a>
 
             <motion.p
-              initial={{ opacity: 0, y: 32 }}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, ease, delay: 0.1 }}
-              className="text-[17px] text-white/80 leading-[1.65] max-w-[400px] mb-10"
+              transition={{ duration: 0.5, ease, delay: 0.14 }}
+              className="text-[14px] text-white/60 mb-10"
             >
-              Call now. Get your questions answered, see how it works,
-              and book a setup call - all in one conversation.
+              Tap to call &middot; Available 24/7
             </motion.p>
 
             <motion.div
-              initial={{ opacity: 0, y: 32 }}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, ease, delay: 0.2 }}
-              className="flex flex-col items-start gap-3"
+              transition={{ duration: 0.5, ease, delay: 0.2 }}
             >
-              <motion.a
-                href={PHONE_HREF}
-                initial={{ scale: 1 }}
-                whileInView={{ scale: [1, 1, 1] }}
-                whileHover={{ scale: 1.03, transition: { duration: 0.15 } }}
-                whileTap={{ scale: 0.97, transition: { duration: 0.1 } }}
-                viewport={{ once: true }}
-                className="inline-flex items-center gap-3 bg-white hover:bg-white/90 text-indigo-600 font-semibold rounded-full transition-colors"
-                style={{ fontSize: "18px", padding: "18px 40px" }}
-              >
-                <motion.span
-                  initial={{ scale: 1 }}
-                  animate={{ scale: [1, 1.25, 1] }}
-                  transition={{ duration: 0.45, delay: 0.6, ease: "easeOut" }}
-                  className="inline-flex"
-                >
-                  <PhoneIcon />
-                </motion.span>
-                Call now: {PHONE_DISPLAY}
-              </motion.a>
-
               <motion.a
                 href={EMAIL_HREF}
                 whileHover={{ scale: 1.02, transition: { duration: 0.15 } }}
                 whileTap={{ scale: 0.97, transition: { duration: 0.1 } }}
-                className="text-[14px] font-medium text-white/80 hover:text-white hover:underline underline-offset-2 transition-colors ml-1"
+                className="text-[14px] font-medium text-white/70 hover:text-white hover:underline underline-offset-2 transition-colors"
               >
                 Or request a callback
               </motion.a>
-
-              <p className="text-[13px] text-white/70 ml-1">Available 24/7</p>
             </motion.div>
           </div>
 
@@ -109,13 +95,5 @@ export default function DemoCall() {
         </div>
       </div>
     </section>
-  )
-}
-
-function PhoneIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 3.95 11a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 2.88 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 18.92z" />
-    </svg>
   )
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import Providers from "@/components/Providers"
 import CookieBanner from "@/components/CookieBanner"
+import StickyCallBar from "@/components/StickyCallBar"
 import "./globals.css"
 
 const inter = Inter({
@@ -92,10 +93,11 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="antialiased font-sans bg-white text-slate-900">
+      <body className="antialiased font-sans bg-white text-slate-900 pb-[60px] lg:pb-0">
         <Providers>
           {children}
           <CookieBanner />
+          <StickyCallBar />
         </Providers>
       </body>
     </html>
