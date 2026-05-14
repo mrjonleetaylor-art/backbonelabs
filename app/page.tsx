@@ -2,7 +2,7 @@ import Nav from "@/components/Nav"
 import Hero from "@/components/Hero"
 import DemoCall from "@/components/DemoCall"
 import Problem from "@/components/Problem"
-import LocalBusinessProof from "@/components/LocalBusinessProof"
+import DashboardPreview from "@/components/DashboardPreview"
 import HowItWorks from "@/components/HowItWorks"
 import WhatThomas from "@/components/WhatThomas"
 import ROICalculator from "@/components/ROICalculator"
@@ -19,7 +19,7 @@ export default function Home() {
         <Hero />
         <DemoCall />
         <Problem />
-        <LocalBusinessProof />
+        <DashboardPreview />
         <HowItWorks />
         <WhatThomas />
         <ROICalculator />
