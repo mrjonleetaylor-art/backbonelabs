@@ -117,7 +117,8 @@ export default function HowItWorks() {
             />
           </div>
 
-          <div className="flex flex-col gap-10 lg:gap-0">
+          {/* Desktop: zig-zag three-column grid */}
+          <div className="hidden lg:flex lg:flex-col">
             {steps.map((step, i) => {
               const isLeft = i % 2 === 0
               const circleColor = isLeft ? "#6366F1" : "#06B6D4"
@@ -155,8 +156,21 @@ export default function HowItWorks() {
                     )}
                   </div>
 
-                  {/* Mobile layout: number above card */}
-                  <div className="lg:hidden flex gap-4 items-start">
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Mobile: alternating badge sides with snaking connector */}
+          <div className="lg:hidden flex flex-col">
+            {steps.map((step, i) => {
+              const isLeft = i % 2 === 0
+              const circleColor = isLeft ? "#6366F1" : "#06B6D4"
+
+              return (
+                <div key={`mob-${step.number}`}>
+                  {/* Badge alternates: odd steps (01,03,05) left, even steps (02,04) right */}
+                  <div className={`flex gap-4 items-start${!isLeft ? ' flex-row-reverse' : ''}`}>
                     <div
                       className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
                       style={{ background: circleColor }}
@@ -166,14 +180,35 @@ export default function HowItWorks() {
                       </span>
                     </div>
                     <div className="flex-1">
-                      <StepCard step={step} example={step.example} fromLeft delay={0} />
+                      <StepCard step={step} example={step.example} fromLeft={isLeft} delay={0} />
                     </div>
                   </div>
 
+                  {/* Diagonal dashed connector to next step's badge */}
+                  {i < steps.length - 1 && (
+                    <svg
+                      width="100%"
+                      height="44"
+                      aria-hidden="true"
+                      className="block overflow-visible"
+                    >
+                      <line
+                        x1={isLeft ? "6.5%" : "93.5%"}
+                        y1="6"
+                        x2={isLeft ? "93.5%" : "6.5%"}
+                        y2="38"
+                        stroke="#CBD5E1"
+                        strokeWidth="1.5"
+                        strokeDasharray="4 3"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  )}
                 </div>
               )
             })}
           </div>
+
         </div>
       </div>
     </section>
