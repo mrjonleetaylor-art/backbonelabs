@@ -127,7 +127,7 @@ export async function emailCallSummary(callId: string): Promise<{ ok: boolean; e
 
   // Build structured summary HTML
   const payloadRows = action?.payload ? Object.entries(action.payload)
-    .filter(([, v]) => v != null && v !== '' && !['caller_phone', 'is_sympathy_or_funeral', 'escalation_needed'].includes(''))
+    .filter(([k, v]) => v != null && v !== '' && !['caller_phone', 'is_sympathy_or_funeral', 'escalation_needed'].includes(k))
     .map(([k, v]) => `<p style="margin:3px 0"><strong>${esc(k.replace(/_/g, ' '))}:</strong> ${esc(v)}</p>`)
     .join('') : ''
 

@@ -9,6 +9,7 @@ type Customer = {
   owner_name: string | null
   owner_email: string
   owner_phone: string | null
+  industry: string | null
 }
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -24,7 +25,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   const { data: customer } = await admin
     .from('customers')
-    .select('id, business_name, owner_name, owner_email, owner_phone')
+    .select('id, business_name, owner_name, owner_email, owner_phone, industry')
     .eq('auth_user_id', user.id)
     .maybeSingle<Customer>()
 
@@ -38,7 +39,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
     .eq('status', 'pending')
 
   return (
-    <div className="flex h-screen bg-beige overflow-hidden">
+    <div className="flex h-screen bg-white overflow-hidden">
       <Sidebar customer={customer} pendingCount={pendingCount ?? 0} />
       <main className="flex-1 overflow-y-auto">
         {children}

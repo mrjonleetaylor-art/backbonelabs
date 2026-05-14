@@ -8,6 +8,7 @@ type Customer = {
   owner_name: string | null
   owner_email: string
   owner_phone: string | null
+  industry: string | null
 }
 
 type Props = {
@@ -80,9 +81,11 @@ export default function Sidebar({ customer, pendingCount }: Props) {
           <span className="text-cyan-500">Relay</span><span className="text-slate-900">Desk</span>
         </div>
         <div className="text-[12px] text-slate-500 font-medium mt-2">{customer.business_name}</div>
-        <span className="inline-block mt-1 text-[11px] bg-cyan-50 text-cyan-700 font-medium rounded px-1.5 py-0.5">
-          Florist
-        </span>
+        {customer.industry && (
+          <span className="inline-block mt-1 text-[11px] bg-cyan-50 text-cyan-700 font-medium rounded px-1.5 py-0.5">
+            {customer.industry}
+          </span>
+        )}
       </div>
 
       {/* Nav */}

@@ -58,7 +58,6 @@ export default async function ActivityPage({
 
   if (outcomeFilter === 'order') callsQuery = callsQuery.eq('outcome', 'order')
   else if (outcomeFilter === 'transfer') callsQuery = callsQuery.eq('outcome', 'transfer')
-  else if (outcomeFilter === 'complaint') callsQuery = callsQuery.eq('outcome', 'complaint')
   else if (outcomeFilter === 'callback' || outcomeFilter === 'question') callsQuery = callsQuery.eq('outcome', 'info')
 
   const showVoicemails = outcomeFilter === 'all' || outcomeFilter === 'voicemail'

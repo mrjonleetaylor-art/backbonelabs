@@ -2,40 +2,45 @@
 export function formatCallTime(iso: string | null): string {
   if (!iso) return '—'
   const d = new Date(iso)
+  if (isNaN(d.getTime())) return '—'
+
   const now = new Date()
+  const tz = 'Australia/Sydney'
 
-  const aest = (date: Date) =>
-    new Date(date.toLocaleString('en-AU', { timeZone: 'Australia/Sydney' }))
-
-  const local = aest(d)
-  const today = aest(now)
-
-  const timePart = local.toLocaleTimeString('en-AU', {
+  const timePart = d.toLocaleTimeString('en-AU', {
     hour: 'numeric',
     minute: '2-digit',
     hour12: true,
-    timeZone: 'Australia/Sydney',
+    timeZone: tz,
   }).toLowerCase()
 
-  const sameDay = (a: Date, b: Date) =>
-    a.getFullYear() === b.getFullYear() &&
-    a.getMonth() === b.getMonth() &&
-    a.getDate() === b.getDate()
+  // Compare calendar dates in AEST by extracting year/month/day via Intl
+  const dateParts = (date: Date) => {
+    const parts = new Intl.DateTimeFormat('en-AU', {
+      year: 'numeric', month: '2-digit', day: '2-digit', timeZone: tz,
+    }).formatToParts(date)
+    return {
+      y: parts.find(p => p.type === 'year')!.value,
+      m: parts.find(p => p.type === 'month')!.value,
+      d: parts.find(p => p.type === 'day')!.value,
+    }
+  }
 
-  const yesterday = new Date(today)
-  yesterday.setDate(yesterday.getDate() - 1)
+  const dp = dateParts(d)
+  const tp = dateParts(now)
+  const yp = dateParts(new Date(now.getTime() - 86400000))
 
   let dayPart: string
-  if (sameDay(local, today)) {
+  if (dp.y === tp.y && dp.m === tp.m && dp.d === tp.d) {
     dayPart = 'Today'
-  } else if (sameDay(local, yesterday)) {
+  } else if (dp.y === yp.y && dp.m === yp.m && dp.d === yp.d) {
     dayPart = 'Yesterday'
   } else {
-    dayPart = local.toLocaleDateString('en-AU', {
+    dayPart = d.toLocaleDateString('en-AU', {
       weekday: 'short',
       day: 'numeric',
       month: 'short',
-      timeZone: 'Australia/Sydney',
+      timeZone: tz,
     })
   }
 
