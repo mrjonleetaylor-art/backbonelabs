@@ -1,13 +1,13 @@
 "use client"
 import { motion } from "framer-motion"
 import { PHONE_HREF } from "@/lib/contact"
+import { OVERFLOW_PRICE, RECEPTIONIST_PRICE, OPERATOR_PRICE } from "@/lib/constants"
 
 const ease = [0.22, 1, 0.36, 1] as const
 
 type Tier = {
   name: string
   price: number
-  setup: string
   tagline: string
   features: string[]
   callsIncluded: string
@@ -19,8 +19,7 @@ type Tier = {
 const tiers: Tier[] = [
   {
     name: "Overflow",
-    price: 199,
-    setup: "$300 one-off setup",
+    price: OVERFLOW_PRICE,
     tagline: "Better than voicemail. Smarter than missing it.",
     features: [
       "Answers calls you miss - RelayDesk is your safety net",
@@ -36,8 +35,7 @@ const tiers: Tier[] = [
   },
   {
     name: "Receptionist",
-    price: 499,
-    setup: "$500 one-off setup",
+    price: RECEPTIONIST_PRICE,
     tagline: "Your front desk. Always staffed.",
     features: [
       "Answers all inbound calls 24/7",
@@ -55,8 +53,7 @@ const tiers: Tier[] = [
   },
   {
     name: "Operator",
-    price: 999,
-    setup: "$2,000 one-off setup",
+    price: OPERATOR_PRICE,
     tagline: "Your customer communications, handled end to end.",
     features: [
       "Everything in Receptionist",
@@ -111,7 +108,6 @@ function PricingCard({ tier }: { tier: Tier }) {
   const textFeature = isLight ? "text-slate-700" : isViolet ? "text-white/85" : "text-white/75"
   const divider = isLight ? "border-slate-100" : "border-white/[0.12]"
   const badgeBg = isViolet ? "bg-white text-indigo-600" : ""
-  const setupColor = isLight ? "text-slate-400" : "text-white/50"
   const goodForColor = isLight ? "text-slate-500" : isViolet ? "text-white/70" : "text-white/55"
   const callsColor = isLight ? "text-slate-400" : "text-white/45"
   const borderStyle = isLight ? "1px solid #E2E8F0" : "none"
@@ -149,7 +145,6 @@ function PricingCard({ tier }: { tier: Tier }) {
           </span>
           <span className={`text-[14px] ${textMuted}`}>/month</span>
         </div>
-        <p className={`text-[12px] ${setupColor}`}>{tier.setup}</p>
         <p className={`text-[12px] italic leading-[1.6] mt-3 ${goodForColor}`}>{tier.goodFor}</p>
       </div>
 
@@ -167,7 +162,7 @@ function PricingCard({ tier }: { tier: Tier }) {
 
       {/* Footer */}
       <div className={`px-7 pb-7 pt-5 border-t ${divider}`}>
-        <p className={`text-[11.5px] mb-4 ${callsColor}`}>{tier.callsIncluded} &mdash; $1 per additional call</p>
+        <p className={`text-[11.5px] mb-4 ${callsColor}`}>{tier.callsIncluded} - $1 per additional call</p>
         <motion.a
           href={PHONE_HREF}
           whileHover={{

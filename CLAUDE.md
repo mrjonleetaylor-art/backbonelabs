@@ -5,8 +5,7 @@ RelayDesk (relaydesk.com.au) is an AI phone agent service
 for owner-operated local businesses in Australia. We answer every 
 inbound call using ElevenLabs voice AI + Claude API + Twilio.
 
-Three tiers: Overflow ($199), Receptionist ($499), Operator ($999).
-Setup fees: $300, $500, $2,000.
+Three tiers: Overflow ($99), Receptionist ($399), Operator ($699). No setup fees.
 
 The demo agent is called Thomas Anderson (Tom). Prospects call 
 the RelayDesk number, speak to Tom, and think he is a real 
@@ -34,7 +33,7 @@ illusion anywhere on the website or in copy.
 - Single scrolling page + /privacy route
 
 ## Shared constants
-- lib/constants.ts - MONTHLY_PRICE, tier prices, setup fees
+- lib/constants.ts - MONTHLY_PRICE, tier prices
 - lib/contact.ts - PHONE_DISPLAY, PHONE_HREF, EMAIL_HREF
 - Never hardcode prices, phone numbers, or email addresses
 
@@ -62,11 +61,11 @@ illusion anywhere on the website or in copy.
 - Sentence case for all headings and CTAs
 
 ## Pricing tiers
-| Tier | Monthly | Setup | Calls |
-|------|---------|-------|-------|
-| Overflow | $199 | $300 | 150/month |
-| Receptionist | $499 | $500 | 300/month |
-| Operator | $999 | $2,000 | 1,000/month |
+| Tier | Monthly | Calls |
+|------|---------|-------|
+| Overflow | $99 | 150/month |
+| Receptionist | $399 | 300/month |
+| Operator | $699 | 1,000/month |
 
 - Overage: $1/call on all tiers
 - Payment links standard on all tiers (1.2% + 30c)
@@ -79,18 +78,23 @@ illusion anywhere on the website or in copy.
 - Never use "demo", "agent", or "AI" in any CTA label
 - Never break the Thomas Anderson illusion
 
-## Page sections in order
+## Page sections in order (homepage)
 1. Nav - floating pill, anchor links, hamburger on mobile
 2. Hero - left text, right cycling iMessage transcript widget
 3. "Before you scroll, give us a call" - solid violet, full viewport
 4. Problem + Sheena quote - combined, fades from white to image
 5. How it works / Process - 5-step interactive timeline
 6. What RelayDesk handles - 6 capability cards
-7. ROI calculator - 4 sliders
-8. Pricing - three tiers
-9. FAQ - accordion
-10. Final CTA
-11. Footer
+7. Sample calls - 4-5 audio players with scenario labels (no autoplay)
+8. ROI calculator - 4 sliders
+9. Pricing - three tiers
+10. FAQ - accordion
+11. Final CTA
+12. Footer
+
+## Execution plan
+See `../relaydesk/Execution Plan.md` — that is the single source of truth.
+Website tasks live under "Parallel — Website conversion audit" in that doc.
 
 ## Thomas Anderson
 - Lives in the demo call section only
@@ -106,9 +110,10 @@ illusion anywhere on the website or in copy.
 - Sentence case for all headings and CTAs
 
 ## Do not
-- Add pages beyond single page + /privacy
+- Add pages not listed in the execution plan above
 - Use stock photos or AI-generated imagery
 - Auto-play audio or video
 - Over-engineer anything
 - Ask for approval on bug fixes or copy changes
 - Proceed with structural changes without asking first
+- Invent features on industry pages that don't exist in the product

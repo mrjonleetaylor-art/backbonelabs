@@ -10,12 +10,20 @@ const faqs = [
     a: "RelayDesk answers in two rings, greets the caller using your shop name, and handles the conversation from there. It takes orders, answers common questions, collects contact details, and sends you a summary after every call. Callers get a natural, helpful experience - and you don't miss a thing.",
   },
   {
-    q: "What if RelayDesk doesn't know the answer to something?",
-    a: "During onboarding, we configure RelayDesk on everything specific to your shop - products, hours, delivery areas, pricing, and your most common questions. For anything outside that, the agent takes a clear message and flags it for you.",
+    q: "Can you handle multiple calls at the same time?",
+    a: "Yes. There is no queue and no engaged tone. RelayDesk handles concurrent calls, so every caller gets answered even during your busiest periods.",
+  },
+  {
+    q: "What happens if you don't know the answer?",
+    a: "During setup, we configure RelayDesk with everything specific to your business - products, hours, pricing, delivery areas, and your most common questions. For anything outside that, it takes a clear message and flags it for you to follow up.",
   },
   {
     q: "Can I customise what RelayDesk says?",
     a: "Absolutely. We configure RelayDesk with your shop name, products, hours, pricing, and FAQs. The setup takes about 30 minutes, and most clients are live within 48 hours.",
+  },
+  {
+    q: "Can I keep my existing phone number?",
+    a: "Yes. We set up call forwarding on your existing number, so callers dial the same number they always have. Nothing changes on their end.",
   },
   {
     q: "Can RelayDesk take payment?",
@@ -30,12 +38,20 @@ const faqs = [
     a: "Every call is logged and summarised. Recordings and data are stored securely and accessible only to you.",
   },
   {
+    q: "Is my customer data secure?",
+    a: "Yes. Call recordings and customer details are stored on encrypted servers in Australia. Only you have access to your data through the dashboard. We do not share it with third parties.",
+  },
+  {
     q: "What does setup require from me?",
     a: "About an hour of your time. We configure everything - your services, hours, pricing, and call rules. Most businesses are live within a week.",
   },
   {
     q: "How does pricing work?",
-    a: "Plans start at $199/month and scale with your call volume. Each plan includes a set number of calls, and extra calls beyond that are charged at $1 per call. Setup is a one-off fee. No lock-in - cancel any month.",
+    a: "Plans start at $99/month and scale with your call volume. Each plan includes a set number of calls, and extra calls beyond that are charged at $1 per call. No lock-in - cancel any month.",
+  },
+  {
+    q: "What happens if there are connection issues or the server is down?",
+    a: "If RelayDesk is unreachable for any reason, calls are automatically re-routed to a voicemail. You will receive a notification and can follow up with the caller directly.",
   },
   {
     q: "What happens if I want to cancel?",
