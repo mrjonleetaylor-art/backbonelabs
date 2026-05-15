@@ -43,14 +43,15 @@ export async function GET(request: Request) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   )
 
-  const { data: customer } = await admin
+  const { data: customer, error: customerError } = await admin
     .from('customers')
     .select('id, auth_user_id')
     .eq('owner_email', email)
     .maybeSingle()
 
+  if (customerError) console.error('[callback] customer lookup error:', customerError)
   if (!customer) {
-    // No customer record for this email
+    console.error('[callback] no customer for email:', email, '| SUPABASE_URL:', process.env.SUPABASE_URL ?? '(unset)', '| PUBLIC_URL set:', !!process.env.NEXT_PUBLIC_SUPABASE_URL, '| SERVICE_ROLE_KEY set:', !!process.env.SUPABASE_SERVICE_ROLE_KEY)
     return NextResponse.redirect(`${origin}/auth/error`)
   }
 
