@@ -111,17 +111,28 @@ export default function Sidebar({ customer, pendingCount, isAdmin }: Props) {
           active={pathname.startsWith('/dashboard/calendar')}
           icon={<CalendarIcon />}
         />
-        <NavItem soon label="Payment links" icon={<LinkIcon />} />
 
         <p className="px-3 mt-5 mb-1 text-[10px] font-semibold uppercase tracking-widest text-slate-400">Configure</p>
-        <NavItem soon label="Agent settings" icon={<AgentIcon />} />
-        <NavItem soon label="Plan" icon={<PlanIcon />} />
         <NavItem
           href="/dashboard/account"
           label="Account"
           active={pathname === '/dashboard/account'}
           icon={<AccountIcon />}
         />
+
+        <p className="px-3 mt-5 mb-1 text-[10px] font-semibold uppercase tracking-widest text-slate-400">Coming soon</p>
+        <div className="flex items-center gap-3 px-3 py-2 text-[13px] font-medium text-slate-400 cursor-default">
+          <LinkIcon />
+          <span>Payment links</span>
+        </div>
+        <div className="flex items-center gap-3 px-3 py-2 text-[13px] font-medium text-slate-400 cursor-default">
+          <AgentIcon />
+          <span>Agent settings</span>
+        </div>
+        <div className="flex items-center gap-3 px-3 py-2 text-[13px] font-medium text-slate-400 cursor-default">
+          <PlanIcon />
+          <span>Plan</span>
+        </div>
 
         {isAdmin && (
           <>
