@@ -1,5 +1,4 @@
 import { redirect } from 'next/navigation'
-import Link from 'next/link'
 import { createClient as createServiceClient } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardHeader } from '../_components/Card'
@@ -101,12 +100,12 @@ export default async function CalendarPage() {
           <div className="px-6 py-12 text-center">
             <p className="text-[15px] font-medium text-slate-700 mb-1">Google Calendar not connected</p>
             <p className="text-[13px] text-slate-400 mb-5">Connect your calendar so your agent can book appointments directly.</p>
-            <Link
-              href="/dashboard/account"
+            <a
+              href="/api/calendar/connect"
               className="inline-flex items-center gap-1.5 text-[13px] font-medium text-white bg-indigo-500 hover:bg-indigo-600 transition-colors rounded-lg px-4 py-2.5 leading-none"
             >
-              Go to Account settings
-            </Link>
+              Connect Google Calendar
+            </a>
           </div>
         </Card>
       </div>
