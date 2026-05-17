@@ -1,8 +1,10 @@
 import { redirect } from 'next/navigation'
 import { createClient as createServiceClient } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/server'
+import { Suspense } from 'react'
 import ProfileForm from './ProfileForm'
 import PasswordForm from './PasswordForm'
+import CalendarConnect from './CalendarConnect'
 import { Card, CardHeader, CardBody } from '../_components/Card'
 
 export default async function AccountPage() {
@@ -17,9 +19,14 @@ export default async function AccountPage() {
 
   const { data: customer } = await admin
     .from('customers')
-    .select('owner_name, owner_email, owner_phone')
+    .select('owner_name, owner_email, owner_phone, google_calendar_connected')
     .eq('auth_user_id', user.id)
-    .maybeSingle<{ owner_name: string | null; owner_email: string; owner_phone: string | null }>()
+    .maybeSingle<{
+      owner_name: string | null
+      owner_email: string
+      owner_phone: string | null
+      google_calendar_connected: boolean | null
+    }>()
 
   if (!customer) redirect('/auth/error')
 
@@ -47,6 +54,18 @@ export default async function AccountPage() {
         />
         <CardBody>
           <PasswordForm />
+        </CardBody>
+      </Card>
+
+      <Card>
+        <CardHeader
+          title="Calendar"
+          meta="Let your agent book appointments directly into your calendar."
+        />
+        <CardBody>
+          <Suspense>
+            <CalendarConnect connected={customer.google_calendar_connected ?? false} />
+          </Suspense>
         </CardBody>
       </Card>
     </div>

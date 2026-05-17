@@ -29,9 +29,9 @@ export default async function DashboardPage() {
 
   const { data: customer } = await admin
     .from('customers')
-    .select('id, business_name, owner_name')
+    .select('id, business_name, owner_name, google_calendar_connected')
     .eq('auth_user_id', user.id)
-    .maybeSingle<{ id: string; business_name: string; owner_name: string | null }>()
+    .maybeSingle<{ id: string; business_name: string; owner_name: string | null; google_calendar_connected: boolean | null }>()
 
   if (!customer) redirect('/auth/error')
 
@@ -41,16 +41,22 @@ export default async function DashboardPage() {
   const lastWeekEnd = new Date(weekStart); lastWeekEnd.setMilliseconds(-1)
   const weekRange = formatWeekRange(weekStart, new Date(weekStart.getTime() + 6 * 86400000), now)
 
+  const calendarConnected = customer.google_calendar_connected ?? false
+
   const [
     { data: thisWeekCalls },
     { data: lastWeekCalls },
     { data: pendingActions },
     { data: recentCalls },
+    { data: upcomingAppointments },
   ] = await Promise.all([
     admin.from('calls').select('id, outcome').eq('customer_id', customer.id).gte('started_at', weekStart.toISOString()),
     admin.from('calls').select('id').eq('customer_id', customer.id).gte('started_at', lastWeekStart.toISOString()).lte('started_at', lastWeekEnd.toISOString()),
     admin.from('actions').select('id, call_id, type, payload, created_at').eq('customer_id', customer.id).eq('status', 'pending').order('created_at', { ascending: false }).limit(4),
     admin.from('calls').select('id, caller_phone, started_at, duration_s, outcome').eq('customer_id', customer.id).order('started_at', { ascending: false }).limit(5),
+    calendarConnected
+      ? admin.from('appointments').select('id, caller_name, caller_phone, service, booked_for, status').eq('customer_id', customer.id).eq('status', 'confirmed').gte('booked_for', now.toISOString()).order('booked_for', { ascending: true }).limit(5)
+      : Promise.resolve({ data: null }),
   ])
 
   const totalThisWeek = thisWeekCalls?.length ?? 0
@@ -105,6 +111,51 @@ export default async function DashboardPage() {
           accent={pendingCount > 0 ? 'amber' : undefined}
         />
       </div>
+
+      {/* Upcoming appointments (only shown when Google Calendar is connected) */}
+      {calendarConnected && (
+        <div className="mb-4">
+          <Card>
+            <CardHeader
+              title="Upcoming appointments"
+              action={
+                <Link href="/dashboard/calendar" className="text-[12px] text-indigo-500 hover:text-indigo-700 transition-colors">
+                  View all
+                </Link>
+              }
+            />
+            <div className="overflow-x-auto">
+              <table className="w-full text-[13px]">
+                <thead>
+                  <tr className="border-b border-slate-100">
+                    {['When', 'Name', 'Phone', 'Service'].map(h => (
+                      <th key={h} className="px-6 py-3 text-left text-[11px] font-semibold text-slate-400 uppercase tracking-wider whitespace-nowrap">{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {upcomingAppointments && upcomingAppointments.length > 0 ? upcomingAppointments.map(appt => (
+                    <tr key={appt.id} className="border-b border-slate-50 hover:bg-slate-50/60 transition-colors">
+                      <td className="px-6 py-3.5 whitespace-nowrap text-slate-600">
+                        {appt.booked_for ? new Date(appt.booked_for).toLocaleString('en-AU', { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'Australia/Sydney' }) : '-'}
+                      </td>
+                      <td className="px-6 py-3.5 text-slate-700">{appt.caller_name ?? '-'}</td>
+                      <td className="px-6 py-3.5 text-slate-500">{appt.caller_phone ?? '-'}</td>
+                      <td className="px-6 py-3.5 text-slate-500">{appt.service ?? '-'}</td>
+                    </tr>
+                  )) : (
+                    <tr>
+                      <td colSpan={4} className="px-6 py-8 text-center text-[13px] text-slate-400">
+                        No upcoming appointments.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        </div>
+      )}
 
       {/* Bottom row: outstanding + recent calls */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
