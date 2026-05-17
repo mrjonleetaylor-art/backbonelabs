@@ -63,7 +63,7 @@ export default function RootLayout({
                 "name": "AU"
               },
               "serviceType": "Phone Answering Service",
-              "priceRange": "$199-$999",
+              "priceRange": "$99-$699",
               "knowsAbout": [
                 "Phone answering",
                 "Call handling",

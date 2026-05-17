@@ -64,8 +64,8 @@ illusion anywhere on the website or in copy.
 | Tier | Monthly | Calls |
 |------|---------|-------|
 | Overflow | $99 | 150/month |
-| Receptionist | $399 | 300/month |
-| Operator | $699 | 1,000/month |
+| Receptionist | $299 | 300/month |
+| Operator | $599 | 1,000/month |
 
 - Overage: $1/call on all tiers
 - Payment links standard on all tiers (1.2% + 30c)

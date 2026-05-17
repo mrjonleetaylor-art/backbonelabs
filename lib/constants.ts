@@ -1,4 +1,4 @@
 export const OVERFLOW_PRICE = 99
-export const RECEPTIONIST_PRICE = 399
-export const OPERATOR_PRICE = 699
+export const RECEPTIONIST_PRICE = 299
+export const OPERATOR_PRICE = 599
 export const MONTHLY_PRICE = RECEPTIONIST_PRICE
