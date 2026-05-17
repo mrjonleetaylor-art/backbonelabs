@@ -1,6 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useState } from 'react'
 
 type Customer = {
   id: string
@@ -64,6 +65,7 @@ function NavItem({
 
 export default function Sidebar({ customer, pendingCount }: Props) {
   const pathname = usePathname()
+  const [comingSoonOpen, setComingSoonOpen] = useState(false)
 
   const initials = (customer.owner_name ?? customer.owner_email)
     .split(' ')
@@ -119,19 +121,34 @@ export default function Sidebar({ customer, pendingCount }: Props) {
           icon={<AccountIcon />}
         />
 
-        <p className="px-3 mt-5 mb-1 text-[10px] font-semibold uppercase tracking-widest text-slate-400">Coming soon</p>
-        <div className="flex items-center gap-3 px-3 py-2 text-[13px] font-medium text-slate-400 cursor-default">
-          <LinkIcon />
-          <span>Payment links</span>
-        </div>
-        <div className="flex items-center gap-3 px-3 py-2 text-[13px] font-medium text-slate-400 cursor-default">
-          <AgentIcon />
-          <span>Agent settings</span>
-        </div>
-        <div className="flex items-center gap-3 px-3 py-2 text-[13px] font-medium text-slate-400 cursor-default">
-          <PlanIcon />
-          <span>Plan</span>
-        </div>
+        <button
+          onClick={() => setComingSoonOpen(o => !o)}
+          className="flex items-center gap-1 px-3 mt-5 mb-1 w-full text-left text-[10px] font-semibold uppercase tracking-widest text-slate-400 hover:text-slate-500 transition-colors"
+        >
+          <span className="flex-1">Coming soon</span>
+          <svg
+            width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+            className={`transition-transform duration-200 ${comingSoonOpen ? 'rotate-180' : ''}`}
+          >
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+        {comingSoonOpen && (
+          <>
+            <div className="flex items-center gap-3 px-3 py-2 text-[13px] font-medium text-slate-400 cursor-default">
+              <LinkIcon />
+              <span>Payment links</span>
+            </div>
+            <div className="flex items-center gap-3 px-3 py-2 text-[13px] font-medium text-slate-400 cursor-default">
+              <AgentIcon />
+              <span>Agent settings</span>
+            </div>
+            <div className="flex items-center gap-3 px-3 py-2 text-[13px] font-medium text-slate-400 cursor-default">
+              <PlanIcon />
+              <span>Plan</span>
+            </div>
+          </>
+        )}
 
       </nav>
 
