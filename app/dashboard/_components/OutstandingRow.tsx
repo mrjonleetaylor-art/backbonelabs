@@ -32,14 +32,13 @@ function derivedTitle(type: ActionType, payload: Record<string, unknown>): strin
   return 'Action needed'
 }
 
-function derivedMeta(type: ActionType, payload: Record<string, unknown>, age: string): string {
+function derivedMetaParts(type: ActionType, payload: Record<string, unknown>): string[] {
   const p = payload
   const parts: string[] = []
   if (type === 'order' && p.budget) parts.push(String(p.budget))
   if (type === 'callback' && p.callback_day) parts.push(String(p.callback_day))
   if (p.occasion) parts.push(String(p.occasion))
-  parts.push(age)
-  return parts.join(' · ')
+  return parts
 }
 
 function ageLabel(createdAt: string): string {
@@ -62,7 +61,8 @@ type Props = {
 export default function OutstandingRow({ id, call_id, type, payload, created_at }: Props) {
   const disk = DISK[type] ?? DISK.other
   const title = derivedTitle(type, payload)
-  const meta = derivedMeta(type, payload, ageLabel(created_at))
+  const metaParts = derivedMetaParts(type, payload)
+  const age = ageLabel(created_at)
   const href = call_id ? `/dashboard/activity/${call_id}` : '/dashboard/activity'
 
   return (
@@ -75,7 +75,18 @@ export default function OutstandingRow({ id, call_id, type, payload, created_at 
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-[13px] font-medium text-slate-800 truncate">{title}</p>
-        <p className="text-[11px] text-slate-400 truncate">{meta}</p>
+        <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
+          {metaParts.map((part, i) => (
+            <span
+              key={i}
+              className="inline-block text-[10px] font-medium rounded-full px-1.5 py-0.5 leading-none"
+              style={{ background: disk.bg, color: disk.fg }}
+            >
+              {part}
+            </span>
+          ))}
+          <span className="text-[11px] text-slate-400">{age}</span>
+        </div>
       </div>
       <Link
         href={href}
