@@ -44,7 +44,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   return (
     <div className="flex h-screen bg-white overflow-hidden">
-      <Sidebar customer={customer} pendingCount={pendingCount ?? 0} isAdmin={user.email === 'mr.jonleetaylor@gmail.com'} />
+      <Sidebar customer={customer} pendingCount={pendingCount ?? 0} />
       <main className="flex-1 overflow-y-auto">
         {children}
       </main>
