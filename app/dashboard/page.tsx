@@ -7,7 +7,7 @@ import { Card, CardHeader, CardBody } from './_components/Card'
 import OutstandingRow from './_components/OutstandingRow'
 import Avatar, { initialsFrom } from './_components/Avatar'
 import Badge, { badgeVariant } from './_components/Badge'
-import { formatCallTime, formatDuration, isoWeekRange, formatWeekRange } from '@/lib/formatTime'
+import { formatCallTime, formatDuration, formatAuPhone, isoWeekRange, formatWeekRange } from '@/lib/formatTime'
 
 function greeting(): string {
   const hr = new Date().toLocaleString('en-AU', { hour: 'numeric', hour12: false, timeZone: 'Australia/Sydney' })
@@ -101,7 +101,7 @@ export default async function DashboardPage() {
         <KpiCard
           label="Calls you didn't have to take"
           value={nonTransfer}
-          subline={`Tom handled ${tomPct}% of your calls`}
+          subline={`Your agent handled ${tomPct}% of your calls.`}
           accent="cyan"
         />
         <KpiCard
@@ -140,7 +140,7 @@ export default async function DashboardPage() {
                         {appt.booked_for ? new Date(appt.booked_for).toLocaleString('en-AU', { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'Australia/Sydney' }) : '-'}
                       </td>
                       <td className="px-6 py-3.5 text-slate-700">{appt.caller_name ?? '-'}</td>
-                      <td className="px-6 py-3.5 text-slate-500">{appt.caller_phone ?? '-'}</td>
+                      <td className="px-6 py-3.5 text-slate-500">{appt.caller_phone ? formatAuPhone(appt.caller_phone) : '-'}</td>
                       <td className="px-6 py-3.5 text-slate-500">{appt.service ?? '-'}</td>
                     </tr>
                   )) : (
@@ -213,7 +213,7 @@ export default async function DashboardPage() {
                 <tbody>
                   {recentCalls && recentCalls.length > 0 ? recentCalls.map(call => {
                     const variant = badgeVariant(call.outcome, callbackSet.has(call.id))
-                    const callerDisplay = call.caller_phone ?? 'Unknown'
+                    const callerDisplay = formatAuPhone(call.caller_phone)
                     const initials = initialsFrom(null, callerDisplay)
                     return (
                       <tr key={call.id} className="border-b border-slate-50 hover:bg-slate-50/60 transition-colors">

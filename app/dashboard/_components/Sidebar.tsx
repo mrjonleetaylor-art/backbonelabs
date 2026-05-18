@@ -166,8 +166,7 @@ export default function Sidebar({ customer, pendingCount }: Props) {
             {initials}
           </div>
           <div className="min-w-0">
-            <p className="text-[12px] font-medium text-slate-700 truncate">{customer.owner_name ?? 'Owner'}</p>
-            <p className="text-[11px] text-slate-400 truncate">{customer.owner_email}</p>
+            <p className="text-[12px] font-medium text-slate-700 truncate">{customer.owner_name?.split(' ')[0] ?? 'Owner'}</p>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { formatCallTime, formatDuration } from '@/lib/formatTime'
+import { formatCallTime, formatDuration, formatAuPhone } from '@/lib/formatTime'
 
 export default function ExpandedVoicemailRow({
   phone,
@@ -37,7 +37,7 @@ export default function ExpandedVoicemailRow({
           <div className="space-y-3">
             <div>
               <p className="text-[10px] font-semibold uppercase tracking-[0.06em] text-slate-400 mb-0.5">Caller</p>
-              <p className="text-[13px] text-slate-800">{phone ?? 'Unknown'}</p>
+              <p className="text-[13px] text-slate-800">{formatAuPhone(phone)}</p>
             </div>
             <div>
               <p className="text-[10px] font-semibold uppercase tracking-[0.06em] text-slate-400 mb-0.5">Received</p>

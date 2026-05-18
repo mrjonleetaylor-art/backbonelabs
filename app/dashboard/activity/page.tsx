@@ -119,7 +119,7 @@ export default async function ActivityPage({
     <div className="p-8 max-w-[1200px] mx-auto">
       <div className="mb-6">
         <h1 className="text-[28px] font-bold tracking-[-0.025em] text-slate-900">Activity</h1>
-        <p className="text-[13px] text-slate-400 mt-1">Every call Tom handled, in one place.</p>
+        <p className="text-[13px] text-slate-400 mt-1">Every call your agent handled, in one place.</p>
       </div>
 
       <ActivityFilters current={{ outcome: outcomeFilter, search, since }} />

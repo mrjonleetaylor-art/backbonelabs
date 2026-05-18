@@ -3,7 +3,7 @@ import { useState, useEffect, Fragment } from 'react'
 import Link from 'next/link'
 import Avatar, { initialsFrom } from '../_components/Avatar'
 import Badge from '../_components/Badge'
-import { formatCallTime, formatDuration } from '@/lib/formatTime'
+import { formatCallTime, formatDuration, formatAuPhone } from '@/lib/formatTime'
 import { getCallDetail } from './actions'
 import ExpandedCallRow from './ExpandedCallRow'
 import ExpandedVoicemailRow from './ExpandedVoicemailRow'
@@ -91,7 +91,7 @@ export default function ActivityTable({
           </thead>
           <tbody>
             {rows.length > 0 ? rows.map(row => {
-              const caller = row.phone ?? 'Unknown'
+              const caller = formatAuPhone(row.phone)
               const initials = initialsFrom(null, caller)
               const isExpanded = expandedId === row.id
               const isLoading = loadingId === row.id

@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { createClient as createServiceClient } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardHeader } from '../_components/Card'
+import { formatAuPhone } from '@/lib/formatTime'
 
 type Appointment = {
   id: string
@@ -45,7 +46,7 @@ function AppointmentTable({ rows, empty }: { rows: Appointment[] | null; empty: 
             <tr key={appt.id} className="border-b border-slate-50 hover:bg-slate-50/60 transition-colors">
               <td className="px-6 py-3.5 whitespace-nowrap text-slate-600">{formatDatetime(appt.booked_for)}</td>
               <td className="px-6 py-3.5 text-slate-700">{appt.caller_name ?? '-'}</td>
-              <td className="px-6 py-3.5 text-slate-500">{appt.caller_phone ?? '-'}</td>
+              <td className="px-6 py-3.5 text-slate-500">{appt.caller_phone ? formatAuPhone(appt.caller_phone) : '-'}</td>
               <td className="px-6 py-3.5 text-slate-500">{appt.service ?? '-'}</td>
               <td className="px-6 py-3.5 text-slate-400 max-w-[200px] truncate">{appt.notes ?? '-'}</td>
               <td className="px-6 py-3.5">
@@ -104,7 +105,7 @@ export default async function CalendarPage() {
               href="/api/calendar/connect"
               className="inline-flex items-center gap-1.5 text-[13px] font-medium text-white bg-indigo-500 hover:bg-indigo-600 transition-colors rounded-lg px-4 py-2.5 leading-none"
             >
-              Connect Google Calendar
+              Connect your Google Calendar
             </a>
           </div>
         </Card>

@@ -68,6 +68,22 @@ export function isoWeekRange(now: Date): { start: Date; end: Date } {
   return { start: monday, end: sunday }
 }
 
+// Format a phone number as AU local format: +61412345678 → 0412 345 678
+export function formatAuPhone(phone: string | null | undefined): string {
+  if (!phone) return 'Unknown'
+  const clean = phone.replace(/\s+/g, '').replace(/[^\d+]/g, '')
+  if (clean.startsWith('+61') && clean.length >= 11) {
+    const local = '0' + clean.slice(3)
+    if (local.startsWith('04') && local.length === 10) {
+      return `${local.slice(0, 4)} ${local.slice(4, 7)} ${local.slice(7)}`
+    }
+    if (local.length === 10) {
+      return `${local.slice(0, 2)} ${local.slice(2, 6)} ${local.slice(6)}`
+    }
+  }
+  return phone
+}
+
 export function formatWeekRange(start: Date, end: Date, today: Date): string {
   const opts: Intl.DateTimeFormatOptions = { weekday: 'long', day: 'numeric', month: 'long' }
   const startStr = start.toLocaleDateString('en-AU', opts)
