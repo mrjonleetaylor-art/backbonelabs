@@ -42,9 +42,11 @@ export default async function DashboardLayout({ children }: { children: React.Re
     .eq('customer_id', customer.id)
     .eq('status', 'pending')
 
+  const isAdmin = customer.owner_email === 'mr.jonleetaylor@gmail.com'
+
   return (
     <div className="flex h-screen bg-white overflow-hidden">
-      <Sidebar customer={customer} pendingCount={pendingCount ?? 0} />
+      <Sidebar customer={customer} pendingCount={pendingCount ?? 0} isAdmin={isAdmin} />
       <main className="flex-1 overflow-y-auto">
         {children}
       </main>

@@ -15,6 +15,7 @@ type Customer = {
 type Props = {
   customer: Customer
   pendingCount: number
+  isAdmin?: boolean
 }
 
 function NavItem({
@@ -63,9 +64,10 @@ function NavItem({
   )
 }
 
-export default function Sidebar({ customer, pendingCount }: Props) {
+export default function Sidebar({ customer, pendingCount, isAdmin = false }: Props) {
   const pathname = usePathname()
   const [comingSoonOpen, setComingSoonOpen] = useState(false)
+  const [linkState, setLinkState] = useState<'idle' | 'loading' | 'copied' | 'error'>('idle')
 
   const initials = (customer.owner_name ?? customer.owner_email)
     .split(' ')
@@ -150,6 +152,34 @@ export default function Sidebar({ customer, pendingCount }: Props) {
           </>
         )}
 
+        {isAdmin && (
+          <>
+            <p className="px-3 mt-5 mb-1 text-[10px] font-semibold uppercase tracking-widest text-slate-400">Admin</p>
+            <button
+              onClick={async () => {
+                setLinkState('loading')
+                try {
+                  const res = await fetch('/api/onboarding', { method: 'POST' })
+                  if (!res.ok) throw new Error('failed')
+                  const { adminUrl } = await res.json()
+                  await navigator.clipboard.writeText(adminUrl)
+                  setLinkState('copied')
+                  setTimeout(() => setLinkState('idle'), 3000)
+                } catch {
+                  setLinkState('error')
+                  setTimeout(() => setLinkState('idle'), 3000)
+                }
+              }}
+              disabled={linkState === 'loading'}
+              className="flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] font-medium transition-colors w-full text-left text-slate-600 hover:bg-slate-100 disabled:opacity-50"
+            >
+              <OnboardIcon />
+              <span className="flex-1">
+                {linkState === 'loading' ? 'Generating…' : linkState === 'copied' ? '✓ Link copied' : linkState === 'error' ? 'Error — retry' : 'New onboarding link'}
+              </span>
+            </button>
+          </>
+        )}
       </nav>
 
       {/* Footer */}
@@ -220,6 +250,13 @@ function AccountIcon() {
   return (
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+    </svg>
+  )
+}
+function OnboardIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/>
     </svg>
   )
 }
