@@ -57,7 +57,7 @@ export default function ROICalculator() {
   }, [revenueAtRisk, mv])
 
   return (
-    <section className="bg-indigo-500 py-24" ref={sectionRef}>
+    <section className="bg-slate-900 py-24" ref={sectionRef}>
       <div className="max-w-[620px] mx-auto px-6">
 
         <motion.div
@@ -67,7 +67,7 @@ export default function ROICalculator() {
           transition={{ duration: 0.5, ease }}
           className="mb-10"
         >
-          <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold uppercase tracking-[0.09em] text-white/70 mb-3.5">
+          <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold uppercase tracking-[0.09em] text-white/50 mb-3.5">
             <span className="w-1.5 h-1.5 rounded-full bg-white/60" />
             ROI calculator
           </span>
@@ -82,7 +82,7 @@ export default function ROICalculator() {
           viewport={{ once: true }}
           transition={{ duration: 0.5, ease, delay: 0.1 }}
           className="bg-white rounded-2xl"
-          style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.1)" }}
+          style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2)" }}
         >
           {/* Always-visible sliders */}
           <div className="p-8 pb-6 space-y-7">

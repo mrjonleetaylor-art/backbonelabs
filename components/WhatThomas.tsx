@@ -38,7 +38,7 @@ const items: Item[] = [
     icon: <TruckIcon />,
     title: "Delivery coverage",
     body: "Suburbs you cover, fees, same-day availability - handled cleanly every time.",
-    sample: "Sent: a secure link to pay $80, expires in 24 hours.",
+    sample: "Yes, we deliver to Caringbah — $15 fee, same-day if ordered before noon.",
   },
   {
     icon: <MessageIcon />,
