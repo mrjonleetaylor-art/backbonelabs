@@ -110,7 +110,7 @@ export default function Hero() {
                 className="blob-a absolute rounded-full pointer-events-none"
                 style={{
                   width: "65%", height: "65%", top: "-15%", left: "-10%",
-                  background: "radial-gradient(circle, rgba(99,102,241,0.65) 0%, transparent 70%)",
+                  background: "radial-gradient(circle, rgba(99,102,241,0.30) 0%, transparent 70%)",
                   filter: "blur(55px)",
                 }}
               />
@@ -118,7 +118,7 @@ export default function Hero() {
                 className="blob-b absolute rounded-full pointer-events-none"
                 style={{
                   width: "55%", height: "55%", bottom: "-10%", right: "-5%",
-                  background: "radial-gradient(circle, rgba(6,182,212,0.55) 0%, transparent 70%)",
+                  background: "radial-gradient(circle, rgba(6,182,212,0.25) 0%, transparent 70%)",
                   filter: "blur(55px)",
                 }}
               />
@@ -126,7 +126,7 @@ export default function Hero() {
                 className="blob-c absolute rounded-full pointer-events-none"
                 style={{
                   width: "40%", height: "40%", top: "35%", left: "35%",
-                  background: "radial-gradient(circle, rgba(139,92,246,0.40) 0%, transparent 70%)",
+                  background: "radial-gradient(circle, rgba(139,92,246,0.18) 0%, transparent 70%)",
                   filter: "blur(55px)",
                 }}
               />

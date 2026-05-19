@@ -127,6 +127,13 @@ export default function ROICalculator() {
               {netGainText}/month back in your pocket
             </p>
 
+            <a href="#pricing" className="inline-flex items-center gap-1 text-[13px] text-slate-400 hover:text-indigo-500 transition-colors mt-4">
+              See pricing
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </a>
+
             <button
               onClick={() => setExpanded((v) => !v)}
               className="inline-flex items-center gap-1.5 text-[13px] text-slate-400 hover:text-indigo-500 transition-colors mt-5"

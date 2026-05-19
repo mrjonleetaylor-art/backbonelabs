@@ -87,7 +87,11 @@ export default function HowItWorks() {
   const lineScaleY = useTransform(scrollYProgress, [0, 1], [0, 1])
 
   return (
-    <section id="process" className="bg-slate-50 py-24 border-t border-slate-200">
+    <section id="process" className="relative overflow-hidden bg-slate-50 pt-28 pb-24">
+      <div
+        className="absolute inset-x-0 top-0 pointer-events-none z-10"
+        style={{ height: "80px", background: "linear-gradient(to bottom, #ffffff, transparent)" }}
+      />
       <div className="max-w-[1100px] mx-auto px-6 lg:px-12">
 
         <motion.div
@@ -98,7 +102,7 @@ export default function HowItWorks() {
           className="mb-16"
         >
           <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold uppercase tracking-[0.09em] text-indigo-500 mb-3.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+            <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
             How it works
           </span>
           <h2 className="text-[clamp(28px,3.5vw,44px)] font-bold leading-[1.1] tracking-[-0.025em] text-slate-900 mt-1.5">

@@ -1,6 +1,5 @@
 import Nav from "@/components/Nav"
 import Hero from "@/components/Hero"
-import DemoCall from "@/components/DemoCall"
 import Problem from "@/components/Problem"
 import DashboardPreview from "@/components/DashboardPreview"
 import HowItWorks from "@/components/HowItWorks"
@@ -18,10 +17,9 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
-        <DemoCall />
         <Problem />
-        <DashboardPreview />
         <HowItWorks />
+        <DashboardPreview />
         <WhatThomas />
         {/* <SampleCalls /> — hidden until real call recordings are available */}
         <ROICalculator />
