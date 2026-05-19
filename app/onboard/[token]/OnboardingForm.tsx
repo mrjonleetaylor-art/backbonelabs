@@ -281,8 +281,8 @@ export function OnboardingForm({ token, initialData, isAdmin }: Props) {
               <Field label="Agent name" hint="What should the agent call itself?">
                 <input type="text" className={inputClass} placeholder="e.g. Sophie, Sam, Riley" {...textProps('agent_name')} />
               </Field>
-              <Field label="Agent voice" hint="Which voice did you choose during the demo?">
-                <input type="text" className={inputClass} placeholder="e.g. Charlotte, warm Australian female" {...textProps('agent_voice')} />
+              <Field label="Agent voice" hint="To be chosen together during the demo call.">
+                <input type="text" className={inputClass} placeholder="Leave blank for now" {...textProps('agent_voice')} />
               </Field>
             </div>
             <Field label="Call handling preference" hint="How should the agent handle after-hours calls?">
