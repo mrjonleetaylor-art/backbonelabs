@@ -5,7 +5,7 @@ import Problem from "@/components/Problem"
 import DashboardPreview from "@/components/DashboardPreview"
 import HowItWorks from "@/components/HowItWorks"
 import WhatThomas from "@/components/WhatThomas"
-import SampleCalls from "@/components/SampleCalls"
+// import SampleCalls from "@/components/SampleCalls" — hidden until real recordings available
 import ROICalculator from "@/components/ROICalculator"
 import Pricing from "@/components/Pricing"
 import FAQ from "@/components/FAQ"
@@ -23,7 +23,7 @@ export default function Home() {
         <DashboardPreview />
         <HowItWorks />
         <WhatThomas />
-        <SampleCalls />
+        {/* <SampleCalls /> — hidden until real call recordings are available */}
         <ROICalculator />
         <Pricing />
         <FAQ />
