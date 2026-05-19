@@ -58,7 +58,7 @@ function StageBadge({ n, label }: { n: number; label: string }) {
       <span className="w-4 h-4 rounded-full bg-current opacity-20 flex items-center justify-center text-[10px] font-bold">
         {n}
       </span>
-      Stage {n} — {label}
+      Stage {n}: {label}
     </div>
   );
 }
@@ -168,10 +168,10 @@ export function OnboardingForm({ token, initialData, isAdmin }: Props) {
               <span className="text-cyan-500">Relay</span><span className="text-slate-900">Desk</span>
             </div>
             <h1 className="text-2xl font-bold text-slate-900 mt-1">
-              {data.business_name ? `${data.business_name} — Onboarding` : 'Business Onboarding'}
+              {data.business_name ? `${data.business_name}: Onboarding` : 'Business Onboarding'}
             </h1>
             <p className="text-slate-500 text-sm mt-1">
-              Fill in what you can. Everything saves automatically — come back any time.
+              Fill in what you can. Everything saves automatically, so come back any time.
             </p>
           </div>
           <div className={`text-xs font-medium transition-opacity ${saveState === 'idle' ? 'opacity-0' : 'opacity-100'} ${saveColour} pt-1 whitespace-nowrap`}>
@@ -219,7 +219,7 @@ export function OnboardingForm({ token, initialData, isAdmin }: Props) {
         <section className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 mb-6">
           <div className="mb-5">
             <StageBadge n={2} label="Your business" />
-            <p className="text-xs text-slate-400 mt-2">Fill this in before your demo call — the more detail the better.</p>
+            <p className="text-xs text-slate-400 mt-2">Fill this in before your demo call. The more detail the better.</p>
           </div>
 
           <div className="space-y-4">
@@ -244,7 +244,7 @@ export function OnboardingForm({ token, initialData, isAdmin }: Props) {
               <textarea rows={2} className={textareaClass} placeholder="e.g. Caller name, mobile, type of arrangement, occasion, preferred pickup/delivery date" {...textProps('info_capture')} />
             </Field>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Field label="Should the agent offer callbacks?" hint="Yes / No — or conditions (e.g. only for complex requests)">
+              <Field label="Should the agent offer callbacks?" hint="Yes / No, or describe conditions (e.g. only for complex requests)">
                 <input type="text" className={inputClass} placeholder="Yes / No" {...textProps('callback_offer')} />
               </Field>
               <Field label="Mobile to transfer urgent calls to" hint="Leave blank if you don't want live transfers">
@@ -264,7 +264,7 @@ export function OnboardingForm({ token, initialData, isAdmin }: Props) {
               </label>
             </div>
             <Field label="Anything else we should know?" hint="Special instructions, seasonal notes, things the agent should never say, etc.">
-              <textarea rows={3} className={textareaClass} placeholder="Optional — anything else that would help the agent represent your business well" {...textProps('additional_notes')} />
+              <textarea rows={3} className={textareaClass} placeholder="Optional. Anything else that would help the agent represent your business well." {...textProps('additional_notes')} />
             </Field>
           </div>
         </section>
@@ -282,7 +282,7 @@ export function OnboardingForm({ token, initialData, isAdmin }: Props) {
                 <input type="text" className={inputClass} placeholder="e.g. Sophie, Sam, Riley" {...textProps('agent_name')} />
               </Field>
               <Field label="Agent voice" hint="Which voice did you choose during the demo?">
-                <input type="text" className={inputClass} placeholder="e.g. Charlotte — warm Australian female" {...textProps('agent_voice')} />
+                <input type="text" className={inputClass} placeholder="e.g. Charlotte, warm Australian female" {...textProps('agent_voice')} />
               </Field>
             </div>
             <Field label="Call handling preference" hint="How should the agent handle after-hours calls?">
@@ -315,7 +315,7 @@ export function OnboardingForm({ token, initialData, isAdmin }: Props) {
               <p className="text-xs text-amber-600 mt-2">This section is only visible when you open the link with <code className="bg-amber-100 px-1 rounded">?admin=1</code>.</p>
             </div>
             <Field label="Internal notes" hint="Not visible to the customer. Configuration notes, issues, next actions.">
-              <textarea rows={4} className={`${textareaClass} bg-amber-50 border-amber-200 focus:ring-amber-400`} placeholder="e.g. Sheena prefers morning callbacks. ElevenLabs agent not yet created — waiting on KB fields." {...textProps('internal_notes')} />
+              <textarea rows={4} className={`${textareaClass} bg-amber-50 border-amber-200 focus:ring-amber-400`} placeholder="e.g. Sheena prefers morning callbacks. ElevenLabs agent not yet created, waiting on KB fields." {...textProps('internal_notes')} />
             </Field>
           </section>
         )}
