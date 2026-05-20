@@ -57,7 +57,7 @@ export default function ROICalculator() {
   }, [revenueAtRisk, mv])
 
   return (
-    <section className="bg-slate-900 py-24" ref={sectionRef}>
+    <section className="bg-slate-900 py-24 border-t border-slate-200" ref={sectionRef}>
       <div className="max-w-[620px] mx-auto px-6">
 
         <motion.div

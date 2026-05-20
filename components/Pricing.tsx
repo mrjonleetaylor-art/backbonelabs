@@ -102,7 +102,7 @@ function PricingCard({ tier }: { tier: Tier }) {
   const isLight = tier.variant === "light"
   const isViolet = tier.variant === "violet"
 
-  const bg = isLight ? "#ffffff" : isViolet ? "#F59E0B" : "#0F172A"
+  const bg = isLight ? "#ffffff" : isViolet ? "#FEF3C7" : "#0F172A"
   const textPrimary = isLight ? "text-slate-900" : isViolet ? "text-slate-900" : "text-white"
   const textMuted = isLight ? "text-slate-500" : isViolet ? "text-slate-600" : "text-white/60"
   const textFeature = isLight ? "text-slate-700" : isViolet ? "text-slate-700" : "text-white/75"
@@ -110,14 +110,14 @@ function PricingCard({ tier }: { tier: Tier }) {
   const badgeBg = isViolet ? "bg-[#1E3A5F] text-white" : ""
   const goodForColor = isLight ? "text-slate-500" : isViolet ? "text-slate-600" : "text-white/55"
   const callsColor = isLight ? "text-slate-400" : isViolet ? "text-slate-400" : "text-white/45"
-  const borderStyle = isLight ? "1px solid #E2E8F0" : "none"
+  const borderStyle = isLight ? "1px solid #E2E8F0" : isViolet ? "1px solid #FDE68A" : "none"
 
   return (
     <motion.div
       variants={cardItem}
       whileHover={{
         y: isViolet ? -16 : -5,
-        ...(isViolet ? { boxShadow: "0 16px 48px rgba(245,158,11,0.40), 0 4px 12px rgba(245,158,11,0.24)" } : {}),
+        ...(isViolet ? { boxShadow: "0 20px 56px rgba(245,158,11,0.18)" } : {}),
         transition: { type: "spring", stiffness: 280, damping: 22 },
       }}
       className={`flex flex-col rounded-2xl h-full ${isViolet ? "lg:translate-y-[-12px] lg:scale-[1.03]" : ""}`}
@@ -125,7 +125,7 @@ function PricingCard({ tier }: { tier: Tier }) {
         background: bg,
         border: borderStyle,
         boxShadow: isViolet
-          ? "0 16px 48px rgba(245,158,11,0.30), 0 4px 12px rgba(245,158,11,0.18)"
+          ? "0 16px 48px rgba(245,158,11,0.12), 0 4px 12px rgba(245,158,11,0.08)"
           : isLight
           ? "0 1px 3px rgba(15,23,42,0.06), 0 4px 16px rgba(15,23,42,0.06)"
           : "0 4px 24px rgba(0,0,0,0.25)",
