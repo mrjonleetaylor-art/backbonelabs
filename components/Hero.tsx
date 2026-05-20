@@ -40,28 +40,18 @@ export default function Hero() {
 
           {/* Left: copy */}
           <div>
-            <motion.div
-              {...slideUp(0.05)}
-              className="inline-flex items-center gap-2 bg-[#1E3A5F] rounded-full px-3.5 py-1.5 mb-7"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-white/60 flex-shrink-0" />
-              <span className="text-[12px] font-semibold text-white tracking-[-0.005em]">
-                Meet your AI phone agent.
-              </span>
-            </motion.div>
-
             <h1 className="text-[clamp(40px,5vw,68px)] font-extrabold leading-[1.04] tracking-[-0.032em] text-slate-900 mb-5">
               <motion.span {...slideUp(0.1)} className="block">
-                Run your business,
+                Every call answered.
               </motion.span>
               <motion.span {...slideUp(0.2)} className="block">
-                not your phone.
+                Every order captured.
               </motion.span>
             </h1>
 
             <p className="text-[20px] text-slate-600 leading-[1.7] max-w-[460px] mb-9">
-              An AI phone agent for Australian local businesses that answers calls, captures orders,
-              and books callbacks.
+              RelayDesk answers calls when you&apos;re busy, takes orders, handles questions,
+              and emails you the details.
             </p>
 
             <motion.div {...slideUp(0.45)} className="flex flex-wrap gap-2.5 mb-11">
@@ -92,7 +82,7 @@ export default function Hero() {
                     className="w-[18px] h-[18px] rounded-full flex items-center justify-center flex-shrink-0"
                     style={{ background: "#F59E0B" }}
                   >
-                    <CyanCheckIcon />
+                    <CheckIcon />
                   </span>
                   {item}
                 </span>
@@ -100,36 +90,12 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* Right: iMessage widget + dots + summary */}
+          {/* Right: transcript widget + scenario dots + call summary card */}
           <motion.div {...slideUp(0.2)} className="hidden lg:block">
             <div
               className="relative h-[360px] bg-slate-900 rounded-[20px] overflow-hidden"
               style={{ boxShadow: "0 8px 16px rgba(15,23,42,0.06), 0 24px 64px rgba(15,23,42,0.08)" }}
             >
-              <div
-                className="blob-a absolute rounded-full pointer-events-none"
-                style={{
-                  width: "65%", height: "65%", top: "-15%", left: "-10%",
-                  background: "radial-gradient(circle, rgba(30,58,95,0.30) 0%, transparent 70%)",
-                  filter: "blur(55px)",
-                }}
-              />
-              <div
-                className="blob-b absolute rounded-full pointer-events-none"
-                style={{
-                  width: "55%", height: "55%", bottom: "-10%", right: "-5%",
-                  background: "radial-gradient(circle, rgba(245,158,11,0.25) 0%, transparent 70%)",
-                  filter: "blur(55px)",
-                }}
-              />
-              <div
-                className="blob-c absolute rounded-full pointer-events-none"
-                style={{
-                  width: "40%", height: "40%", top: "35%", left: "35%",
-                  background: "radial-gradient(circle, rgba(139,92,246,0.18) 0%, transparent 70%)",
-                  filter: "blur(55px)",
-                }}
-              />
               <div
                 className="absolute inset-0"
                 style={{
@@ -159,6 +125,31 @@ export default function Hero() {
               ))}
             </div>
 
+            {/* Call summary card */}
+            <div className="mt-3 bg-white rounded-xl border border-slate-200 border-l-4 border-l-[#F59E0B] px-5 py-4 shadow-md">
+              <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400 mb-3">
+                Call Summary &middot; 2 mins ago
+              </p>
+              <div className="space-y-1.5 text-[13px] leading-relaxed">
+                <div>
+                  <span className="text-slate-400">Caller: </span>
+                  <span className="text-slate-900 font-medium">Emma R.</span>
+                </div>
+                <div>
+                  <span className="text-slate-400">Request: </span>
+                  <span className="text-slate-900">Custom arrangement, delivery at 12</span>
+                </div>
+                <div>
+                  <span className="text-slate-400">Contact: </span>
+                  <span className="text-slate-900">0411 XXX XXX</span>
+                </div>
+                <div>
+                  <span className="text-slate-400">Status: </span>
+                  <span className="text-[#F59E0B] font-semibold">Booking confirmed. $100 deposit received.</span>
+                </div>
+              </div>
+            </div>
+
           </motion.div>
 
         </div>
@@ -177,7 +168,7 @@ function PhoneIcon() {
   )
 }
 
-function CyanCheckIcon() {
+function CheckIcon() {
   return (
     <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M2 6l3 3 5-5" />

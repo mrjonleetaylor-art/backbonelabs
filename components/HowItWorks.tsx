@@ -87,7 +87,7 @@ export default function HowItWorks() {
   const lineScaleY = useTransform(scrollYProgress, [0, 1], [0, 1])
 
   return (
-    <section id="process" className="relative overflow-hidden bg-slate-50 pt-28 pb-24">
+    <section id="process" className="relative overflow-hidden bg-[#FAF9F5] pt-28 pb-24">
       <div
         className="absolute inset-x-0 top-0 pointer-events-none z-10"
         style={{ height: "80px", background: "linear-gradient(to bottom, #ffffff, transparent)" }}

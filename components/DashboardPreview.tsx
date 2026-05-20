@@ -73,7 +73,7 @@ export default function DashboardPreview() {
           </div>
 
           {/* Right: screenshot with browser chrome */}
-          <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-2xl">
+          <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-2xl min-w-0">
             {/* Browser chrome */}
             <div className="bg-slate-100 border-b border-slate-200 h-10 px-4 flex items-center gap-1.5 flex-shrink-0">
               <span className="w-3 h-3 rounded-full bg-red-400" />
