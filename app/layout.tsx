@@ -55,7 +55,7 @@ export default function RootLayout({
               "@type": "LocalBusiness",
               "name": "RelayDesk",
               "description": "Phone answering service for local Australian businesses. Answer every inbound call, capture orders, handle common questions.",
-              "url": "https://relaydesk.com.au",
+              "url": "https://www.relaydesk.com.au",
               "telephone": "+61253023030",
               "email": "hello@relaydesk.com.au",
               "areaServed": {
@@ -63,7 +63,7 @@ export default function RootLayout({
                 "name": "AU"
               },
               "serviceType": "Phone Answering Service",
-              "priceRange": "$99-$699",
+              "priceRange": "$99-$599",
               "knowsAbout": [
                 "Phone answering",
                 "Call handling",
