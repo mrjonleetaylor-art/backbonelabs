@@ -1,9 +1,13 @@
 import { ImageResponse } from 'next/og'
+import { readFileSync } from 'fs'
+import { join } from 'path'
 
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
-export default function OGImage() {
+export default async function OGImage() {
+  const interBold = readFileSync(join(process.cwd(), 'app/fonts/Inter-Bold.woff'))
+
   return new ImageResponse(
     (
       <div
@@ -62,6 +66,14 @@ export default function OGImage() {
         </span>
       </div>
     ),
-    { ...size }
+    {
+      ...size,
+      fonts: [{
+        name: 'Inter',
+        data: interBold,
+        style: 'normal',
+        weight: 700,
+      }],
+    }
   )
 }
