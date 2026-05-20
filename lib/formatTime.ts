@@ -1,8 +1,8 @@
 // Format a UTC timestamp as "2:47 pm / Today", "9:21 am / Yesterday", "5:32 pm / Mon 11 May"
 export function formatCallTime(iso: string | null): string {
-  if (!iso) return '—'
+  if (!iso) return '–'
   const d = new Date(iso)
-  if (isNaN(d.getTime())) return '—'
+  if (isNaN(d.getTime())) return '–'
 
   const now = new Date()
   const tz = 'Australia/Sydney'
@@ -48,7 +48,7 @@ export function formatCallTime(iso: string | null): string {
 }
 
 export function formatDuration(seconds: number | null): string {
-  if (!seconds) return '—'
+  if (!seconds) return '–'
   const m = Math.floor(seconds / 60)
   const s = seconds % 60
   return `${m}:${String(s).padStart(2, '0')}`

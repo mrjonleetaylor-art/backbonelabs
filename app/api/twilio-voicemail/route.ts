@@ -109,7 +109,7 @@ export async function POST(req: Request) {
   const toEmail = customer?.owner_email ?? jonEmail;
   const ccEmail = toEmail !== jonEmail ? jonEmail : null;
   const businessLabel = customer?.business_name ?? 'RelayDesk sales';
-  const subject = `Voicemail from ${from ?? 'unknown'} — ${businessLabel}`;
+  const subject = `Voicemail from ${from ?? 'unknown'}: ${businessLabel}`;
   const timestamp = new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' });
 
   const html = `

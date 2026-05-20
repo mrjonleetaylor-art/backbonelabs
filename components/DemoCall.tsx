@@ -32,7 +32,7 @@ export default function DemoCall() {
             </h2>
             <p className="text-white/70 text-[17px] leading-[1.65] mb-8 max-w-[440px]">
               Call now. Get your questions answered, see how it works, and book a
-              setup call — all in one conversation.
+              setup call, all in one conversation.
             </p>
             <a
               href="tel:+61253023030"

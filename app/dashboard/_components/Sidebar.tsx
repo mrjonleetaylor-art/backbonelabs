@@ -175,7 +175,7 @@ export default function Sidebar({ customer, pendingCount, isAdmin = false }: Pro
             >
               <OnboardIcon />
               <span className="flex-1">
-                {linkState === 'loading' ? 'Generating…' : linkState === 'copied' ? '✓ Link copied' : linkState === 'error' ? 'Error — retry' : 'New onboarding link'}
+                {linkState === 'loading' ? 'Generating…' : linkState === 'copied' ? '✓ Link copied' : linkState === 'error' ? 'Error, retry' : 'New onboarding link'}
               </span>
             </button>
           </>

@@ -41,7 +41,7 @@ export default function DashboardPreview() {
                 See exactly what happened while you were busy
               </h2>
               <p className="text-[17px] text-slate-500 leading-[1.7] mt-4 max-w-[460px]">
-                Every call your agent handles shows up here — orders taken, callbacks due, and a full activity log. Nothing falls through the cracks.
+                Every call your agent handles shows up here: orders taken, callbacks due, and a full activity log. Nothing falls through the cracks.
               </p>
             </motion.div>
 
@@ -65,7 +65,7 @@ export default function DashboardPreview() {
                   </span>
                   <div>
                     <span className="text-[14px] font-medium text-slate-700">{b.title}</span>
-                    <span className="text-[14px] text-slate-500"> — {b.desc}</span>
+                    <span className="text-[14px] text-slate-500">: {b.desc}</span>
                   </div>
                 </motion.div>
               ))}
