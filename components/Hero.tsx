@@ -40,6 +40,12 @@ export default function Hero() {
 
           {/* Left: copy */}
           <div>
+            <motion.div {...slideUp(0.05)} className="mb-5">
+              <span className="inline-flex items-center gap-1.5 text-[12px] font-medium text-slate-500 bg-slate-100 rounded-full px-3 py-1">
+                <span>🇦🇺</span>
+                Built for Australian businesses
+              </span>
+            </motion.div>
             <h1 className="text-[clamp(40px,5vw,68px)] font-extrabold leading-[1.04] tracking-[-0.032em] text-slate-900 mb-5">
               <motion.span {...slideUp(0.1)} className="block">
                 Every call answered.
@@ -91,7 +97,7 @@ export default function Hero() {
           </div>
 
           {/* Right: transcript widget + scenario dots + call summary card */}
-          <motion.div {...slideUp(0.2)} className="hidden lg:block">
+          <motion.div {...slideUp(0.2)} className="block">
             <div
               className="relative h-[360px] bg-white rounded-[20px] overflow-hidden border border-slate-200"
               style={{ boxShadow: "0 4px 6px rgba(0,0,0,0.04), 0 16px 40px rgba(0,0,0,0.10)" }}
