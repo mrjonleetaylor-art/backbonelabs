@@ -66,7 +66,7 @@ export default function Problem() {
             transition={{ duration: 0.6, ease }}
           >
             <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold uppercase tracking-[0.09em] text-[#1E3A5F] mb-3.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#1E3A5F]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
               The problem
             </span>
             <h2 className="text-[clamp(32px,4vw,54px)] font-bold leading-[1.08] tracking-[-0.028em] text-slate-900 mt-1.5 mb-5 lg:max-w-[700px]">

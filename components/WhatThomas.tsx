@@ -123,7 +123,7 @@ function BentoCard({ item }: { item: Item }) {
 
 export default function WhatThomas() {
   return (
-    <section className="bg-white py-24 border-t border-slate-200">
+    <section className="bg-[#FAF9F5] py-24 border-t border-slate-200">
       <div className="max-w-[1100px] mx-auto px-6 lg:px-12">
 
         <motion.div

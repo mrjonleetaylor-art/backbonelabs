@@ -146,14 +146,12 @@ const CallTranscript = forwardRef<CallTranscriptHandle, Props>(function CallTran
   if (!isDesktop) return null
 
   return (
-    <div
-      className="absolute inset-5 flex flex-col rounded-xl overflow-hidden border border-white/[0.10]"
-      style={{ background: "rgba(8, 12, 26, 0.82)", backdropFilter: "blur(14px)" }}
-    >
-      <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.07] flex-shrink-0">
+    <div className="absolute inset-5 flex flex-col rounded-xl overflow-hidden">
+      {/* Header */}
+      <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-200 flex-shrink-0">
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-[#F59E0B] flex-shrink-0" />
-          <span className="text-[12px] font-medium text-white/50 tracking-wide">Incoming call</span>
+          <span className="text-[12px] font-medium text-slate-600 tracking-wide">Incoming call</span>
         </div>
         <AnimatePresence mode="wait">
           <motion.span
@@ -162,13 +160,14 @@ const CallTranscript = forwardRef<CallTranscriptHandle, Props>(function CallTran
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.25 }}
-            className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[#F59E0B]/80"
+            className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[#F59E0B]"
           >
             {conv.label}
           </motion.span>
         </AnimatePresence>
       </div>
 
+      {/* Message list */}
       <motion.div
         ref={scrollRef}
         animate={{ opacity: msgOpacity }}
@@ -188,8 +187,8 @@ const CallTranscript = forwardRef<CallTranscriptHandle, Props>(function CallTran
               <div
                 className={`max-w-[82%] px-3 py-1.5 text-[12px] leading-[1.5] rounded-2xl ${
                   isBB
-                    ? "bg-[#1E3A5F]/30 border border-[#1E3A5F]/35 text-white rounded-br-md"
-                    : "bg-white/[0.08] border border-white/[0.10] text-white/85 rounded-bl-md"
+                    ? "bg-[#1E3A5F] text-white rounded-br-md"
+                    : "bg-slate-100 text-slate-800 rounded-bl-md"
                 }`}
               >
                 {msg.text}
@@ -208,12 +207,12 @@ const CallTranscript = forwardRef<CallTranscriptHandle, Props>(function CallTran
               transition={{ duration: 0.3, ease }}
               className="flex justify-end"
             >
-              <div className="bg-[#1E3A5F]/30 border border-[#1E3A5F]/35 rounded-2xl rounded-br-md px-3.5 py-2.5">
+              <div className="bg-[#1E3A5F] rounded-2xl rounded-br-md px-3.5 py-2.5">
                 <div className="flex gap-[5px] items-center">
                   {[0, 1, 2].map((i) => (
                     <motion.span
                       key={i}
-                      className="w-[5px] h-[5px] rounded-full bg-[#1E3A5F] block"
+                      className="w-[5px] h-[5px] rounded-full bg-white/60 block"
                       animate={{ opacity: [0.35, 1, 0.35], y: [0, -3, 0] }}
                       transition={{ duration: 0.7, repeat: Infinity, delay: i * 0.15, ease: "easeInOut" }}
                     />

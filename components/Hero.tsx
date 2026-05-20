@@ -93,16 +93,9 @@ export default function Hero() {
           {/* Right: transcript widget + scenario dots + call summary card */}
           <motion.div {...slideUp(0.2)} className="hidden lg:block">
             <div
-              className="relative h-[360px] bg-slate-900 rounded-[20px] overflow-hidden"
-              style={{ boxShadow: "0 8px 16px rgba(15,23,42,0.06), 0 24px 64px rgba(15,23,42,0.08)" }}
+              className="relative h-[360px] bg-white rounded-[20px] overflow-hidden border border-slate-200"
+              style={{ boxShadow: "0 4px 6px rgba(0,0,0,0.04), 0 16px 40px rgba(0,0,0,0.10)" }}
             >
-              <div
-                className="absolute inset-0"
-                style={{
-                  backgroundImage: "radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px)",
-                  backgroundSize: "28px 28px",
-                }}
-              />
               <CallTranscript
                 ref={transcriptRef}
                 onConvChange={handleConvChange}
