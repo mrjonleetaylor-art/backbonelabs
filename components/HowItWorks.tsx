@@ -69,7 +69,7 @@ function StepCard({
       <p className="text-[14px] text-slate-500 leading-[1.6]">{step.summary}</p>
 
       <p
-        className="text-[12px] text-indigo-500 italic mt-3 pt-3 border-t border-slate-100 transition-opacity duration-200"
+        className="text-[12px] text-[#1E3A5F] italic mt-3 pt-3 border-t border-slate-100 transition-opacity duration-200"
         style={{ opacity: hovered ? 1 : 0.4 }}
       >
         {example}
@@ -101,7 +101,7 @@ export default function HowItWorks() {
           transition={{ duration: 0.5, ease }}
           className="mb-16"
         >
-          <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold uppercase tracking-[0.09em] text-indigo-500 mb-3.5">
+          <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold uppercase tracking-[0.09em] text-[#1E3A5F] mb-3.5">
             <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
             How it works
           </span>
@@ -116,7 +116,7 @@ export default function HowItWorks() {
           {/* Vertical connecting line — desktop only */}
           <div className="absolute left-1/2 top-6 bottom-6 w-0.5 bg-slate-300 -translate-x-1/2 hidden lg:block overflow-hidden origin-top">
             <motion.div
-              className="w-full bg-indigo-400 origin-top"
+              className="w-full bg-[#1E3A5F] origin-top"
               style={{ scaleY: lineScaleY, height: "100%" }}
             />
           </div>
@@ -125,7 +125,7 @@ export default function HowItWorks() {
           <div className="hidden lg:flex lg:flex-col">
             {steps.map((step, i) => {
               const isLeft = i % 2 === 0
-              const circleColor = isLeft ? "#6366F1" : "#06B6D4"
+              const circleColor = isLeft ? "#1E3A5F" : "#F59E0B"
 
               return (
                 <div key={step.number} className="lg:grid lg:grid-cols-[1fr_64px_1fr] lg:gap-4 lg:items-center lg:mb-4">
@@ -169,7 +169,7 @@ export default function HowItWorks() {
           <div className="lg:hidden flex flex-col">
             {steps.map((step, i) => {
               const isLeft = i % 2 === 0
-              const circleColor = isLeft ? "#6366F1" : "#06B6D4"
+              const circleColor = isLeft ? "#1E3A5F" : "#F59E0B"
 
               return (
                 <div key={`mob-${step.number}`}>

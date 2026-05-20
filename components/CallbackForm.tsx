@@ -76,7 +76,7 @@ export default function CallbackForm({
   }, [form])
 
   const inputClass =
-    "w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-[14px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 transition-colors"
+    "w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-[14px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/30 focus:border-[#1E3A5F] transition-colors"
   const labelClass = "block text-[12px] font-semibold text-slate-700 mb-1.5"
 
   return (
@@ -119,7 +119,7 @@ export default function CallbackForm({
 
               {submitted ? (
                 <div className="py-6 text-center">
-                  <div className="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center mx-auto mb-4">
+                  <div className="w-12 h-12 rounded-full bg-[#EEF2F8] flex items-center justify-center mx-auto mb-4">
                     <CheckIcon />
                   </div>
                   <h3 className="text-[18px] font-bold text-slate-900 mb-2">Callback requested</h3>
@@ -128,7 +128,7 @@ export default function CallbackForm({
                   </p>
                   <button
                     onClick={handleClose}
-                    className="mt-6 bg-indigo-500 hover:bg-indigo-600 text-white text-[14px] font-semibold rounded-full px-7 py-3 transition-colors"
+                    className="mt-6 bg-[#1E3A5F] hover:bg-[#162D47] text-white text-[14px] font-semibold rounded-full px-7 py-3 transition-colors"
                   >
                     Done
                   </button>
@@ -219,7 +219,7 @@ export default function CallbackForm({
                     <button
                       type="submit"
                       disabled={submitting}
-                      className="w-full bg-indigo-500 hover:bg-indigo-600 disabled:opacity-60 text-white text-[14px] font-semibold rounded-full py-3.5 transition-colors"
+                      className="w-full bg-[#1E3A5F] hover:bg-[#162D47] disabled:opacity-60 text-white text-[14px] font-semibold rounded-full py-3.5 transition-colors"
                     >
                       {submitting ? "Sending..." : "Request callback"}
                     </button>
@@ -244,7 +244,7 @@ function CloseIcon() {
 
 function CheckIcon() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6366F1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="12" cy="12" r="10" />
       <path d="M9 12l2 2 4-4" />
     </svg>

@@ -6,7 +6,7 @@ const ease = [0.22, 1, 0.36, 1] as const
 
 export default function FinalCTA() {
   return (
-    <section className="bg-indigo-500 py-[120px]">
+    <section className="bg-[#1E3A5F] py-[120px]">
       <div className="max-w-[640px] mx-auto px-6 text-center">
 
         <motion.h2
@@ -55,7 +55,7 @@ export default function FinalCTA() {
             href={PHONE_HREF}
             whileHover={{ scale: 1.03, transition: { duration: 0.15 } }}
             whileTap={{ scale: 0.97, transition: { duration: 0.1 } }}
-            className="inline-flex items-center justify-center bg-white hover:bg-white/90 text-indigo-600 text-[16px] font-semibold rounded-full py-4 px-[34px] transition-colors"
+            className="inline-flex items-center justify-center bg-white hover:bg-white/90 text-[#1E3A5F] text-[16px] font-semibold rounded-full py-4 px-[34px] transition-colors"
           >
             Give us a call
           </motion.a>

@@ -26,8 +26,8 @@ export default function Icon() {
             display: 'flex',
           }}
         >
-          <span style={{ color: '#06B6D4' }}>R</span>
-          <span style={{ color: '#0F172A' }}>d</span>
+          <span style={{ color: '#0F172A' }}>R</span>
+          <span style={{ color: '#F59E0B' }}>d</span>
         </span>
       </div>
     ),

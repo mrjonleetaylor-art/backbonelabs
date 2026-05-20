@@ -82,7 +82,7 @@ const cardItem = {
 }
 
 function CheckIcon({ variant }: { variant: "light" | "violet" | "dark" }) {
-  const color = variant === "light" ? "#6366F1" : "rgba(255,255,255,0.7)"
+  const color = variant === "light" ? "#1E3A5F" : "rgba(255,255,255,0.7)"
   return (
     <svg
       className="w-[14px] h-[14px] flex-shrink-0 mt-[2px]"
@@ -102,12 +102,12 @@ function PricingCard({ tier }: { tier: Tier }) {
   const isLight = tier.variant === "light"
   const isViolet = tier.variant === "violet"
 
-  const bg = isLight ? "#ffffff" : isViolet ? "#6366F1" : "#1E293B"
+  const bg = isLight ? "#ffffff" : isViolet ? "#1E3A5F" : "#1E293B"
   const textPrimary = isLight ? "text-slate-900" : "text-white"
   const textMuted = isLight ? "text-slate-500" : isViolet ? "text-white/70" : "text-white/60"
   const textFeature = isLight ? "text-slate-700" : isViolet ? "text-white/85" : "text-white/75"
   const divider = isLight ? "border-slate-100" : "border-white/[0.12]"
-  const badgeBg = isViolet ? "bg-white text-indigo-600" : ""
+  const badgeBg = isViolet ? "bg-white text-[#1E3A5F]" : ""
   const goodForColor = isLight ? "text-slate-500" : isViolet ? "text-white/70" : "text-white/55"
   const callsColor = isLight ? "text-slate-400" : "text-white/45"
   const borderStyle = isLight ? "1px solid #E2E8F0" : "none"
@@ -124,7 +124,7 @@ function PricingCard({ tier }: { tier: Tier }) {
         background: bg,
         border: borderStyle,
         boxShadow: isViolet
-          ? "0 16px 48px rgba(99,102,241,0.3), 0 4px 12px rgba(99,102,241,0.2)"
+          ? "0 16px 48px rgba(30,58,95,0.3), 0 4px 12px rgba(30,58,95,0.2)"
           : isLight
           ? "0 1px 3px rgba(15,23,42,0.06), 0 4px 16px rgba(15,23,42,0.06)"
           : "0 4px 24px rgba(0,0,0,0.25)",
@@ -172,7 +172,7 @@ function PricingCard({ tier }: { tier: Tier }) {
           whileTap={{ scale: 0.97, transition: { duration: 0.1 } }}
           className={`block w-full text-center text-[14px] font-semibold rounded-full py-3 transition-colors ${
             isLight
-              ? "bg-indigo-500 hover:bg-indigo-600 text-white"
+              ? "bg-[#1E3A5F] hover:bg-[#162D47] text-white"
               : "bg-white/[0.15] hover:bg-white/[0.25] text-white border border-white/[0.2]"
           }`}
         >
@@ -195,7 +195,7 @@ export default function Pricing() {
           transition={{ duration: 0.5, ease }}
           className="mb-14"
         >
-          <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold uppercase tracking-[0.09em] text-indigo-500 mb-3.5">
+          <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold uppercase tracking-[0.09em] text-[#1E3A5F] mb-3.5">
             <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
             Pricing
           </span>

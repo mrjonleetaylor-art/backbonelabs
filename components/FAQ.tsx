@@ -73,7 +73,7 @@ export default function FAQ() {
           transition={{ duration: 0.5, ease }}
           className="mb-11"
         >
-          <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold uppercase tracking-[0.09em] text-indigo-500 mb-3.5">
+          <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold uppercase tracking-[0.09em] text-[#1E3A5F] mb-3.5">
             <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
             FAQ
           </span>
@@ -102,13 +102,13 @@ export default function FAQ() {
                   aria-expanded={open === i}
                   aria-controls={`faq-answer-${i}`}
                 >
-                  <span className="text-[17px] font-semibold text-slate-900 group-hover:text-indigo-500 transition-colors tracking-[-0.01em]">
+                  <span className="text-[17px] font-semibold text-slate-900 group-hover:text-[#1E3A5F] transition-colors tracking-[-0.01em]">
                     {faq.q}
                   </span>
                   <motion.svg
                     animate={{ rotate: open === i ? 180 : 0 }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
-                    className={`flex-shrink-0 w-5 h-5 transition-colors ${open === i ? "text-indigo-500" : "text-slate-400"}`}
+                    className={`flex-shrink-0 w-5 h-5 transition-colors ${open === i ? "text-[#1E3A5F]" : "text-slate-400"}`}
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"

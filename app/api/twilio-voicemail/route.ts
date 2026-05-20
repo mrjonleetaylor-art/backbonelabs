@@ -121,7 +121,7 @@ export async function POST(req: Request) {
       <p style="margin:4px 0;"><strong>Duration:</strong> ${Number.isFinite(duration) ? `${duration}s` : 'unknown'}</p>
       <p style="margin:4px 0;"><strong>Time:</strong> ${esc(timestamp)} AEST</p>
       <p style="margin:16px 0 4px;">
-        <a href="${esc(recordingUrl ?? '')}" style="background:#6366F1;color:#fff;padding:8px 16px;border-radius:6px;text-decoration:none;font-weight:600;">
+        <a href="${esc(recordingUrl ?? '')}" style="background:#1E3A5F;color:#fff;padding:8px 16px;border-radius:6px;text-decoration:none;font-weight:600;">
           Listen to voicemail
         </a>
       </p>

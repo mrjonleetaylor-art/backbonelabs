@@ -31,8 +31,8 @@ export default function TwitterImage() {
             marginBottom: 40,
           }}
         >
-          <span style={{ color: '#06B6D4' }}>Relay</span>
-          <span style={{ color: '#0F172A' }}>Desk</span>
+          <span style={{ color: '#0F172A' }}>Relay</span>
+          <span style={{ color: '#F59E0B' }}>Desk</span>
         </span>
         <span
           style={{

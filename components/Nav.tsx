@@ -46,8 +46,8 @@ export default function Nav() {
         >
           <Link href="/" className="flex items-center select-none">
             <span className="text-[17px] font-bold tracking-[-0.025em]">
-              <span className="text-indigo-500">Relay</span>
-              <span className="text-cyan-500">Desk</span>
+              <span className="text-slate-900">Relay</span>
+              <span className="text-[#F59E0B]">Desk</span>
             </span>
           </Link>
 
@@ -86,11 +86,11 @@ export default function Nav() {
               href={PHONE_HREF}
               whileHover={{
                 scale: 1.03,
-                boxShadow: "0 0 0 4px rgba(99,102,241,0.4)",
+                boxShadow: "0 0 0 4px rgba(30,58,95,0.4)",
                 transition: { duration: 0.15 },
               }}
               whileTap={{ scale: 0.97, transition: { duration: 0.1 } }}
-              className="text-[13px] font-semibold text-white bg-indigo-500 hover:bg-indigo-600 rounded-full px-[18px] py-2 transition-colors"
+              className="text-[13px] font-semibold text-white bg-[#1E3A5F] hover:bg-[#162D47] rounded-full px-[18px] py-2 transition-colors"
             >
               Give us a call
             </motion.a>
@@ -191,7 +191,7 @@ export default function Nav() {
                   <a
                     href={PHONE_HREF}
                     onClick={closeMenu}
-                    className="block text-center text-[14px] font-semibold text-white bg-indigo-500 hover:bg-indigo-600 rounded-full py-2.5 transition-colors"
+                    className="block text-center text-[14px] font-semibold text-white bg-[#1E3A5F] hover:bg-[#162D47] rounded-full py-2.5 transition-colors"
                   >
                     Give us a call
                   </a>

@@ -15,7 +15,7 @@ function WordSwap({ trigger }: { trigger: boolean }) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease }}
-            style={{ color: "#6366F1" }}
+            style={{ color: "#1E3A5F" }}
             className="inline-block"
           >
             answered
@@ -65,8 +65,8 @@ export default function Problem() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease }}
           >
-            <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold uppercase tracking-[0.09em] text-indigo-500 mb-3.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+            <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold uppercase tracking-[0.09em] text-[#1E3A5F] mb-3.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#1E3A5F]" />
               The problem
             </span>
             <h2 className="text-[clamp(32px,4vw,54px)] font-bold leading-[1.08] tracking-[-0.028em] text-slate-900 mt-1.5 mb-5 lg:max-w-[700px]">
@@ -117,12 +117,12 @@ export default function Problem() {
               style={{ boxShadow: "0 8px 32px rgba(10,15,30,0.28), 0 2px 8px rgba(10,15,30,0.12)" }}
             >
               {/* Violet top bar */}
-              <div className="h-1 bg-indigo-500" />
+              <div className="h-1 bg-[#1E3A5F]" />
               <div className="px-8 py-8">
                 <p className="text-[clamp(17px,2.2vw,24px)] font-bold text-slate-900 leading-[1.5] tracking-[-0.01em] mb-5">
                   &ldquo;Being a business owner and a mum, I used to dread missing calls. Now I don&apos;t even check my missed calls anymore.&rdquo;
                 </p>
-                <p className="text-[14px] font-semibold" style={{ color: "#06B6D4" }}>
+                <p className="text-[14px] font-semibold" style={{ color: "#F59E0B" }}>
                   Sheena, local business owner, Menai NSW
                 </p>
               </div>

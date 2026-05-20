@@ -70,13 +70,13 @@ function BentoCard({ item }: { item: Item }) {
   const [hovered, setHovered] = useState(false)
 
   const isViolet = item.violet
-  const bg = isViolet ? "#6366F1" : "#ffffff"
+  const bg = isViolet ? "#1E3A5F" : "#ffffff"
   const textPrimary = isViolet ? "text-white" : "text-slate-900"
   const textBody = isViolet ? "text-white/70" : "text-slate-500"
-  const iconBg = isViolet ? "bg-white/15" : "bg-indigo-50"
-  const iconColor = isViolet ? "text-white" : "text-indigo-500"
+  const iconBg = isViolet ? "bg-white/15" : "bg-[#EEF2F8]"
+  const iconColor = isViolet ? "text-white" : "text-[#1E3A5F]"
   const divider = isViolet ? "border-white/20" : "border-slate-100"
-  const sampleColor = isViolet ? "text-white/60" : "text-indigo-500"
+  const sampleColor = isViolet ? "text-white/60" : "text-[#1E3A5F]"
 
   return (
     <motion.div
@@ -86,7 +86,7 @@ function BentoCard({ item }: { item: Item }) {
       whileHover={{
         y: -4,
         boxShadow: isViolet
-          ? "0 16px 40px rgba(99,102,241,0.35)"
+          ? "0 16px 40px rgba(30,58,95,0.35)"
           : "0 12px 32px rgba(15,23,42,0.12)",
         transition: { duration: 0.2, ease: "easeOut" },
       }}
@@ -95,7 +95,7 @@ function BentoCard({ item }: { item: Item }) {
         background: bg,
         borderColor: isViolet ? "transparent" : "#E2E8F0",
         boxShadow: isViolet
-          ? "0 4px 16px rgba(99,102,241,0.2)"
+          ? "0 4px 16px rgba(30,58,95,0.2)"
           : "0 1px 3px rgba(15,23,42,0.05)",
         minHeight: item.span2 ? "180px" : "160px",
       }}
@@ -133,7 +133,7 @@ export default function WhatThomas() {
           transition={{ duration: 0.5, ease }}
           className="mb-12"
         >
-          <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold uppercase tracking-[0.09em] text-indigo-500 mb-3.5">
+          <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold uppercase tracking-[0.09em] text-[#1E3A5F] mb-3.5">
             <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
             Capabilities
           </span>

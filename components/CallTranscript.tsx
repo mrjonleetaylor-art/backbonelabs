@@ -152,7 +152,7 @@ const CallTranscript = forwardRef<CallTranscriptHandle, Props>(function CallTran
     >
       <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.07] flex-shrink-0">
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-cyan-400 flex-shrink-0" />
+          <span className="w-2 h-2 rounded-full bg-[#F59E0B] flex-shrink-0" />
           <span className="text-[12px] font-medium text-white/50 tracking-wide">Incoming call</span>
         </div>
         <AnimatePresence mode="wait">
@@ -162,7 +162,7 @@ const CallTranscript = forwardRef<CallTranscriptHandle, Props>(function CallTran
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.25 }}
-            className="text-[10px] font-semibold uppercase tracking-[0.1em] text-cyan-400/80"
+            className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[#F59E0B]/80"
           >
             {conv.label}
           </motion.span>
@@ -188,7 +188,7 @@ const CallTranscript = forwardRef<CallTranscriptHandle, Props>(function CallTran
               <div
                 className={`max-w-[82%] px-3 py-1.5 text-[12px] leading-[1.5] rounded-2xl ${
                   isBB
-                    ? "bg-indigo-500/30 border border-indigo-400/35 text-white rounded-br-md"
+                    ? "bg-[#1E3A5F]/30 border border-[#1E3A5F]/35 text-white rounded-br-md"
                     : "bg-white/[0.08] border border-white/[0.10] text-white/85 rounded-bl-md"
                 }`}
               >
@@ -208,12 +208,12 @@ const CallTranscript = forwardRef<CallTranscriptHandle, Props>(function CallTran
               transition={{ duration: 0.3, ease }}
               className="flex justify-end"
             >
-              <div className="bg-indigo-500/30 border border-indigo-400/35 rounded-2xl rounded-br-md px-3.5 py-2.5">
+              <div className="bg-[#1E3A5F]/30 border border-[#1E3A5F]/35 rounded-2xl rounded-br-md px-3.5 py-2.5">
                 <div className="flex gap-[5px] items-center">
                   {[0, 1, 2].map((i) => (
                     <motion.span
                       key={i}
-                      className="w-[5px] h-[5px] rounded-full bg-indigo-400 block"
+                      className="w-[5px] h-[5px] rounded-full bg-[#1E3A5F] block"
                       animate={{ opacity: [0.35, 1, 0.35], y: [0, -3, 0] }}
                       transition={{ duration: 0.7, repeat: Infinity, delay: i * 0.15, ease: "easeInOut" }}
                     />

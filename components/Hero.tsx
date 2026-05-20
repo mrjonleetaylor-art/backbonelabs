@@ -31,7 +31,7 @@ export default function Hero() {
         className="absolute inset-0 pointer-events-none"
         aria-hidden="true"
         style={{
-          background: "radial-gradient(ellipse 70% 60% at 30% 40%, rgba(99,102,241,0.04) 0%, transparent 65%)",
+          background: "radial-gradient(ellipse 70% 60% at 30% 40%, rgba(30,58,95,0.04) 0%, transparent 65%)",
         }}
       />
 
@@ -42,7 +42,7 @@ export default function Hero() {
           <div>
             <motion.div
               {...slideUp(0.05)}
-              className="inline-flex items-center gap-2 bg-indigo-500 rounded-full px-3.5 py-1.5 mb-7"
+              className="inline-flex items-center gap-2 bg-[#1E3A5F] rounded-full px-3.5 py-1.5 mb-7"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-white/60 flex-shrink-0" />
               <span className="text-[12px] font-semibold text-white tracking-[-0.005em]">
@@ -67,9 +67,9 @@ export default function Hero() {
             <motion.div {...slideUp(0.45)} className="flex flex-wrap gap-2.5 mb-11">
               <motion.a
                 href={PHONE_HREF}
-                whileHover={{ scale: 1.03, boxShadow: "0 0 0 4px rgba(99,102,241,0.25)", transition: { duration: 0.15 } }}
+                whileHover={{ scale: 1.03, boxShadow: "0 0 0 4px rgba(30,58,95,0.25)", transition: { duration: 0.15 } }}
                 whileTap={{ scale: 0.97, transition: { duration: 0.1 } }}
-                className="inline-flex items-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white text-[15px] font-semibold rounded-full px-7 py-3.5 transition-colors"
+                className="inline-flex items-center gap-2 bg-[#1E3A5F] hover:bg-[#162D47] text-white text-[15px] font-semibold rounded-full px-7 py-3.5 transition-colors"
               >
                 <PhoneIcon />
                 <span className="sm:hidden">Call {PHONE_DISPLAY}</span>
@@ -90,7 +90,7 @@ export default function Hero() {
                 <span key={item} className="flex items-center gap-2 text-[13px] text-slate-500 font-medium">
                   <span
                     className="w-[18px] h-[18px] rounded-full flex items-center justify-center flex-shrink-0"
-                    style={{ background: "#06B6D4" }}
+                    style={{ background: "#F59E0B" }}
                   >
                     <CyanCheckIcon />
                   </span>
@@ -110,7 +110,7 @@ export default function Hero() {
                 className="blob-a absolute rounded-full pointer-events-none"
                 style={{
                   width: "65%", height: "65%", top: "-15%", left: "-10%",
-                  background: "radial-gradient(circle, rgba(99,102,241,0.30) 0%, transparent 70%)",
+                  background: "radial-gradient(circle, rgba(30,58,95,0.30) 0%, transparent 70%)",
                   filter: "blur(55px)",
                 }}
               />
@@ -118,7 +118,7 @@ export default function Hero() {
                 className="blob-b absolute rounded-full pointer-events-none"
                 style={{
                   width: "55%", height: "55%", bottom: "-10%", right: "-5%",
-                  background: "radial-gradient(circle, rgba(6,182,212,0.25) 0%, transparent 70%)",
+                  background: "radial-gradient(circle, rgba(245,158,11,0.25) 0%, transparent 70%)",
                   filter: "blur(55px)",
                 }}
               />
@@ -152,7 +152,7 @@ export default function Hero() {
                   aria-label={`Switch to scenario ${i + 1}`}
                   className="w-2 h-2 rounded-full transition-all duration-200 focus:outline-none"
                   style={{
-                    background: activeConv === i ? "#6366F1" : "#CBD5E1",
+                    background: activeConv === i ? "#1E3A5F" : "#CBD5E1",
                     transform: activeConv === i ? "scale(1.3)" : "scale(1)",
                   }}
                 />

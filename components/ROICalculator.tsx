@@ -123,11 +123,11 @@ export default function ROICalculator() {
               RelayDesk Overflow gets these orders back for ${OVERFLOW_PRICE}/month.
             </p>
 
-            <p className="text-[17px] font-bold tabular-nums mt-2 leading-snug" style={{ color: "#06B6D4" }}>
+            <p className="text-[17px] font-bold tabular-nums mt-2 leading-snug" style={{ color: "#F59E0B" }}>
               {netGainText}/month back in your pocket
             </p>
 
-            <a href="#pricing" className="inline-flex items-center gap-1 text-[13px] text-slate-400 hover:text-indigo-500 transition-colors mt-4">
+            <a href="#pricing" className="inline-flex items-center gap-1 text-[13px] text-slate-400 hover:text-[#1E3A5F] transition-colors mt-4">
               See pricing
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="9 18 15 12 9 6" />
@@ -136,7 +136,7 @@ export default function ROICalculator() {
 
             <button
               onClick={() => setExpanded((v) => !v)}
-              className="inline-flex items-center gap-1.5 text-[13px] text-slate-400 hover:text-indigo-500 transition-colors mt-5"
+              className="inline-flex items-center gap-1.5 text-[13px] text-slate-400 hover:text-[#1E3A5F] transition-colors mt-5"
             >
               {expanded ? "Hide the working" : "Refine the numbers"}
               <motion.span
@@ -281,7 +281,7 @@ function SliderField({ id, label, value, min, max, step, display, onChange }: Sl
           className="absolute inset-x-0 rounded-full bg-slate-200 pointer-events-none"
           style={{ top: "50%", transform: "translateY(-50%)", height: "10px" }}
         >
-          <div className="h-full rounded-full bg-cyan-400" style={{ width: `${pct}%` }} />
+          <div className="h-full rounded-full bg-[#F59E0B]" style={{ width: `${pct}%` }} />
         </div>
 
         {/* Fader grip */}
@@ -293,9 +293,9 @@ function SliderField({ id, label, value, min, max, step, display, onChange }: Sl
             style={{
               width: "56px",
               height: "46px",
-              background: "#6366F1",
+              background: "#1E3A5F",
               borderRadius: "10px",
-              boxShadow: "0 0 0 3px rgba(99,102,241,0.22), 0 6px 18px rgba(99,102,241,0.38)",
+              boxShadow: "0 0 0 3px rgba(30,58,95,0.22), 0 6px 18px rgba(30,58,95,0.38)",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -336,7 +336,7 @@ function OutputCard({ label, value, highlight }: OutputCardProps) {
       </p>
       <p
         className="text-[26px] font-bold tracking-[-0.03em] leading-none tabular-nums"
-        style={{ color: highlight ? "#06B6D4" : "#0F172A" }}
+        style={{ color: highlight ? "#F59E0B" : "#0F172A" }}
       >
         {value}
       </p>

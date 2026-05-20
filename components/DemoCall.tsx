@@ -7,7 +7,7 @@ const ease = [0.22, 1, 0.36, 1] as const
 export default function DemoCall() {
   return (
     <section
-      className="relative overflow-hidden bg-indigo-500"
+      className="relative overflow-hidden bg-[#1E3A5F]"
       style={{ padding: "100px 0" }}
     >
       <div className="max-w-[1100px] mx-auto px-6 lg:px-12">

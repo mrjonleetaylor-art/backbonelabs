@@ -33,7 +33,7 @@ export default function DashboardPreview() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, ease }}
             >
-              <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold uppercase tracking-[0.09em] text-indigo-500 mb-3.5">
+              <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold uppercase tracking-[0.09em] text-[#1E3A5F] mb-3.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
                 Your dashboard
               </span>
@@ -57,7 +57,7 @@ export default function DashboardPreview() {
                 >
                   <span
                     className="mt-0.5 w-[18px] h-[18px] rounded-full flex items-center justify-center flex-shrink-0"
-                    style={{ background: "#6366F1" }}
+                    style={{ background: "#1E3A5F" }}
                   >
                     <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M2 6l3 3 5-5" />
