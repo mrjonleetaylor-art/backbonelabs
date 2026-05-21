@@ -119,7 +119,7 @@ export default async function DashboardPage() {
             <CardHeader
               title="Upcoming appointments"
               action={
-                <Link href="/dashboard/calendar" className="text-[12px] text-indigo-500 hover:text-indigo-700 transition-colors">
+                <Link href="/dashboard/calendar" className="text-[12px] text-[#1E3A5F] hover:text-[#162D47] transition-colors">
                   View all
                 </Link>
               }
@@ -166,7 +166,7 @@ export default async function DashboardPage() {
               title="Outstanding"
               meta={pendingCount > 0 ? `${pendingCount} waiting on you` : 'All clear'}
               action={
-                <Link href="/dashboard/activity" className="text-[12px] text-indigo-500 hover:text-indigo-700 transition-colors">
+                <Link href="/dashboard/activity" className="text-[12px] text-[#1E3A5F] hover:text-[#162D47] transition-colors">
                   See all
                 </Link>
               }
@@ -196,7 +196,7 @@ export default async function DashboardPage() {
             <CardHeader
               title="Recent calls"
               action={
-                <Link href="/dashboard/activity" className="text-[12px] text-indigo-500 hover:text-indigo-700 transition-colors">
+                <Link href="/dashboard/activity" className="text-[12px] text-[#1E3A5F] hover:text-[#162D47] transition-colors">
                   View all
                 </Link>
               }

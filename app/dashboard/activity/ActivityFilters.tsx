@@ -64,7 +64,7 @@ export default function ActivityFilters({ current }: Props) {
       <select
         value={current.since}
         onChange={e => navigate({ since: e.target.value, page: '1' } as never)}
-        className="text-[12px] border border-slate-200 rounded-lg px-3 py-2 text-slate-600 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/30 cursor-pointer"
+        className="text-[12px] border border-slate-200 rounded-lg px-3 py-2 text-slate-600 bg-white focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/30 cursor-pointer"
       >
         {DATE_OPTIONS.map(o => (
           <option key={o.value} value={o.value}>{o.label}</option>
@@ -79,7 +79,7 @@ export default function ActivityFilters({ current }: Props) {
         onChange={e => setSearch(e.target.value)}
         onKeyDown={e => e.key === 'Enter' && navigate({ search, page: '1' } as never)}
         onBlur={() => search !== current.search && navigate({ search, page: '1' } as never)}
-        className="text-[12px] border border-slate-200 rounded-lg px-3 py-2 text-slate-600 placeholder:text-slate-400 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/30 w-48"
+        className="text-[12px] border border-slate-200 rounded-lg px-3 py-2 text-slate-600 placeholder:text-slate-400 bg-white focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/30 w-48"
       />
     </div>
   )

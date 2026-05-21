@@ -2,8 +2,8 @@ export type Variant = 'order' | 'callback' | 'question' | 'transfer' | 'voicemai
 
 const CONFIG: Record<Variant, { label: string; bg: string; color: string }> = {
   order:     { label: 'Order taken',         bg: '#DCFCE7', color: '#15803D' },
-  callback:  { label: 'Callback scheduled',  bg: '#EEF2FF', color: '#4F46E5' },
-  question:  { label: 'Question answered',   bg: '#F0F9FF', color: '#0369A1' },
+  callback:  { label: 'Callback scheduled',  bg: '#EEF2F8', color: '#1E3A5F' },
+  question:  { label: 'Question answered',   bg: '#F1F5F9', color: '#475569' },
   transfer:  { label: 'Transferred to you',  bg: '#FEF3C7', color: '#B45309' },
   voicemail: { label: 'Voicemail taken',     bg: '#F1F5F9', color: '#475569' },
   complaint: { label: 'Complaint',           bg: '#FEE2E2', color: '#B91C1C' },

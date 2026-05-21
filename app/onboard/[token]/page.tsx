@@ -37,7 +37,7 @@ export default async function OnboardingTokenPage({ params, searchParams }: Prop
           </p>
           <p className="mt-6 text-sm text-slate-400">
             Need help?{' '}
-            <a href="tel:+61253023030" className="text-indigo-500 hover:underline">
+            <a href="tel:+61253023030" className="text-[#1E3A5F] hover:underline">
               02 5302 3030
             </a>
           </p>

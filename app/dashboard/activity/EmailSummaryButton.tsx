@@ -32,7 +32,7 @@ export default function EmailSummaryButton({ callId }: { callId: string }) {
       <button
         onClick={handleClick}
         disabled={isPending}
-        className="w-full text-[13px] font-medium text-white bg-indigo-500 hover:bg-indigo-600 disabled:opacity-60 rounded-lg py-2.5 transition-colors"
+        className="w-full text-[13px] font-medium text-white bg-[#1E3A5F] hover:bg-[#1E3A5F] disabled:opacity-60 rounded-lg py-2.5 transition-colors"
       >
         {isPending ? 'Sending…' : 'Email me this summary'}
       </button>

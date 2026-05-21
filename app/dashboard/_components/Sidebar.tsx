@@ -51,7 +51,7 @@ function NavItem({
   return (
     <Link
       href={href!}
-      className={`${base} ${active ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-100'}`}
+      className={`${base} ${active ? 'bg-[#EEF2F8] text-[#1E3A5F]' : 'text-slate-600 hover:bg-slate-100'}`}
     >
       {icon}
       <span className="flex-1">{label}</span>
@@ -82,11 +82,11 @@ export default function Sidebar({ customer, pendingCount, isAdmin = false }: Pro
       {/* Header */}
       <div className="px-5 pt-6 pb-4 border-b border-slate-100">
         <div className="text-[18px] font-bold tracking-[-0.02em] text-slate-900 mb-0.5">
-          <span className="text-cyan-500">Relay</span><span className="text-slate-900">Desk</span>
+          <span className="text-slate-900">Relay</span><span className="text-[#1E3A5F]">Desk</span>
         </div>
         <div className="text-[12px] text-slate-500 font-medium mt-2">{customer.business_name}</div>
         {customer.industry && (
-          <span className="inline-block mt-1 text-[11px] bg-cyan-50 text-cyan-700 font-medium rounded px-1.5 py-0.5">
+          <span className="inline-block mt-1 text-[11px] bg-[#FEF3C7] text-[#D97706] font-medium rounded px-1.5 py-0.5">
             {customer.industry}
           </span>
         )}
@@ -186,12 +186,12 @@ export default function Sidebar({ customer, pendingCount, isAdmin = false }: Pro
       <div className="px-5 py-4 border-t border-slate-100">
         <p className="text-[11px] text-slate-400 leading-relaxed mb-3">
           Need a hand? Reply to your welcome email or ring us on{' '}
-          <a href="tel:+61253023030" className="text-indigo-500 hover:underline">02 5302 3030</a>.
+          <a href="tel:+61253023030" className="text-[#1E3A5F] hover:underline">02 5302 3030</a>.
         </p>
         <div className="flex items-center gap-2.5">
           <div
             className="w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-bold text-white flex-shrink-0"
-            style={{ background: '#6366F1' }}
+            style={{ background: '#1E3A5F' }}
           >
             {initials}
           </div>

@@ -4,8 +4,8 @@ type ActionType = 'order' | 'callback' | 'info' | 'other' | 'quote' | 'complaint
 
 const DISK: Record<string, { bg: string; fg: string; label: string }> = {
   order:     { bg: '#DCFCE7', fg: '#15803D', label: 'Order' },
-  callback:  { bg: '#EEF2FF', fg: '#4F46E5', label: 'Callback' },
-  info:      { bg: '#F0F9FF', fg: '#0369A1', label: 'Info' },
+  callback:  { bg: '#EEF2F8', fg: '#1E3A5F', label: 'Callback' },
+  info:      { bg: '#F1F5F9', fg: '#475569', label: 'Info' },
   quote:     { bg: '#FEF3C7', fg: '#B45309', label: 'Quote' },
   complaint: { bg: '#FEE2E2', fg: '#B91C1C', label: 'Complaint' },
   other:     { bg: '#F1F5F9', fg: '#475569', label: 'Other' },
@@ -90,7 +90,7 @@ export default function OutstandingRow({ id, call_id, type, payload, created_at 
       </div>
       <Link
         href={href}
-        className="text-[12px] font-medium text-indigo-500 hover:text-indigo-700 whitespace-nowrap transition-colors"
+        className="text-[12px] font-medium text-[#1E3A5F] hover:text-[#162D47] whitespace-nowrap transition-colors"
       >
         Open
       </Link>

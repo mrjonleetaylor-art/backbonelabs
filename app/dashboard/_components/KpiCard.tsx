@@ -13,12 +13,12 @@ type Props = {
 
 export default function KpiCard({ label, value, subline, delta, accent }: Props) {
   const accentClass =
-    accent === 'cyan' ? 'border-t-2 border-cyan-400' :
+    accent === 'cyan' ? 'border-t-2 border-[#F59E0B]' :
     accent === 'amber' ? 'border-t-2 border-amber-400' :
-    accent === 'violet' ? 'border-t-2 border-indigo-400' : ''
+    accent === 'violet' ? 'border-t-2 border-[#1E3A5F]' : ''
 
   const valueColor =
-    accent === 'cyan' ? '#06B6D4' :
+    accent === 'cyan' ? '#F59E0B' :
     accent === 'amber' ? '#F59E0B' : '#0F172A'
 
   return (

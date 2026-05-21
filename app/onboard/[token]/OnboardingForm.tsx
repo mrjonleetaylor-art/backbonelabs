@@ -49,9 +49,9 @@ type SaveState = 'idle' | 'saving' | 'saved' | 'error';
 
 function StageBadge({ n, label }: { n: number; label: string }) {
   const colours = [
-    'bg-indigo-50 text-indigo-700 border-indigo-200',
-    'bg-cyan-50 text-cyan-700 border-cyan-200',
-    'bg-violet-50 text-violet-700 border-violet-200',
+    'bg-[#EEF2F8] text-[#162D47] border-[#EEF2F8]',
+    'bg-[#FEF3C7] text-[#D97706] border-[#FDE68A]',
+    'bg-slate-100 text-slate-700 border-slate-200',
   ];
   return (
     <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-semibold ${colours[n - 1] ?? colours[0]}`}>
@@ -74,7 +74,7 @@ function Field({ label, hint, children }: { label: string; hint?: string; childr
 }
 
 const inputClass =
-  'w-full px-3.5 py-2.5 text-sm border border-slate-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition placeholder-slate-300';
+  'w-full px-3.5 py-2.5 text-sm border border-slate-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-[#1E3A5F] focus:border-transparent transition placeholder-slate-300';
 const textareaClass = `${inputClass} resize-none`;
 
 export function OnboardingForm({ token, initialData, isAdmin }: Props) {
@@ -165,7 +165,7 @@ export function OnboardingForm({ token, initialData, isAdmin }: Props) {
         <div className="mb-8 flex items-start justify-between gap-4">
           <div>
             <div className="text-[22px] font-bold tracking-tight mb-1">
-              <span className="text-cyan-500">Relay</span><span className="text-slate-900">Desk</span>
+              <span className="text-slate-900">Relay</span><span className="text-slate-900">Desk</span>
             </div>
             <h1 className="text-2xl font-bold text-slate-900 mt-1">
               {data.business_name ? `${data.business_name}: Onboarding` : 'Business Onboarding'}
@@ -209,7 +209,7 @@ export function OnboardingForm({ token, initialData, isAdmin }: Props) {
 
           <div className="mt-4">
             <label className="flex items-center gap-3 cursor-pointer">
-              <input type="checkbox" className="w-4 h-4 rounded border-slate-300 accent-indigo-600" {...checkProps('new_number_needed')} />
+              <input type="checkbox" className="w-4 h-4 rounded border-slate-300 accent-[#1E3A5F]" {...checkProps('new_number_needed')} />
               <span className="text-sm text-slate-700">New RelayDesk phone number needed?</span>
             </label>
           </div>
@@ -259,7 +259,7 @@ export function OnboardingForm({ token, initialData, isAdmin }: Props) {
             </Field>
             <div className="mt-2">
               <label className="flex items-center gap-3 cursor-pointer">
-                <input type="checkbox" className="w-4 h-4 rounded border-slate-300 accent-indigo-600" {...checkProps('customer_confirmation')} />
+                <input type="checkbox" className="w-4 h-4 rounded border-slate-300 accent-[#1E3A5F]" {...checkProps('customer_confirmation')} />
                 <span className="text-sm text-slate-700">Send callers a confirmation SMS or email after booking?</span>
               </label>
             </div>
@@ -323,7 +323,7 @@ export function OnboardingForm({ token, initialData, isAdmin }: Props) {
         {/* Footer */}
         <div className="text-center text-xs text-slate-400 pb-8">
           Your answers save automatically.{' '}
-          <a href="tel:+61253023030" className="text-indigo-500 hover:underline">02 5302 3030</a>
+          <a href="tel:+61253023030" className="text-[#1E3A5F] hover:underline">02 5302 3030</a>
           {' '}· hello@relaydesk.com.au
         </div>
 

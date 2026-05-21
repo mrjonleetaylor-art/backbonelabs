@@ -34,14 +34,14 @@ export default function ExpandedCallRow({
                   <div key={i} className={`flex gap-2.5 ${isAgent ? '' : 'flex-row-reverse'}`}>
                     <div
                       className="w-6 h-6 rounded-full flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0"
-                      style={{ background: isAgent ? '#6366F1' : '#94A3B8' }}
+                      style={{ background: isAgent ? '#1E3A5F' : '#94A3B8' }}
                     >
                       {isAgent ? 'T' : 'C'}
                     </div>
-                    <div className={`rounded-xl px-3.5 py-2 text-[12px] leading-relaxed max-w-[85%] ${isAgent ? 'bg-indigo-50 text-slate-800' : 'bg-white text-slate-700 border border-slate-200'}`}>
+                    <div className={`rounded-xl px-3.5 py-2 text-[12px] leading-relaxed max-w-[85%] ${isAgent ? 'bg-[#EEF2F8] text-slate-800' : 'bg-white text-slate-700 border border-slate-200'}`}>
                       <p
                         className="text-[9px] font-semibold mb-1 uppercase tracking-wide"
-                        style={{ color: isAgent ? '#6366F1' : '#64748B' }}
+                        style={{ color: isAgent ? '#1E3A5F' : '#64748B' }}
                       >
                         {isAgent ? 'Tom' : 'Caller'}
                       </p>

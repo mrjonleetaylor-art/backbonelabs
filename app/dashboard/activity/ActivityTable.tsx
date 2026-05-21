@@ -111,7 +111,7 @@ export default function ActivityTable({
                     <td className="px-6 py-3.5 text-right">
                       <button
                         onClick={() => toggle(row.id, row.kind)}
-                        className="inline-flex items-center gap-1 text-[12px] font-medium text-slate-500 hover:text-indigo-500 transition-colors"
+                        className="inline-flex items-center gap-1 text-[12px] font-medium text-slate-500 hover:text-[#1E3A5F] transition-colors"
                         aria-expanded={isExpanded}
                       >
                         {isLoading ? (
@@ -167,7 +167,7 @@ export default function ActivityTable({
         <div className="px-6 py-4 border-t border-slate-100 flex justify-center">
           <Link
             href={`/dashboard/activity?outcome=${outcomeFilter}&since=${since}&search=${search}&page=${page + 1}`}
-            className="text-[13px] font-medium text-indigo-500 hover:text-indigo-700 transition-colors"
+            className="text-[13px] font-medium text-[#1E3A5F] hover:text-[#162D47] transition-colors"
           >
             Load more
           </Link>

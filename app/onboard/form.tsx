@@ -175,7 +175,7 @@ export function OnboardForm() {
         )}
 
         {draftSuccess && (
-          <div className="mb-6 p-4 bg-blue-100 text-blue-800 rounded-lg border border-blue-200 flex justify-between items-center">
+          <div className="mb-6 p-4 bg-slate-100 text-slate-700 rounded-lg border border-blue-200 flex justify-between items-center">
             <span>✓ Draft saved</span>
             {draftId && (
               <button
@@ -205,7 +205,7 @@ export function OnboardForm() {
                   value={formData.businessname}
                   onChange={handleChange}
                   placeholder="e.g. Mini Marshmallows"
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]"
                 />
               </div>
 
@@ -216,7 +216,7 @@ export function OnboardForm() {
                   name="ownername"
                   value={formData.ownername}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]"
                 />
               </div>
 
@@ -228,7 +228,7 @@ export function OnboardForm() {
                   value={formData.industry}
                   onChange={handleChange}
                   placeholder="e.g. Party planning, Florist"
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]"
                 />
               </div>
 
@@ -239,7 +239,7 @@ export function OnboardForm() {
                   name="existingphone"
                   value={formData.existingphone}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]"
                 />
               </div>
 
@@ -250,7 +250,7 @@ export function OnboardForm() {
                   name="owneremail"
                   value={formData.owneremail}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]"
                 />
               </div>
 
@@ -261,7 +261,7 @@ export function OnboardForm() {
                   name="ownermobile"
                   value={formData.ownermobile}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]"
                 />
               </div>
             </div>
@@ -292,7 +292,7 @@ export function OnboardForm() {
                   onChange={handleChange}
                   placeholder="e.g. Event planning, Florist, Consultation, Booking"
                   rows={3}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]"
                 />
               </div>
 
@@ -305,7 +305,7 @@ export function OnboardForm() {
                     value={formData.operatinghours}
                     onChange={handleChange}
                     placeholder="e.g. Mon-Fri 9am-6pm, Sat 10am-4pm"
-                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]"
                   />
                 </div>
 
@@ -317,7 +317,7 @@ export function OnboardForm() {
                     value={formData.callvolume}
                     onChange={handleChange}
                     placeholder="e.g. 15-20 calls"
-                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]"
                   />
                 </div>
               </div>
@@ -330,7 +330,7 @@ export function OnboardForm() {
                   onChange={handleChange}
                   placeholder="e.g. What's included? How much notice needed? Can we customise?"
                   rows={3}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]"
                 />
               </div>
             </div>
@@ -349,7 +349,7 @@ export function OnboardForm() {
                     value={formData.callbackoffer}
                     onChange={handleChange}
                     placeholder="Yes / No"
-                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]"
                   />
                 </div>
 
@@ -361,7 +361,7 @@ export function OnboardForm() {
                     value={formData.escalation}
                     onChange={handleChange}
                     placeholder="Yes / No"
-                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]"
                   />
                 </div>
               </div>
@@ -374,7 +374,7 @@ export function OnboardForm() {
                   onChange={handleChange}
                   placeholder="e.g. Monday 9am-12pm, Tuesday 2-5pm, Friday 10am-1pm"
                   rows={3}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]"
                 />
               </div>
 
@@ -386,7 +386,7 @@ export function OnboardForm() {
                   onChange={handleChange}
                   placeholder="e.g. Name, email, phone, service type, event date, budget, special requests"
                   rows={3}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]"
                 />
               </div>
             </div>
@@ -403,7 +403,7 @@ export function OnboardForm() {
                   name="summaryemail"
                   value={formData.summaryemail}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]"
                 />
               </div>
 
@@ -415,7 +415,7 @@ export function OnboardForm() {
                   onChange={handleChange}
                   placeholder="e.g. Transcript, caller details, booking confirmation, follow-up actions"
                   rows={3}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]"
                 />
               </div>
 
@@ -444,7 +444,7 @@ export function OnboardForm() {
                   onChange={handleChange}
                   placeholder="e.g. Calls answered, bookings captured, customer satisfaction"
                   rows={3}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]"
                 />
               </div>
 
@@ -456,7 +456,7 @@ export function OnboardForm() {
                   onChange={handleChange}
                   placeholder="Any other important details..."
                   rows={3}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]"
                 />
               </div>
             </div>
@@ -473,7 +473,7 @@ export function OnboardForm() {
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-semibold py-3 px-6 rounded-lg transition"
+              className="flex-1 bg-[#1E3A5F] hover:bg-[#162D47] disabled:opacity-50 text-white font-semibold py-3 px-6 rounded-lg transition"
             >
               {loading ? 'Submitting...' : 'Submit'}
             </button>

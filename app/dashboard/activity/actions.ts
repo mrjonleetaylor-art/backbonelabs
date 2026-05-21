@@ -140,7 +140,7 @@ export async function emailCallSummary(callId: string): Promise<{ ok: boolean; e
         transcriptHtml = `
           <h3 style="margin:20px 0 8px;font-size:13px;color:#64748B;text-transform:uppercase;letter-spacing:0.05em;">Transcript</h3>
           <div style="background:#F8FAFC;border-radius:8px;padding:12px;font-size:12px;line-height:1.6;">
-            ${turns.map(t => `<p style="margin:4px 0"><strong style="color:${t.role === 'agent' ? '#6366F1' : '#0F172A'}">${t.role === 'agent' ? 'Tom' : 'Caller'}:</strong> ${esc(t.message)}</p>`).join('')}
+            ${turns.map(t => `<p style="margin:4px 0"><strong style="color:${t.role === 'agent' ? '#1E3A5F' : '#0F172A'}">${t.role === 'agent' ? 'Tom' : 'Caller'}:</strong> ${esc(t.message)}</p>`).join('')}
           </div>`
       }
     } catch {

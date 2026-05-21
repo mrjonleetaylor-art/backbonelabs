@@ -103,7 +103,7 @@ export default async function CalendarPage() {
             <p className="text-[13px] text-slate-400 mb-5">Connect your calendar so your agent can book appointments directly.</p>
             <a
               href="/api/calendar/connect"
-              className="inline-flex items-center gap-1.5 text-[13px] font-medium text-white bg-indigo-500 hover:bg-indigo-600 transition-colors rounded-lg px-4 py-2.5 leading-none"
+              className="inline-flex items-center gap-1.5 text-[13px] font-medium text-white bg-[#1E3A5F] hover:bg-[#1E3A5F] transition-colors rounded-lg px-4 py-2.5 leading-none"
             >
               Connect your Google Calendar
             </a>

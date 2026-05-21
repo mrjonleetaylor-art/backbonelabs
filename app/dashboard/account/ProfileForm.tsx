@@ -61,7 +61,7 @@ function AutoSaveField({
           className={`flex items-center gap-1 text-[11px] font-medium transition-opacity duration-500 ${
             hasStatus ? (fadeOut ? 'opacity-0' : 'opacity-100') : 'opacity-0'
           } ${
-            status === 'saved' ? 'text-indigo-500' :
+            status === 'saved' ? 'text-[#1E3A5F]' :
             status === 'saving' ? 'text-slate-400' :
             'text-red-500'
           }`}
@@ -75,7 +75,7 @@ function AutoSaveField({
         defaultValue={defaultValue}
         onBlur={readOnly ? undefined : handleBlur}
         readOnly={readOnly}
-        className={`w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-[14px] text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 transition ${readOnly ? 'bg-slate-50 text-slate-500 cursor-default' : ''}`}
+        className={`w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-[14px] text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/30 focus:border-[#1E3A5F] transition ${readOnly ? 'bg-slate-50 text-slate-500 cursor-default' : ''}`}
       />
       {hint && <p className="text-[11px] text-slate-400 leading-relaxed">{hint}</p>}
     </div>
@@ -99,7 +99,7 @@ export default function ProfileForm({ customer }: { customer: Customer }) {
             To change your email,{' '}
             <a
               href="mailto:support@relaydesk.com.au?subject=Change%20my%20email"
-              className="text-indigo-500 hover:underline"
+              className="text-[#1E3A5F] hover:underline"
             >
               email support
             </a>

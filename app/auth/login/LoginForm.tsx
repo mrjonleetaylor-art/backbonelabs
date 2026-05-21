@@ -32,8 +32,8 @@ export default function LoginForm({ next }: { next?: string }) {
   if (status === 'sent') {
     return (
       <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center" style={{ boxShadow: '0 2px 12px rgba(15,23,42,0.06)' }}>
-        <div className="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center mx-auto mb-4">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6366F1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <div className="w-12 h-12 rounded-full bg-[#EEF2F8] flex items-center justify-center mx-auto mb-4">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
           </svg>
         </div>
@@ -63,7 +63,7 @@ export default function LoginForm({ next }: { next?: string }) {
         value={email}
         onChange={e => setEmail(e.target.value)}
         placeholder="you@yourbusiness.com.au"
-        className="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-[14px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 transition"
+        className="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-[14px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/30 focus:border-[#1E3A5F] transition"
       />
       {status === 'error' && (
         <p className="mt-2 text-[12px] text-red-500">{errorMsg}</p>
@@ -71,7 +71,7 @@ export default function LoginForm({ next }: { next?: string }) {
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="mt-4 w-full bg-indigo-500 hover:bg-indigo-600 disabled:opacity-60 text-white text-[14px] font-semibold rounded-lg py-2.5 transition-colors"
+        className="mt-4 w-full bg-[#1E3A5F] hover:bg-[#1E3A5F] disabled:opacity-60 text-white text-[14px] font-semibold rounded-lg py-2.5 transition-colors"
       >
         {status === 'loading' ? 'Sending…' : 'Send sign-in link'}
       </button>

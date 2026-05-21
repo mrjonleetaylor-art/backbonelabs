@@ -36,7 +36,7 @@ export default function PasswordForm() {
           onChange={e => setPw(e.target.value)}
           minLength={12}
           placeholder="At least 12 characters"
-          className="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-[14px] text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 transition"
+          className="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-[14px] text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/30 focus:border-[#1E3A5F] transition"
         />
       </div>
       <div className="space-y-1.5">
@@ -46,7 +46,7 @@ export default function PasswordForm() {
           value={confirm}
           onChange={e => setConfirm(e.target.value)}
           placeholder="Repeat new password"
-          className="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-[14px] text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 transition"
+          className="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-[14px] text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/30 focus:border-[#1E3A5F] transition"
         />
       </div>
       {status !== 'idle' && (
@@ -55,7 +55,7 @@ export default function PasswordForm() {
       <button
         type="submit"
         disabled={isPending || !pw || !confirm}
-        className="text-[13px] font-medium bg-indigo-500 hover:bg-indigo-600 disabled:opacity-50 text-white rounded-lg px-5 py-2.5 transition-colors"
+        className="text-[13px] font-medium bg-[#1E3A5F] hover:bg-[#1E3A5F] disabled:opacity-50 text-white rounded-lg px-5 py-2.5 transition-colors"
       >
         {isPending ? 'Updating…' : 'Update password'}
       </button>

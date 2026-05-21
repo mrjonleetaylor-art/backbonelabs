@@ -1,4 +1,4 @@
-const PALETTE = ['#6366F1', '#06B6D4', '#F59E0B', '#10B981', '#F43F5E', '#8B5CF6']
+const PALETTE = ['#1E3A5F', '#F59E0B', '#162D47', '#10B981', '#F43F5E', '#64748B']
 
 function colourFor(initials: string): string {
   const code = initials.charCodeAt(0) + (initials.charCodeAt(1) || 0)

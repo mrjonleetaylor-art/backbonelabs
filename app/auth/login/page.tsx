@@ -17,7 +17,7 @@ export default async function LoginPage({
       <div className="w-full max-w-[400px] px-6">
         <div className="mb-8 text-center">
           <div className="text-[22px] font-bold tracking-[-0.02em] text-slate-900 mb-1">
-            relay<span className="text-indigo-500">desk</span>
+            relay<span className="text-[#1E3A5F]">desk</span>
           </div>
           <p className="text-[14px] text-slate-500">Sign in to your dashboard</p>
         </div>
