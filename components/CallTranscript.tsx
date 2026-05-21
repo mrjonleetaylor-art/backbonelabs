@@ -7,30 +7,30 @@ type Message = { speaker: Speaker; text: string }
 
 const CONVERSATIONS: { label: string; messages: Message[] }[] = [
   {
-    label: "Locking in a booking",
-    messages: [
-      { speaker: "Caller",   text: "Hi, I'd like a custom arrangement for delivery tomorrow around midday. It's for an anniversary." },
-      { speaker: "Reception", text: "Lovely. What's your budget, and any preference on colours?" },
-      { speaker: "Caller",   text: "Around $100 - reds and whites." },
-      { speaker: "Reception", text: "Perfect. I'll send a secure payment link to your phone now for a $100 deposit to lock that in." },
-    ],
-  },
-  {
     label: "Taking an order",
     messages: [
-      { speaker: "Caller",   text: "Hi, do you have sunflowers this Saturday?" },
-      { speaker: "Reception", text: "We do - are you after a bunch or an arrangement?" },
-      { speaker: "Caller",   text: "Just a bunch, it's for a birthday." },
-      { speaker: "Reception", text: "Perfect. What's your budget roughly?" },
+      { speaker: "Caller",    text: "Hi, do you have sunflowers this Saturday? It's for a birthday." },
+      { speaker: "Reception", text: "We do! Are you after a bunch or something arranged?" },
+      { speaker: "Caller",    text: "Just a bunch is fine." },
+      { speaker: "Reception", text: "Great. Can I grab your name and best number so we can have it ready for you?" },
     ],
   },
   {
-    label: "Booking an appointment",
+    label: "After-hours enquiry",
     messages: [
-      { speaker: "Caller",   text: "Hi, I want to order flowers for a funeral on Thursday." },
-      { speaker: "Reception", text: "Of course, I'm sorry for your loss. What time is the service?" },
-      { speaker: "Caller",   text: "11am at the church in Parramatta." },
-      { speaker: "Reception", text: "We can have an arrangement ready for collection by 9am. Would white lilies work?" },
+      { speaker: "Caller",    text: "Hi, I need flowers for tomorrow morning. Budget around $80." },
+      { speaker: "Reception", text: "Of course. What's the occasion, and do you have a colour preference?" },
+      { speaker: "Caller",    text: "It's a thank you gift - something bright and cheerful." },
+      { speaker: "Reception", text: "Lovely. I'll log this for the team to confirm first thing. Can I take your number?" },
+    ],
+  },
+  {
+    label: "Answering a question",
+    messages: [
+      { speaker: "Caller",    text: "Do you deliver to Parramatta?" },
+      { speaker: "Reception", text: "Yes, we do. It's $15 delivery, same-day if ordered before noon." },
+      { speaker: "Caller",    text: "That works. What have you got in season at the moment?" },
+      { speaker: "Reception", text: "Lots of beautiful natives and peonies right now. Were you after something specific?" },
     ],
   },
 ]
