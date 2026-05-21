@@ -4,7 +4,7 @@ import Footer from "@/components/Footer"
 import { EMAIL_HREF } from "@/lib/contact"
 
 export const metadata: Metadata = {
-  title: "Privacy | RelayDesk",
+  title: "Privacy Policy",
   description: "How RelayDesk handles your customer data and call information.",
 }
 

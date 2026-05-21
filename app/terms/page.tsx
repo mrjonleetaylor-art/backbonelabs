@@ -4,7 +4,7 @@ import Footer from "@/components/Footer"
 import { EMAIL_HREF } from "@/lib/contact"
 
 export const metadata: Metadata = {
-  title: "Terms of Service | RelayDesk",
+  title: "Terms of Service",
   description: "Terms governing your use of RelayDesk phone agent services, including subscription, cancellation, acceptable use, and liability.",
   alternates: {
     canonical: "https://www.relaydesk.com.au/terms",
@@ -41,12 +41,27 @@ export default function TermsPage() {
             </p>
           </Section>
 
+          <Section title="Free trials and pilot access">
+            <p>
+              We may offer free trial or pilot access to RelayDesk at our discretion. Free trial access is provided for evaluation purposes only and may be limited in duration, call volume, or features.
+            </p>
+            <p>
+              All other terms in this agreement apply during a free trial or pilot period, including acceptable use, limitations of liability, and your responsibilities. We reserve the right to end a free trial or pilot at any time.
+            </p>
+            <p>
+              Unless otherwise agreed in writing, free trial or pilot access does not convert automatically to a paid subscription.
+            </p>
+          </Section>
+
           <Section title="Subscription and billing">
             <p>
               RelayDesk subscriptions are billed monthly in advance. Your billing cycle begins on the date you first subscribe and renews automatically each month on the same date.
             </p>
             <p>
               Each plan includes a set number of calls per month. Calls beyond that limit are charged at $1 per call, billed at the end of each billing period. Call counts reset at the start of each billing cycle.
+            </p>
+            <p>
+              Where your plan includes payment link functionality, a transaction fee of 1.2% + $0.30 AUD applies to each payment processed through a RelayDesk-generated payment link. This fee is charged at the time of transaction and is separate from your subscription fee.
             </p>
             <p>
               Prices are in Australian dollars and inclusive of GST where applicable. We may change pricing with 30 days notice by email.
@@ -62,10 +77,10 @@ export default function TermsPage() {
             </p>
             <SubSection title="What happens to your data on cancellation">
               <p>
-                Following cancellation, your account and associated data will be retained for 30 days. During this period you may request an export of your call history and summaries by contacting us at <a href={EMAIL_HREF} className="font-semibold">hello@relaydesk.com.au</a>.
+                Following cancellation, your account will be deactivated. You may request an export of your call history and summaries at any time before or within 30 days of cancellation by contacting us at <a href={EMAIL_HREF} className="font-semibold">hello@relaydesk.com.au</a>.
               </p>
               <p>
-                After 30 days, your account data will be deleted in accordance with our data retention practices described in the <a href="/privacy" className="font-semibold">Privacy Policy</a>. Some data may be retained longer where required for legal or accounting purposes.
+                Data is retained and deleted in accordance with the retention schedule in our <a href="/privacy" className="font-semibold">Privacy Policy</a> — for example, call recordings are retained for 90 days and transcripts for 12 months from the date of each call. Account information may be retained longer where required for legal or accounting purposes.
               </p>
             </SubSection>
           </Section>
