@@ -110,7 +110,7 @@ export default function Hero() {
 
             {/* Scenario dots */}
             <div className="flex items-center justify-center gap-2.5 mt-4 mb-1">
-              {[0, 1, 2].map((i) => (
+              {[0, 1, 2, 3].map((i) => (
                 <button
                   key={i}
                   onClick={() => handleDotClick(i)}
@@ -132,19 +132,19 @@ export default function Hero() {
               <div className="space-y-1.5 text-[13px] leading-relaxed">
                 <div>
                   <span className="text-slate-400">Caller: </span>
-                  <span className="text-slate-900 font-medium">Emma R.</span>
+                  <span className="text-slate-900 font-medium">Marcus T.</span>
                 </div>
                 <div>
                   <span className="text-slate-400">Request: </span>
-                  <span className="text-slate-900">Custom arrangement, delivery at 12</span>
+                  <span className="text-slate-900">Table for 4, Saturday 7pm</span>
                 </div>
                 <div>
                   <span className="text-slate-400">Contact: </span>
-                  <span className="text-slate-900">0411 XXX XXX</span>
+                  <span className="text-slate-900">0412 XXX XXX</span>
                 </div>
                 <div>
                   <span className="text-slate-400">Status: </span>
-                  <span className="text-[#F59E0B] font-semibold">Booking confirmed. $100 deposit received.</span>
+                  <span className="text-[#F59E0B] font-semibold">Booking confirmed. Reminder scheduled.</span>
                 </div>
               </div>
             </div>

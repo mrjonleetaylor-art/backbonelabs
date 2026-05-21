@@ -7,30 +7,39 @@ type Message = { speaker: Speaker; text: string }
 
 const CONVERSATIONS: { label: string; messages: Message[] }[] = [
   {
+    label: "Table booking",
+    messages: [
+      { speaker: "Caller",    text: "Hi, can I book a table for Saturday night? Four people, around 7." },
+      { speaker: "Reception", text: "Absolutely — 7pm Saturday for four. Can I grab a name and number to confirm?" },
+      { speaker: "Caller",    text: "It's Marcus. 0412 555 890." },
+      { speaker: "Reception", text: "Perfect, you're confirmed. We'll send a reminder the morning of." },
+    ],
+  },
+  {
     label: "Taking an order",
     messages: [
-      { speaker: "Caller",    text: "Hi, do you have sunflowers this Saturday? It's for a birthday." },
-      { speaker: "Reception", text: "We do! Are you after a bunch or something arranged?" },
-      { speaker: "Caller",    text: "Just a bunch is fine." },
-      { speaker: "Reception", text: "Great. Can I grab your name and best number so we can have it ready for you?" },
+      { speaker: "Caller",    text: "Hi, do you have sunflowers in this Saturday?" },
+      { speaker: "Reception", text: "We do — are you after a bunch or an arrangement?" },
+      { speaker: "Caller",    text: "Just a bunch, it's for a birthday." },
+      { speaker: "Reception", text: "No problem. I'll set one aside. Can I grab your name and a number to confirm?" },
     ],
   },
   {
-    label: "After-hours enquiry",
+    label: "Booking an appointment",
     messages: [
-      { speaker: "Caller",    text: "Hi, I need flowers for tomorrow morning. Budget around $80." },
-      { speaker: "Reception", text: "Of course. What's the occasion, and do you have a colour preference?" },
-      { speaker: "Caller",    text: "It's a thank you gift - something bright and cheerful." },
-      { speaker: "Reception", text: "Lovely. I'll log this for the team to confirm first thing. Can I take your number?" },
+      { speaker: "Caller",    text: "Hi, I need to book a checkup." },
+      { speaker: "Reception", text: "Of course. We have Tuesday at 10am or Thursday at 2pm — which suits?" },
+      { speaker: "Caller",    text: "Tuesday works." },
+      { speaker: "Reception", text: "Confirmed for Tuesday 10am. Can I get your name and a contact number?" },
     ],
   },
   {
-    label: "Answering a question",
+    label: "After-hours message",
     messages: [
-      { speaker: "Caller",    text: "Do you deliver to Parramatta?" },
-      { speaker: "Reception", text: "Yes, we do. It's $15 delivery, same-day if ordered before noon." },
-      { speaker: "Caller",    text: "That works. What have you got in season at the moment?" },
-      { speaker: "Reception", text: "Lots of beautiful natives and peonies right now. Were you after something specific?" },
+      { speaker: "Caller",    text: "Hi, it's after hours but I have an end-of-year tax question." },
+      { speaker: "Reception", text: "No problem — I'll make sure the team gets back to you. What's the question?" },
+      { speaker: "Caller",    text: "It's about a property sale and whether it affects my return." },
+      { speaker: "Reception", text: "Got it. Can I take your name and best number so they can call you back?" },
     ],
   },
 ]
