@@ -10,7 +10,7 @@ const CONVERSATIONS: { label: string; messages: Message[] }[] = [
     label: "Table booking",
     messages: [
       { speaker: "Caller",    text: "Hi, can I book a table for Saturday night? Four people, around 7." },
-      { speaker: "Reception", text: "Absolutely — 7pm Saturday for four. Can I grab a name and number to confirm?" },
+      { speaker: "Reception", text: "Absolutely, 7pm Saturday for four. Can I grab a name and number to confirm?" },
       { speaker: "Caller",    text: "It's Marcus. 0412 555 890." },
       { speaker: "Reception", text: "Perfect, you're confirmed. We'll send a reminder the morning of." },
     ],
@@ -19,7 +19,7 @@ const CONVERSATIONS: { label: string; messages: Message[] }[] = [
     label: "Taking an order",
     messages: [
       { speaker: "Caller",    text: "Hi, do you have sunflowers in this Saturday?" },
-      { speaker: "Reception", text: "We do — are you after a bunch or an arrangement?" },
+      { speaker: "Reception", text: "We do. Are you after a bunch or an arrangement?" },
       { speaker: "Caller",    text: "Just a bunch, it's for a birthday." },
       { speaker: "Reception", text: "No problem. I'll set one aside. Can I grab your name and a number to confirm?" },
     ],
@@ -28,7 +28,7 @@ const CONVERSATIONS: { label: string; messages: Message[] }[] = [
     label: "Booking an appointment",
     messages: [
       { speaker: "Caller",    text: "Hi, I need to book a checkup." },
-      { speaker: "Reception", text: "Of course. We have Tuesday at 10am or Thursday at 2pm — which suits?" },
+      { speaker: "Reception", text: "Of course. We have Tuesday at 10am or Thursday at 2pm. Which suits?" },
       { speaker: "Caller",    text: "Tuesday works." },
       { speaker: "Reception", text: "Confirmed for Tuesday 10am. Can I get your name and a contact number?" },
     ],
@@ -37,7 +37,7 @@ const CONVERSATIONS: { label: string; messages: Message[] }[] = [
     label: "After-hours message",
     messages: [
       { speaker: "Caller",    text: "Hi, it's after hours but I have an end-of-year tax question." },
-      { speaker: "Reception", text: "No problem — I'll make sure the team gets back to you. What's the question?" },
+      { speaker: "Reception", text: "No problem. I'll make sure the team gets back to you. What's the question?" },
       { speaker: "Caller",    text: "It's about a property sale and whether it affects my return." },
       { speaker: "Reception", text: "Got it. Can I take your name and best number so they can call you back?" },
     ],
