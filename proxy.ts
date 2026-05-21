@@ -24,9 +24,10 @@ export async function proxy(request: NextRequest) {
   // Refresh session — required so the session cookie doesn't expire mid-visit.
   const { data: { user } } = await supabase.auth.getUser()
 
-  if (!user && request.nextUrl.pathname.startsWith('/dashboard')) {
+  const { pathname } = request.nextUrl
+  if (!user && pathname.startsWith('/dashboard') && !/\.[a-z0-9]+$/i.test(pathname)) {
     const loginUrl = new URL('/auth/login', request.url)
-    loginUrl.searchParams.set('next', request.nextUrl.pathname)
+    loginUrl.searchParams.set('next', pathname)
     return NextResponse.redirect(loginUrl)
   }
 
