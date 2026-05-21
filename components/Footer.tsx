@@ -12,6 +12,9 @@ export default function Footer() {
           <span className="text-white">Relay</span><span className="text-[#F59E0B]">Desk</span>
         </span>
         <div className="flex items-center gap-5">
+          <a href="/terms" className="text-[12px] text-white/30 hover:text-white/60 transition-colors whitespace-nowrap">
+            Terms
+          </a>
           <a href="/privacy" className="text-[12px] text-white/30 hover:text-white/60 transition-colors whitespace-nowrap">
             Privacy
           </a>
