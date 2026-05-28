@@ -89,14 +89,14 @@ export async function POST(req: Request) {
     return json({ error: 'unauthorized' }, 401);
   }
 
-  let body: { square_customer_id?: string; query?: string };
+  let body: { agent_id?: string; square_customer_id?: string; query?: string };
   try {
     body = await req.json();
   } catch {
     return json(FALLBACK);
   }
 
-  const { square_customer_id, query } = body;
+  const { agent_id, square_customer_id, query } = body;
 
   if (!square_customer_id) {
     return json({
@@ -111,18 +111,15 @@ export async function POST(req: Request) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-  // MVP: look up the first Square-connected customer.
-  // Scales to multi-merchant when agent_id is added to the tool parameters.
-  const { data: customers, error } = await supabase
+  const { data: customer, error } = await supabase
     .from('customers')
     .select('id, square_access_token, square_location_id')
-    .not('square_access_token', 'is', null)
-    .limit(1);
-
-  const customer = customers?.[0] as CustomerRow | undefined;
+    .eq('elevenlabs_agent_id', agent_id)
+    .maybeSingle<CustomerRow>();
 
   if (error || !customer?.square_access_token || !customer.square_location_id) {
-    console.error('[order-status] no Square-connected customer or missing location_id', {
+    console.error('[order-status] customer lookup failed or missing Square credentials', {
+      agent_id,
       error: error?.message,
     });
     return json(FALLBACK);
