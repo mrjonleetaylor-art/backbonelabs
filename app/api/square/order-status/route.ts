@@ -30,6 +30,7 @@ type OrderResult = {
   status: string;
   description: string | null;
   delivery_date: string | null;
+  fulfillment_type: 'pickup' | 'delivery' | null;
   amount: string | null;
   paid: boolean;
 };
@@ -64,7 +65,13 @@ function buildSummary(orders: OrderResult[]): string {
   const o = orders[0];
   const parts: string[] = [];
   if (o.description) parts.push(o.description);
-  if (o.delivery_date) parts.push(`for ${o.delivery_date}`);
+  if (o.fulfillment_type === 'delivery' && o.delivery_date) {
+    parts.push(`for delivery on ${o.delivery_date}`);
+  } else if (o.fulfillment_type === 'pickup' && o.delivery_date) {
+    parts.push(`for pickup on ${o.delivery_date}`);
+  } else if (o.delivery_date) {
+    parts.push(`for ${o.delivery_date}`);
+  }
   if (o.amount) parts.push(o.amount);
   const desc = parts.join(', ') || 'recent order';
   const statusNote = o.paid ? 'Paid.' : 'Not yet paid.';
@@ -156,9 +163,16 @@ export async function POST(req: Request) {
     const orders: OrderResult[] = rawOrders.map((o) => {
       const fulfillment = o.fulfillments?.[0];
       const pickupAt = fulfillment?.pickupDetails?.pickupAt;
-      const deliveryDate = pickupAt
-        ? new Date(pickupAt).toLocaleDateString('en-AU', { weekday: 'long' })
+      const deliverAt = fulfillment?.deliveryDetails?.deliverAt;
+      const whenIso = pickupAt ?? deliverAt;
+      const deliveryDate = whenIso
+        ? new Date(whenIso).toLocaleDateString('en-AU', { weekday: 'long' })
         : null;
+      const fulfillmentType: 'pickup' | 'delivery' | null = pickupAt
+        ? 'pickup'
+        : deliverAt
+          ? 'delivery'
+          : null;
       const description = o.lineItems?.[0]?.name ?? null;
       const amount = formatMoney(o.totalMoney?.amount, o.totalMoney?.currency);
       const isPaid = o.state === 'COMPLETED' && (o.tenders?.length ?? 0) > 0;
@@ -168,6 +182,7 @@ export async function POST(req: Request) {
         status: isPaid ? 'confirmed' : 'pending',
         description,
         delivery_date: deliveryDate,
+        fulfillment_type: fulfillmentType,
         amount,
         paid: isPaid,
       };
