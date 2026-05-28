@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed:square": "tsx scripts/seed-square-sandbox.ts"
+    "seed:square": "tsx scripts/seed-square-sandbox.ts",
+    "seed:square:catalog": "tsx scripts/seed-square-catalog.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.3",
