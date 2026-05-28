@@ -44,7 +44,7 @@ type CustomerRow = {
 };
 
 type DynamicVariables = {
-  caller_name: string | null;
+  caller_name: string;
   square_customer_id: string | null;
   has_recent_order: string;
   recent_order_summary: string | null;
@@ -61,7 +61,7 @@ function json(body: unknown, status = 200) {
 }
 
 const ANONYMOUS: DynamicVariables = {
-  caller_name: null,
+  caller_name: 'there',
   square_customer_id: null,
   has_recent_order: 'false',
   recent_order_summary: null,
@@ -70,6 +70,13 @@ const ANONYMOUS: DynamicVariables = {
 
 function anonymousResponse() {
   return json({ dynamic_variables: ANONYMOUS });
+}
+
+function safeName(name: string | null | undefined): string {
+  if (!name?.trim()) return 'there';
+  if (name.length > 30) return 'there';
+  if (!/^[a-zA-Z'\- ]+$/.test(name)) return 'there';
+  return name;
 }
 
 function makeSquareClient(token: string) {
@@ -163,7 +170,7 @@ export async function POST(req: Request) {
 
     const squareCustomer = squareCustomers[0];
     const squareCustomerId = squareCustomer.id ?? null;
-    const callerName = squareCustomer.givenName ?? null;
+    const callerName = safeName(squareCustomer.givenName);
 
     if (!squareCustomerId) {
       return anonymousResponse();
