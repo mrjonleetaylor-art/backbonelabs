@@ -74,8 +74,9 @@ async function findExistingItem(client: SquareClient, name: string) {
     textFilter: name,
     limit: 5,
   });
-  const items = result.items ?? [];
-  // Exact match on name (case-insensitive)
+  const items = (result.items ?? []).filter(
+    (it): it is Extract<typeof it, { type: 'ITEM' }> => it.type === 'ITEM'
+  );
   return items.find(
     (i) => i.itemData?.name?.toLowerCase() === name.toLowerCase()
   );
@@ -124,7 +125,9 @@ async function upsertFixture(
 
   const created = result.catalogObject;
   if (!created?.id) throw new Error(`Upsert returned no id for ${fixture.name}`);
-  const variationId = created.itemData?.variations?.[0]?.id ?? '';
+  // We just upserted an ITEM, so narrow before reading itemData.
+  const variationId =
+    created.type === 'ITEM' ? (created.itemData?.variations?.[0]?.id ?? '') : '';
   return { status: 'created', itemId: created.id, variationId };
 }
 

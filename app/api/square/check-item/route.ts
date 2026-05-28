@@ -150,7 +150,10 @@ export async function POST(req: Request) {
       limit: 10,
     });
 
-    const rawItems = result.items ?? [];
+    // CatalogObject is a discriminated union — narrow to ITEM before reading itemData
+    const rawItems = (result.items ?? []).filter(
+      (it): it is Extract<typeof it, { type: 'ITEM' }> => it.type === 'ITEM'
+    );
 
     if (rawItems.length === 0) {
       return json({
@@ -164,7 +167,10 @@ export async function POST(req: Request) {
         const name = it.itemData?.name ?? 'Unknown';
         const description = it.itemData?.description ?? null;
         const variation = it.itemData?.variations?.[0];
-        const priceMoney = variation?.itemVariationData?.priceMoney;
+        const priceMoney =
+          variation?.type === 'ITEM_VARIATION'
+            ? variation.itemVariationData?.priceMoney
+            : undefined;
         const price = formatPrice(priceMoney?.amount, priceMoney?.currency);
         const kind = classify(name);
         return { name, description, price, kind, in_stock: true };
