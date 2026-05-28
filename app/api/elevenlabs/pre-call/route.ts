@@ -69,7 +69,10 @@ const ANONYMOUS: DynamicVariables = {
 };
 
 function anonymousResponse() {
-  return json({ dynamic_variables: ANONYMOUS });
+  return json({
+    type: 'conversation_initiation_client_data',
+    dynamic_variables: ANONYMOUS,
+  });
 }
 
 function safeName(name: string | null | undefined): string {
@@ -95,10 +98,27 @@ export async function POST(req: Request) {
   const t0 = Date.now();
   const rawBody = await req.text();
 
+  // Auth: the conversation-initiation webhook from ElevenLabs uses header-based
+  // secrets configured in the workspace, NOT the HMAC body-signing scheme of
+  // post-call webhooks. We accept either: a matching `Authorization: Bearer`
+  // header against ELEVENLABS_INIT_SECRET, OR a valid body signature (legacy /
+  // future-compat). If neither matches we log and fall through to anonymous
+  // defaults — pre-call must NEVER 401, that breaks the caller's experience.
   const sigHeader = req.headers.get('elevenlabs-signature');
+  const authHeader = req.headers.get('authorization') ?? '';
+  const initSecret = process.env.ELEVENLABS_INIT_SECRET;
+
+  const bearerMatch = initSecret && authHeader === `Bearer ${initSecret}`;
   const parsed = parseSignatureHeader(sigHeader);
-  if (!parsed || !verifySignature(parsed.timestamp, rawBody, parsed.signature)) {
-    return json({ error: 'invalid signature' }, 401);
+  const sigMatch = parsed && verifySignature(parsed.timestamp, rawBody, parsed.signature);
+
+  if (!bearerMatch && !sigMatch) {
+    console.warn('[pre-call] auth failed, returning anonymous defaults', {
+      has_sig_header: Boolean(sigHeader),
+      has_auth_header: Boolean(authHeader),
+      init_secret_configured: Boolean(initSecret),
+    });
+    return anonymousResponse();
   }
 
   let body: { agent_id?: string; caller_id?: string | null; call_id?: string };
@@ -246,6 +266,7 @@ export async function POST(req: Request) {
     if (orderSummary && !isPaid) orderSummary += ', unpaid';
 
     return json({
+      type: 'conversation_initiation_client_data',
       dynamic_variables: {
         caller_name: callerName,
         square_customer_id: squareCustomerId,
