@@ -2,6 +2,7 @@
 // PATCH /api/onboarding/[token] — autosave fields
 
 import { createClient } from '@supabase/supabase-js';
+import { isAdminRequest, pickWritableFields, stripAdminFields } from '@/lib/onboarding';
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -35,7 +36,9 @@ export async function GET(_req: Request, { params }: { params: Promise<Params> }
   }
   if (!data) return json({ error: 'not found' }, 404);
 
-  return json(data);
+  // Only the authenticated admin sees internal_notes.
+  const isAdmin = await isAdminRequest();
+  return json(stripAdminFields(data, isAdmin));
 }
 
 export async function PATCH(req: Request, { params }: { params: Promise<Params> }) {
@@ -49,11 +52,15 @@ export async function PATCH(req: Request, { params }: { params: Promise<Params> 
     return json({ error: 'invalid json' }, 400);
   }
 
-  // Strip read-only fields from the patch payload
-  const readOnly = new Set(['id', 'token', 'created_at', 'updated_at']);
-  const fields = Object.fromEntries(
-    Object.entries(body).filter(([k]) => !readOnly.has(k))
-  );
+  // Whitelist writable columns. Customers can write their own form fields only;
+  // internal_notes is writable only by the authenticated admin. This blocks
+  // mass-assignment of id/token/timestamps and tampering with admin fields.
+  const isAdmin = await isAdminRequest();
+  const fields = pickWritableFields(body, isAdmin);
+
+  if (Object.keys(fields).length === 0) {
+    return json({ error: 'no writable fields' }, 400);
+  }
 
   const { error } = await admin
     .from('onboarding_sessions')

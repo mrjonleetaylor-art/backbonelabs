@@ -1,15 +1,17 @@
 import { createClient } from '@supabase/supabase-js';
-import { OnboardingForm } from './OnboardingForm';
+import { OnboardingForm, type Session } from './OnboardingForm';
+import { isAdminRequest, stripAdminFields } from '@/lib/onboarding';
 
 type Props = {
   params: Promise<{ token: string }>;
-  searchParams: Promise<{ admin?: string }>;
 };
 
-export default async function OnboardingTokenPage({ params, searchParams }: Props) {
+export default async function OnboardingTokenPage({ params }: Props) {
   const { token } = await params;
-  const { admin } = await searchParams;
-  const isAdmin = admin === '1';
+
+  // Admin is determined by an authenticated admin session, not a URL param.
+  // A customer holding the link has no session, so they never see internal_notes.
+  const isAdmin = await isAdminRequest();
 
   const supabase = createClient(
     process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -46,5 +48,14 @@ export default async function OnboardingTokenPage({ params, searchParams }: Prop
     );
   }
 
-  return <OnboardingForm token={token} initialData={session} isAdmin={isAdmin} />;
+  // Non-admins never receive internal_notes in the client payload.
+  const initialData = stripAdminFields(session, isAdmin);
+
+  return (
+    <OnboardingForm
+      token={token}
+      initialData={initialData as Session}
+      isAdmin={isAdmin}
+    />
+  );
 }

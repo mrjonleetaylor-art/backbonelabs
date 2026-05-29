@@ -14,6 +14,16 @@ export async function GET(
     return new Response('Bad request', { status: 400 })
   }
 
+  // Ownership check: this query runs under the caller's RLS-scoped session, and
+  // the voicemails SELECT policy is restricted to the caller's customer. So a
+  // row comes back only if this recording belongs to them. No row = not theirs.
+  const { data: voicemail } = await supabase
+    .from('voicemails')
+    .select('id')
+    .eq('twilio_recording_sid', sid)
+    .maybeSingle()
+  if (!voicemail) return new Response('Not found', { status: 404 })
+
   const accountSid = process.env.TWILIO_ACCOUNT_SID
   const authToken = process.env.TWILIO_AUTH_TOKEN
   if (!accountSid || !authToken) {

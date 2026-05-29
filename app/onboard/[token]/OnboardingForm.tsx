@@ -3,7 +3,7 @@
 import { useState, useCallback, useRef } from 'react';
 
 // Field names that match the onboarding_sessions table columns
-type Session = {
+export type Session = {
   id: string;
   token: string;
   // Stage 1

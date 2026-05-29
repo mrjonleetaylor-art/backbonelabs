@@ -3,6 +3,7 @@
 // Called from the dashboard admin section when Jon clicks "New onboarding link".
 
 import { createClient } from '@supabase/supabase-js';
+import { isAdminRequest, pickWritableFields } from '@/lib/onboarding';
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -12,18 +13,25 @@ function json(body: unknown, status = 200) {
 }
 
 export async function POST(req: Request) {
+  // Only the authenticated admin may mint onboarding links.
+  if (!(await isAdminRequest())) {
+    return json({ error: 'unauthorized' }, 401);
+  }
+
   const admin = createClient(
     process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-  // Optional: prefill fields Jon already knows
-  let prefill: Record<string, unknown> = {};
+  // Optional: prefill fields Jon already knows. Whitelist to known columns so
+  // the raw request body can't mass-assign arbitrary columns.
+  let body: Record<string, unknown> = {};
   try {
-    prefill = await req.json();
+    body = await req.json();
   } catch {
     // Body is optional — an empty POST is valid
   }
+  const prefill = pickWritableFields(body, true);
 
   const { data, error } = await admin
     .from('onboarding_sessions')
