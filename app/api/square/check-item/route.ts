@@ -8,13 +8,20 @@ function checkAuth(req: Request): boolean {
   const expectedToken = process.env.ELEVENLABS_TOOL_SECRET;
   if (!expectedToken) return false;
   const authHeader = req.headers.get('authorization') ?? '';
-  const expected = `Bearer ${expectedToken}`;
-  if (authHeader.length !== expected.length) return false;
-  try {
-    return crypto.timingSafeEqual(Buffer.from(authHeader), Buffer.from(expected));
-  } catch {
-    return false;
+  // Accept either "Bearer <token>" or "<token>" alone — ElevenLabs sends
+  // the workspace secret value verbatim and we can't assume Jon prefixed it.
+  const candidates = [`Bearer ${expectedToken}`, expectedToken];
+  for (const expected of candidates) {
+    if (authHeader.length !== expected.length) continue;
+    try {
+      if (crypto.timingSafeEqual(Buffer.from(authHeader), Buffer.from(expected))) {
+        return true;
+      }
+    } catch {
+      // ignore
+    }
   }
+  return false;
 }
 
 // --- Types ---
