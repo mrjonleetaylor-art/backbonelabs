@@ -18,7 +18,7 @@ const CONVERSATIONS: { label: string; messages: Message[] }[] = [
   {
     label: "Taking an order",
     messages: [
-      { speaker: "Caller",    text: "Hi, do you have sunflowers in this Saturday?" },
+      { speaker: "Caller",    text: "Hi, do you have sunflowers this Saturday?" },
       { speaker: "Reception", text: "We do. Are you after a bunch or an arrangement?" },
       { speaker: "Caller",    text: "Just a bunch, it's for a birthday." },
       { speaker: "Reception", text: "No problem. I'll set one aside. Can I grab your name and a number to confirm?" },
@@ -59,7 +59,7 @@ const CallTranscript = forwardRef<CallTranscriptHandle, Props>(function CallTran
   { onComplete, onConvChange },
   ref
 ) {
-  const [isDesktop, setIsDesktop]   = useState(false)
+  const [reducedMotion, setReducedMotion] = useState(false)
   const [convIdx, setConvIdx]       = useState(0)
   const [visible, setVisible]       = useState<Message[]>([])
   const [showTyping, setShowTyping] = useState(false)
@@ -71,9 +71,9 @@ const CallTranscript = forwardRef<CallTranscriptHandle, Props>(function CallTran
   const startConvRef = useRef(0)
 
   useEffect(() => {
-    const mql = window.matchMedia("(min-width: 1024px)")
-    setIsDesktop(mql.matches)
-    const listener = (e: MediaQueryListEvent) => setIsDesktop(e.matches)
+    const mql = window.matchMedia("(prefers-reduced-motion: reduce)")
+    setReducedMotion(mql.matches)
+    const listener = (e: MediaQueryListEvent) => setReducedMotion(e.matches)
     mql.addEventListener("change", listener)
     return () => mql.removeEventListener("change", listener)
   }, [])
@@ -94,7 +94,19 @@ const CallTranscript = forwardRef<CallTranscriptHandle, Props>(function CallTran
   }, [visible.length, showTyping])
 
   useEffect(() => {
-    if (!isDesktop) return
+    // Reduced-motion / low-end fallback: render one full conversation
+    // statically (all messages at once), with no typing indicator and no
+    // auto-cycling. startConvRef defaults to 0 and still honours jumpTo.
+    if (reducedMotion) {
+      const ci = startConvRef.current
+      setConvIdx(ci)
+      onConvChange?.(ci)
+      setVisible(CONVERSATIONS[ci].messages)
+      setShowTyping(false)
+      setMsgOpacity(1)
+      return
+    }
+
     let cancelled = false
     const ids: ReturnType<typeof setTimeout>[] = []
 
@@ -148,11 +160,9 @@ const CallTranscript = forwardRef<CallTranscriptHandle, Props>(function CallTran
 
     run()
     return () => { cancelled = true; ids.forEach(clearTimeout) }
-  }, [isDesktop, restartKey, onComplete, onConvChange])
+  }, [reducedMotion, restartKey, onComplete, onConvChange])
 
   const conv = CONVERSATIONS[convIdx]
-
-  if (!isDesktop) return null
 
   return (
     <div className="absolute inset-5 flex flex-col rounded-xl overflow-hidden">
@@ -188,9 +198,9 @@ const CallTranscript = forwardRef<CallTranscriptHandle, Props>(function CallTran
           return (
             <motion.div
               key={`${convIdx}-${i}`}
-              initial={{ opacity: 0, y: 10 }}
+              initial={reducedMotion ? false : { opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, ease }}
+              transition={reducedMotion ? { duration: 0 } : { duration: 0.35, ease }}
               className={`flex ${isBB ? "justify-end" : "justify-start"}`}
             >
               <div
