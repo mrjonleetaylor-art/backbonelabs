@@ -5,11 +5,16 @@ import { OVERFLOW_PRICE, RECEPTIONIST_PRICE, OPERATOR_PRICE } from "@/lib/consta
 
 const ease = [0.22, 1, 0.36, 1] as const
 
+// A feature is either a plain string (live, ticked) or an object that can
+// flag a not-yet-available feature with `soon`, which renders a muted marker
+// and a "Coming soon" pill instead of the usual check.
+type Feature = string | { label: string; soon?: boolean }
+
 type Tier = {
   name: string
   price: number
   tagline: string
-  features: string[]
+  features: Feature[]
   callsIncluded: string
   goodFor: string
   badge?: string
@@ -44,6 +49,7 @@ const tiers: Tier[] = [
       "Priority routing for urgent calls",
       "Call summary after every call",
       "Transfers to you when needed",
+      { label: "Square POS integration", soon: true },
       "Cancel any month",
     ],
     callsIncluded: "300 calls/month included",
@@ -63,6 +69,7 @@ const tiers: Tier[] = [
       "Multilingual support",
       "Custom automation workflows",
       "Dedicated setup and onboarding support",
+      { label: "Square POS integration", soon: true },
       "Cancel any month",
     ],
     callsIncluded: "1,000 calls/month included",
@@ -95,6 +102,46 @@ function CheckIcon({ variant }: { variant: "light" | "violet" | "dark" }) {
     >
       <path d="M20 6 9 17l-5-5" />
     </svg>
+  )
+}
+
+// Clock marker for "coming soon" rows: visually distinct from the check and
+// muted, so the row never reads as available today. Same 14px box as CheckIcon
+// to keep the feature list aligned.
+function SoonIcon({ variant }: { variant: "light" | "violet" | "dark" }) {
+  const color = variant === "dark" ? "rgba(255,255,255,0.4)" : "#94A3B8"
+  return (
+    <svg
+      className="w-[14px] h-[14px] flex-shrink-0 mt-[2px]"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7.5V12l3 1.5" />
+    </svg>
+  )
+}
+
+// "Coming soon" pill. Per-variant colours keep it legible on the white,
+// cream (#FEF3C7) and dark navy (#0F172A) cards. The text label means the
+// state is perceivable without relying on colour.
+function SoonPill({ variant }: { variant: "light" | "violet" | "dark" }) {
+  const cls =
+    variant === "dark"
+      ? "bg-white/15 text-white/90"
+      : variant === "violet"
+      ? "bg-slate-900/10 text-slate-700"
+      : "bg-slate-100 text-slate-600"
+  return (
+    <span
+      className={`inline-flex items-center align-middle ml-2 text-[10px] font-semibold rounded-full px-2 py-0.5 tracking-[0.03em] whitespace-nowrap ${cls}`}
+    >
+      Coming soon
+    </span>
   )
 }
 
@@ -152,12 +199,21 @@ function PricingCard({ tier }: { tier: Tier }) {
       {/* Features */}
       <div className={`px-7 py-5 border-t ${divider} flex-1`}>
         <ul className="space-y-3">
-          {tier.features.map((f) => (
-            <li key={f} className={`flex items-start gap-2.5 text-[13px] leading-[1.5] ${textFeature}`}>
-              <CheckIcon variant={tier.variant} />
-              {f}
-            </li>
-          ))}
+          {tier.features.map((f) => {
+            const feat = typeof f === "string" ? { label: f, soon: false } : f
+            return (
+              <li
+                key={feat.label}
+                className={`flex items-start gap-2.5 text-[13px] leading-[1.5] ${feat.soon ? textMuted : textFeature}`}
+              >
+                {feat.soon ? <SoonIcon variant={tier.variant} /> : <CheckIcon variant={tier.variant} />}
+                <span className="flex-1">
+                  {feat.label}
+                  {feat.soon && <SoonPill variant={tier.variant} />}
+                </span>
+              </li>
+            )
+          })}
         </ul>
       </div>
 
