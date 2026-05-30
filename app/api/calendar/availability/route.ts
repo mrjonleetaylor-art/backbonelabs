@@ -4,6 +4,7 @@
 // Returns: { available_slots: [{ start, end, label }] }
 
 import { createClient } from '@supabase/supabase-js'
+import { sydneyToUtc, sydneyToUtcISO, toSydneyISO, formatSydneySlotLabel } from '@/lib/time'
 
 type RequestBody = {
   agent_id?: string
@@ -34,31 +35,13 @@ async function refreshAccessToken(refreshToken: string): Promise<string | null> 
   return data.access_token ?? null
 }
 
-// Convert epoch ms (UTC) to an ISO string with AEST offset (+10:00).
-// Safe for use in May (AEST — no DST). For year-round correctness, replace with a TZ lib.
-function toAEST(epochMs: number): string {
-  const aestMs = epochMs + 10 * 60 * 60 * 1000
-  const d = new Date(aestMs)
-  return d.toISOString().replace('Z', '+10:00')
-}
-
-function formatSlotLabel(epochMs: number): string {
-  const aestMs = epochMs + 10 * 60 * 60 * 1000
-  const d = new Date(aestMs)
-  const h = d.getUTCHours()
-  const m = d.getUTCMinutes()
-  const ampm = h >= 12 ? 'PM' : 'AM'
-  const h12 = h % 12 === 0 ? 12 : h % 12
-  return `${h12}:${String(m).padStart(2, '0')} ${ampm}`
-}
-
 function computeAvailableSlots(
   busyPeriods: { start: string; end: string }[],
   dateStr: string,
   durationMinutes: number
 ): { start: string; end: string; label: string }[] {
-  const businessStartMs = Date.parse(`${dateStr}T09:00:00+10:00`)
-  const businessEndMs = Date.parse(`${dateStr}T17:00:00+10:00`)
+  const businessStartMs = sydneyToUtc(dateStr, '09:00:00').getTime()
+  const businessEndMs = sydneyToUtc(dateStr, '17:00:00').getTime()
   const durationMs = durationMinutes * 60 * 1000
 
   const busy = busyPeriods.map(b => ({
@@ -74,9 +57,9 @@ function computeAvailableSlots(
     const overlaps = busy.some(b => current < b.end && slotEnd > b.start)
     if (!overlaps) {
       slots.push({
-        start: toAEST(current),
-        end: toAEST(slotEnd),
-        label: formatSlotLabel(current),
+        start: toSydneyISO(current),
+        end: toSydneyISO(slotEnd),
+        label: formatSydneySlotLabel(current),
       })
     }
     current += durationMs
@@ -135,8 +118,8 @@ export async function POST(req: Request) {
   }
 
   const calendarId = customer.google_calendar_id ?? 'primary'
-  const timeMin = `${date}T00:00:00+10:00`
-  const timeMax = `${date}T23:59:59+10:00`
+  const timeMin = sydneyToUtcISO(date, '00:00:00')
+  const timeMax = sydneyToUtcISO(date, '23:59:59')
 
   const freeBusyRes = await fetch('https://www.googleapis.com/calendar/v3/freeBusy', {
     method: 'POST',

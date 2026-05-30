@@ -7,8 +7,7 @@ import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 import { format, addDays } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
-
-const TZ = 'Australia/Sydney';
+import { TZ, sydneyToUtcISO } from '@/lib/time';
 
 type BookingRow = {
   half: string;
@@ -38,8 +37,8 @@ export async function GET(req: Request) {
   const today = format(now, 'yyyy-MM-dd');
   const tomorrow = format(addDays(now, 1), 'yyyy-MM-dd');
 
-  const todayStartUtc = new Date(`${today}T00:00:00+10:00`).toISOString();
-  const tomorrowStartUtc = new Date(`${tomorrow}T00:00:00+10:00`).toISOString();
+  const todayStartUtc = sydneyToUtcISO(today, '00:00:00');
+  const tomorrowStartUtc = sydneyToUtcISO(tomorrow, '00:00:00');
 
   const { data: bookedToday, error: bookedTodayErr } = await supabase
     .from('bookings')

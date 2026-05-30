@@ -17,6 +17,7 @@ import twilio from 'twilio';
 import { Resend } from 'resend';
 import { parse, addDays, format } from 'date-fns';
 import crypto from 'crypto';
+import { sydneyToUtcISO } from '@/lib/time';
 
 // ===== Types =====
 
@@ -440,7 +441,7 @@ async function handleCustomerCall(
         card_message: collected.card_message ?? null,
         is_sympathy_or_funeral: collected.is_sympathy_or_funeral ?? false,
       },
-      due_at: dueAt ? `${dueAt}T07:00:00+10:00` : null,
+      due_at: dueAt ? sydneyToUtcISO(dueAt, '07:00:00') : null,
     });
   } else if (actionType === 'callback') {
     const callbackDate = parseRelativeDay(collected.callback_day) ?? null;
@@ -457,7 +458,7 @@ async function handleCustomerCall(
         callback_reason: collected.callback_reason ?? null,
         business_name: collected.business_name ?? null,
       },
-      due_at: callbackDate ? `${callbackDate}T00:00:00+10:00` : null,
+      due_at: callbackDate ? sydneyToUtcISO(callbackDate, '00:00:00') : null,
     });
   } else if (actionType === 'info') {
     await supabase.from('actions').insert({
