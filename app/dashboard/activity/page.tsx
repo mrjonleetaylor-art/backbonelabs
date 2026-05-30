@@ -7,6 +7,8 @@ import ActivityTable from './ActivityTable'
 import type { TableRow } from './ActivityTable'
 
 const PAGE_SIZE = 25
+const DEFAULT_DAYS = 7
+const MAX_DAYS = 90
 
 type SearchParams = {
   outcome?: string
@@ -14,6 +16,39 @@ type SearchParams = {
   since?: string
   page?: string
   open?: string
+}
+
+// A row from the activity_feed view (see supabase/migrations/0001_activity_feed.sql).
+type FeedRow = {
+  kind: 'call' | 'voicemail'
+  id: string
+  phone: string | null
+  at: string
+  duration: number | null
+  outcome: string | null
+  recording_sid: string | null
+  has_pending_callback: boolean
+}
+
+function ymd(d: Date): string {
+  return d.toISOString().slice(0, 10)
+}
+
+// Validate and clamp the `since` window: reject malformed input (fall back to
+// the 7-day default) and cap the lookback at 90 days before today.
+function resolveSince(raw: string | undefined): string {
+  const now = new Date()
+  const defaultSince = new Date(now)
+  defaultSince.setUTCDate(defaultSince.getUTCDate() - DEFAULT_DAYS)
+  const maxSince = new Date(now)
+  maxSince.setUTCDate(maxSince.getUTCDate() - MAX_DAYS)
+
+  if (!raw || !/^\d{4}-\d{2}-\d{2}$/.test(raw)) return ymd(defaultSince)
+  const parsed = new Date(`${raw}T00:00:00Z`)
+  if (Number.isNaN(parsed.getTime())) return ymd(defaultSince)
+  if (parsed.getTime() > now.getTime()) return ymd(defaultSince) // future -> default
+  if (parsed.getTime() < maxSince.getTime()) return ymd(maxSince) // older than 90d -> clamp
+  return raw
 }
 
 export default async function ActivityPage({
@@ -42,68 +77,72 @@ export default async function ActivityPage({
   const page = Math.max(1, parseInt(params.page ?? '1'))
   const outcomeFilter = params.outcome ?? 'all'
   const search = params.search ?? ''
-  const since = params.since ?? (() => {
-    const d = new Date(); d.setDate(d.getDate() - 7); return d.toISOString().slice(0, 10)
-  })()
-  const sinceDate = new Date(since)
+  const since = resolveSince(params.since)
+  const sinceIso = new Date(`${since}T00:00:00Z`).toISOString()
   const initialExpandedId = params.open ?? null
-
-  // Build calls query
-  let callsQuery = admin
-    .from('calls')
-    .select('id, caller_phone, started_at, duration_s, outcome')
-    .eq('customer_id', customer.id)
-    .gte('started_at', sinceDate.toISOString())
-    .order('started_at', { ascending: false })
-
-  if (outcomeFilter === 'order') callsQuery = callsQuery.eq('outcome', 'order')
-  else if (outcomeFilter === 'transfer') callsQuery = callsQuery.eq('outcome', 'transfer')
-  else if (outcomeFilter === 'callback' || outcomeFilter === 'question') callsQuery = callsQuery.eq('outcome', 'info')
-
-  const showVoicemails = outcomeFilter === 'all' || outcomeFilter === 'voicemail'
-  const showCalls = outcomeFilter !== 'voicemail'
-
-  const [callsResult, voicemailsResult] = await Promise.all([
-    showCalls ? callsQuery : Promise.resolve({ data: [] }),
-    showVoicemails
-      ? admin.from('voicemails').select('id, twilio_from_number, created_at, duration_seconds, twilio_recording_sid').eq('customer_id', customer.id).gte('created_at', sinceDate.toISOString()).order('created_at', { ascending: false })
-      : Promise.resolve({ data: [] }),
-  ])
-
-  type CallRow = { id: string; caller_phone: string | null; started_at: string; duration_s: number | null; outcome: string | null }
-  type VoicemailRow = { id: string; twilio_from_number: string | null; created_at: string; duration_seconds: number | null; twilio_recording_sid: string | null }
-
-  const calls = (callsResult.data ?? []) as CallRow[]
-  const voicemails = (voicemailsResult.data ?? []) as VoicemailRow[]
-
-  const allCallIds = calls.map(c => c.id)
-  const { data: callbackActions } = allCallIds.length > 0
-    ? await admin.from('actions').select('call_id').in('call_id', allCallIds).eq('type', 'callback').eq('status', 'pending')
-    : { data: [] }
-  const callbackSet = new Set((callbackActions ?? []).map(a => a.call_id))
-
-  type MergedRow =
-    | { kind: 'call'; id: string; phone: string | null; at: string; duration: number | null; outcome: string | null }
-    | { kind: 'voicemail'; id: string; phone: string | null; at: string; duration: number | null; recordingSid: string | null }
-
-  const merged: MergedRow[] = [
-    ...calls.map(c => ({ kind: 'call' as const, id: c.id, phone: c.caller_phone, at: c.started_at, duration: c.duration_s, outcome: c.outcome })),
-    ...voicemails.map(v => ({ kind: 'voicemail' as const, id: v.id, phone: v.twilio_from_number, at: v.created_at, duration: v.duration_seconds, recordingSid: v.twilio_recording_sid })),
-  ].sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime())
-
-  const filtered = search ? merged.filter(r => r.phone?.includes(search)) : merged
-
-  const finalRows = outcomeFilter === 'callback'
-    ? filtered.filter(r => r.kind === 'call' && callbackSet.has(r.id))
-    : outcomeFilter === 'question'
-    ? filtered.filter(r => r.kind === 'call' && !callbackSet.has(r.id) && r.outcome === 'info')
-    : filtered
-
   const offset = (page - 1) * PAGE_SIZE
-  const pageRows = finalRows.slice(offset, offset + PAGE_SIZE)
-  const hasMore = finalRows.length > offset + PAGE_SIZE
 
-  const tableRows: TableRow[] = pageRows.map(row => ({
+  // Minimal builder shape we drive against the activity_feed view. The view is
+  // not in the generated DB types, so we cast to this rather than fight the
+  // recursive PostgrestFilterBuilder generics (which blow the type checker).
+  type FeedBuilder = {
+    eq(column: string, value: unknown): FeedBuilder
+    gte(column: string, value: unknown): FeedBuilder
+    ilike(column: string, value: string): FeedBuilder
+    order(column: string, opts: { ascending: boolean }): FeedBuilder
+    range(from: number, to: number): FeedBuilder
+    then: PromiseLike<{ data: FeedRow[] | null; error: unknown; count: number | null }>['then']
+  }
+
+  // Apply the customer/window/search/outcome filters to a query builder.
+  // Used identically for the data page and the exact-count query so they
+  // always describe the same result set. The outcome mapping mirrors the
+  // ActivityFilters values: callback vs question split on has_pending_callback,
+  // and the two together are exactly the in-window `info` calls.
+  function applyFilters(q: FeedBuilder): FeedBuilder {
+    let out = q.eq('customer_id', customer!.id).gte('at', sinceIso)
+    if (search) out = out.ilike('phone', `%${search}%`)
+    switch (outcomeFilter) {
+      case 'order':
+        out = out.eq('outcome', 'order')
+        break
+      case 'transfer':
+        out = out.eq('outcome', 'transfer')
+        break
+      case 'voicemail':
+        out = out.eq('outcome', 'voicemail')
+        break
+      case 'callback':
+        out = out.eq('outcome', 'info').eq('has_pending_callback', true)
+        break
+      case 'question':
+        out = out.eq('outcome', 'info').eq('has_pending_callback', false)
+        break
+      // 'all' (and anything unrecognised): no outcome filter, includes voicemails
+    }
+    return out
+  }
+
+  const dataQuery = applyFilters(
+    admin
+      .from('activity_feed')
+      .select('kind, id, phone, at, duration, outcome, recording_sid, has_pending_callback') as unknown as FeedBuilder
+  )
+    .order('at', { ascending: false })
+    .range(offset, offset + PAGE_SIZE - 1)
+
+  const countQuery = applyFilters(
+    admin.from('activity_feed').select('*', { count: 'exact', head: true }) as unknown as FeedBuilder
+  )
+
+  const [{ data, error }, { count }] = await Promise.all([dataQuery, countQuery])
+  if (error) throw error
+
+  const rows = data ?? []
+  const total = count ?? 0
+  const hasMore = offset + PAGE_SIZE < total
+
+  const tableRows: TableRow[] = rows.map(row => ({
     kind: row.kind,
     id: row.id,
     phone: row.phone,
@@ -111,8 +150,8 @@ export default async function ActivityPage({
     duration: row.duration,
     variant: row.kind === 'voicemail'
       ? 'voicemail'
-      : badgeVariant(row.outcome ?? null, callbackSet.has(row.id)),
-    recordingSid: row.kind === 'voicemail' ? row.recordingSid : undefined,
+      : badgeVariant(row.outcome, row.has_pending_callback),
+    recordingSid: row.kind === 'voicemail' ? row.recording_sid : undefined,
   }))
 
   return (
