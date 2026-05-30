@@ -1,5 +1,5 @@
 "use client"
-import { useRef, useState } from "react"
+import { useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 
 const ease = [0.22, 1, 0.36, 1] as const
@@ -8,57 +8,41 @@ const spring = [0.34, 1.56, 0.64, 1] as const
 const steps = [
   {
     number: "01",
-    title: "We learn your business",
-    summary: "A 30-minute consultation to understand how your calls work.",
-    example: "Sample question: 'What's your delivery cutoff for next-day arrangements?'",
+    title: "Investigation call",
+    summary: "We learn how your business handles calls: your services, hours, and what customers ask most. About 20 minutes.",
   },
   {
     number: "02",
-    title: "We configure RelayDesk",
-    summary: "We set up your services, hours, FAQs, transfer rules, and payment links.",
-    example: "Configured: services, hours, FAQs, transfer rules, payment links.",
+    title: "We set it up",
+    summary: "We build and configure your agent, then give you access to try it out yourself before any real calls come through.",
   },
   {
     number: "03",
-    title: "We sort the phone setup",
-    summary: "Keep your number or get a new one - your choice.",
-    example: "Setup time: most telcos complete call forwarding in under 5 minutes.",
+    title: "Connect your number",
+    summary: "Forward your existing number to us, or we'll give you a new one. Your choice, and it takes minutes.",
   },
   {
     number: "04",
-    title: "Go live",
-    summary: "Your first call is usually within hours of setup.",
-    example: "First 48 hours: we monitor every call and adjust in real time if needed.",
-  },
-  {
-    number: "05",
-    title: "Ongoing support",
-    summary: "We're here whenever something needs updating.",
-    example: "We tune your setup based on real call patterns each week.",
+    title: "That's it, you're live",
+    summary: "Every call answered from day one. No long setup, no fuss.",
   },
 ]
 
 function StepCard({
   step,
-  example,
   fromLeft,
   delay,
 }: {
   step: typeof steps[0]
-  example: string
   fromLeft: boolean
   delay: number
 }) {
-  const [hovered, setHovered] = useState(false)
-
   return (
     <motion.div
       initial={{ opacity: 0, x: fromLeft ? -40 : 40 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: "-8%" }}
       transition={{ duration: 0.55, ease, delay }}
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
       whileHover={{ y: -4, boxShadow: "0 12px 32px rgba(15,23,42,0.12), 0 2px 8px rgba(15,23,42,0.06)" }}
       className="bg-white rounded-2xl border border-slate-200 p-6 cursor-default"
       style={{ boxShadow: "0 1px 3px rgba(15,23,42,0.06), 0 4px 12px rgba(15,23,42,0.04)" }}
@@ -67,13 +51,6 @@ function StepCard({
         {step.title}
       </h3>
       <p className="text-[14px] text-slate-500 leading-[1.6]">{step.summary}</p>
-
-      <p
-        className="text-[12px] text-[#1E3A5F] italic mt-3 pt-3 border-t border-slate-100 transition-opacity duration-200"
-        style={{ opacity: hovered ? 1 : 0.4 }}
-      >
-        {example}
-      </p>
     </motion.div>
   )
 }
@@ -106,7 +83,7 @@ export default function HowItWorks() {
             How it works
           </span>
           <h2 className="text-[clamp(28px,3.5vw,44px)] font-bold leading-[1.1] tracking-[-0.025em] text-slate-900 mt-1.5">
-            We make sure you never miss another call
+            Up and running in four easy steps
           </h2>
         </motion.div>
 
@@ -133,7 +110,7 @@ export default function HowItWorks() {
                   {/* Left column */}
                   <div className="hidden lg:block">
                     {isLeft && (
-                      <StepCard step={step} example={step.example} fromLeft delay={0.1} />
+                      <StepCard step={step} fromLeft delay={0.1} />
                     )}
                   </div>
 
@@ -156,7 +133,7 @@ export default function HowItWorks() {
                   {/* Right column */}
                   <div className="hidden lg:block">
                     {!isLeft && (
-                      <StepCard step={step} example={step.example} fromLeft={false} delay={0.1} />
+                      <StepCard step={step} fromLeft={false} delay={0.1} />
                     )}
                   </div>
 
@@ -165,53 +142,24 @@ export default function HowItWorks() {
             })}
           </div>
 
-          {/* Mobile: alternating badge sides with snaking connector */}
-          <div className="lg:hidden flex flex-col">
+          {/* Mobile: badges left-aligned, steps stacked with even spacing */}
+          <div className="lg:hidden flex flex-col gap-7">
             {steps.map((step, i) => {
-              const isLeft = i % 2 === 0
-              const circleColor = isLeft ? "#1E3A5F" : "#F59E0B"
+              const circleColor = i % 2 === 0 ? "#1E3A5F" : "#F59E0B"
 
               return (
-                <div key={`mob-${step.number}`}>
-                  {/* Badge alternates: odd steps (01,03,05) left, even steps (02,04) right */}
-                  <div className={`flex gap-4 items-start${!isLeft ? ' flex-row-reverse' : ''}`}>
-                    <div
-                      className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
-                      style={{ background: circleColor }}
-                    >
-                      <span className="text-[13px] font-bold text-white tabular-nums leading-none">
-                        {step.number}
-                      </span>
-                    </div>
-                    <div className="flex-1">
-                      <StepCard step={step} example={step.example} fromLeft={isLeft} delay={0} />
-                    </div>
+                <div key={`mob-${step.number}`} className="flex gap-4 items-start">
+                  <div
+                    className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+                    style={{ background: circleColor }}
+                  >
+                    <span className="text-[13px] font-bold text-white tabular-nums leading-none">
+                      {step.number}
+                    </span>
                   </div>
-
-                  {/* Diagonal dashed connector to next step's badge.
-                      The wrapper is offset by 20px (half badge width w-10=40px) and
-                      shrunk by 40px total so 0% / 100% land exactly on badge centres. */}
-                  {i < steps.length - 1 && (
-                    <div style={{ marginLeft: "20px", width: "calc(100% - 40px)" }}>
-                      <svg
-                        width="100%"
-                        height="44"
-                        aria-hidden="true"
-                        className="block overflow-visible"
-                      >
-                        <line
-                          x1={isLeft ? "0%" : "100%"}
-                          y1="6"
-                          x2={isLeft ? "100%" : "0%"}
-                          y2="38"
-                          stroke="#CBD5E1"
-                          strokeWidth="1.5"
-                          strokeDasharray="4 3"
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                    </div>
-                  )}
+                  <div className="flex-1">
+                    <StepCard step={step} fromLeft delay={0} />
+                  </div>
                 </div>
               )
             })}
