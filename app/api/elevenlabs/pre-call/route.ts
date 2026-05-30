@@ -49,7 +49,42 @@ type DynamicVariables = {
   has_recent_order: string;
   recent_order_summary: string | null;
   recent_order_paid: string | null;
+  current_date: string;
+  current_time: string;
+  same_day_cutoff_passed: string;
 };
+
+// Current Sydney date/time, injected so the agent has a clock and can reason
+// about the 2pm same-day delivery cutoff. Computed per request.
+function sydneyNow(): {
+  current_date: string;
+  current_time: string;
+  same_day_cutoff_passed: string;
+} {
+  const now = new Date();
+  const tz = 'Australia/Sydney';
+  // e.g. "Friday, 30 May 2026"
+  const current_date = new Intl.DateTimeFormat('en-AU', {
+    timeZone: tz,
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  }).format(now);
+  // e.g. "3:05 pm"
+  const current_time = new Intl.DateTimeFormat('en-AU', {
+    timeZone: tz,
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  }).format(now);
+  // 24h hour in Sydney to compare against the 2pm cutoff
+  const hour24 = Number(
+    new Intl.DateTimeFormat('en-GB', { timeZone: tz, hour: '2-digit', hour12: false }).format(now)
+  );
+  const same_day_cutoff_passed = hour24 >= 14 ? 'true' : 'false';
+  return { current_date, current_time, same_day_cutoff_passed };
+}
 
 // --- Helpers ---
 
@@ -60,18 +95,17 @@ function json(body: unknown, status = 200) {
   });
 }
 
-const ANONYMOUS: DynamicVariables = {
-  caller_name: 'there',
-  square_customer_id: null,
-  has_recent_order: 'false',
-  recent_order_summary: null,
-  recent_order_paid: null,
-};
-
 function anonymousResponse() {
   return json({
     type: 'conversation_initiation_client_data',
-    dynamic_variables: ANONYMOUS,
+    dynamic_variables: {
+      caller_name: 'there',
+      square_customer_id: null,
+      has_recent_order: 'false',
+      recent_order_summary: null,
+      recent_order_paid: null,
+      ...sydneyNow(),
+    } satisfies DynamicVariables,
   });
 }
 
@@ -203,12 +237,14 @@ export async function POST(req: Request) {
       // Can't search orders without a location ID — return name-only context.
       console.log('[pre-call] no square_location_id, skipping orders lookup', { agent_id });
       return json({
+        type: 'conversation_initiation_client_data',
         dynamic_variables: {
           caller_name: callerName,
           square_customer_id: squareCustomerId,
           has_recent_order: 'false',
           recent_order_summary: null,
           recent_order_paid: null,
+          ...sydneyNow(),
         } satisfies DynamicVariables,
       });
     }
@@ -239,12 +275,14 @@ export async function POST(req: Request) {
 
     if (orders.length === 0) {
       return json({
+        type: 'conversation_initiation_client_data',
         dynamic_variables: {
           caller_name: callerName,
           square_customer_id: squareCustomerId,
           has_recent_order: 'false',
           recent_order_summary: null,
           recent_order_paid: null,
+          ...sydneyNow(),
         } satisfies DynamicVariables,
       });
     }
@@ -273,6 +311,7 @@ export async function POST(req: Request) {
         has_recent_order: 'true',
         recent_order_summary: orderSummary,
         recent_order_paid: isPaid ? 'true' : 'false',
+        ...sydneyNow(),
       } satisfies DynamicVariables,
     });
   } catch (err) {

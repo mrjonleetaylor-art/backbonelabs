@@ -150,12 +150,23 @@ export async function POST(req: Request) {
 
   const squareClient = makeSquareClient(customer.square_access_token);
 
+  // Browse mode: "what do you have?", "what's available?", "show me your range".
+  // These aren't a specific item — list the whole catalog (items only, no
+  // delivery zones) so the agent can read back the range.
+  const q = query.trim().toLowerCase();
+  const BROWSE_TRIGGERS = [
+    'what do you have', 'what have you got', "what's available", 'what is available',
+    'whats available', 'what can i get', 'your range', 'full range', 'everything',
+    'all your', 'what flowers', 'list', 'options', 'selection', 'menu',
+  ];
+  const isBrowse = BROWSE_TRIGGERS.some((t) => q.includes(t));
+
   try {
-    // Search catalog items by text — Square handles fuzzy matching internally
-    const result = await squareClient.catalog.searchItems({
-      textFilter: query.trim(),
-      limit: 10,
-    });
+    // Search catalog items by text — Square handles fuzzy matching internally.
+    // Browse mode passes no textFilter, returning the whole catalog.
+    const result = await squareClient.catalog.searchItems(
+      isBrowse ? { limit: 50 } : { textFilter: query.trim(), limit: 10 }
+    );
 
     // CatalogObject is a discriminated union — narrow to ITEM before reading itemData
     const rawItems = (result.items ?? []).filter(
@@ -183,12 +194,28 @@ export async function POST(req: Request) {
         return { name, description, price, kind, in_stock: true };
       })
       // Filter out items with no variations / no price unless query specifically matches
-      .filter((m) => m.price !== 'price on request' || m.name.toLowerCase().includes(query.toLowerCase()));
+      .filter((m) => m.price !== 'price on request' || m.name.toLowerCase().includes(query.toLowerCase()))
+      // In browse mode, drop delivery zones — the caller wants products, not postage.
+      .filter((m) => (isBrowse ? m.kind !== 'delivery' : true));
 
     if (matches.length === 0) {
       return json({
         found: false,
         summary: buildSummary([], query),
+      });
+    }
+
+    if (isBrowse) {
+      const list = matches.map((m) => `${m.name} at ${m.price}`);
+      const joined =
+        list.length === 1
+          ? list[0]
+          : list.slice(0, -1).join(', ') + ', and ' + list[list.length - 1];
+      return json({
+        found: true,
+        matches,
+        browse: true,
+        summary: `Here's what we've got at the moment: ${joined}. Anything there take your fancy, or is it for a particular occasion?`,
       });
     }
 
