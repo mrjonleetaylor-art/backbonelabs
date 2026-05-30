@@ -88,8 +88,8 @@ export default function Problem() {
           style={{ y: imageY }}
         >
           <Image
-            src="/florist-desk.jpg"
-            alt="Florist shop desk"
+            src="/backdrop.jpeg"
+            alt="Balloon and party styling display at an event"
             fill
             className="object-cover object-center"
             sizes="100vw"
