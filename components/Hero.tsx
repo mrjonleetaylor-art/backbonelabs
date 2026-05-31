@@ -1,6 +1,6 @@
 "use client"
 import { useRef, useState, useCallback } from "react"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { PHONE_DISPLAY, PHONE_HREF } from "@/lib/contact"
 import CallTranscript, { type CallTranscriptHandle } from "@/components/CallTranscript"
 import CallbackForm from "@/components/CallbackForm"
@@ -13,10 +13,21 @@ const slideUp = (delay: number) => ({
   transition: { duration: 0.6, ease, delay },
 })
 
+// Keyed to CallTranscript's scenario order, so the summary card matches the
+// transcript playing above it.
+const callSummaries = [
+  { caller: "Marcus T.", request: "Table for 4, Saturday 7pm", contact: "0412 XXX XXX", status: "Booking confirmed. Reminder scheduled." },
+  { caller: "New caller", request: "Bunch of sunflowers, Saturday pickup", contact: "0412 XXX XXX", status: "Order captured. Set aside for pickup." },
+  { caller: "New patient", request: "Checkup, Tuesday 10am", contact: "0412 XXX XXX", status: "Appointment confirmed." },
+  { caller: "New caller", request: "Tax question, property sale", contact: "0412 XXX XXX", status: "Message taken. Team to call back." },
+]
+
 export default function Hero() {
   const [activeConv, setActiveConv] = useState(0)
   const [callbackOpen, setCallbackOpen] = useState(false)
   const transcriptRef = useRef<CallTranscriptHandle>(null)
+  const reduceMotion = useReducedMotion()
+  const summary = callSummaries[activeConv] ?? callSummaries[0]
 
   const handleConvChange = useCallback((idx: number) => setActiveConv(idx), [])
 
@@ -129,24 +140,33 @@ export default function Hero() {
               <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400 mb-3">
                 Call Summary &middot; 2 mins ago
               </p>
-              <div className="space-y-1.5 text-[13px] leading-relaxed">
-                <div>
-                  <span className="text-slate-400">Caller: </span>
-                  <span className="text-slate-900 font-medium">Marcus T.</span>
-                </div>
-                <div>
-                  <span className="text-slate-400">Request: </span>
-                  <span className="text-slate-900">Table for 4, Saturday 7pm</span>
-                </div>
-                <div>
-                  <span className="text-slate-400">Contact: </span>
-                  <span className="text-slate-900">0412 XXX XXX</span>
-                </div>
-                <div>
-                  <span className="text-slate-400">Status: </span>
-                  <span className="text-[#F59E0B] font-semibold">Booking confirmed. Reminder scheduled.</span>
-                </div>
-              </div>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeConv}
+                  initial={reduceMotion ? false : { opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
+                  transition={reduceMotion ? { duration: 0 } : { duration: 0.25, ease }}
+                  className="space-y-1.5 text-[13px] leading-relaxed"
+                >
+                  <div>
+                    <span className="text-slate-400">Caller: </span>
+                    <span className="text-slate-900 font-medium">{summary.caller}</span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400">Request: </span>
+                    <span className="text-slate-900">{summary.request}</span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400">Contact: </span>
+                    <span className="text-slate-900">{summary.contact}</span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400">Status: </span>
+                    <span className="text-[#F59E0B] font-semibold">{summary.status}</span>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
             </div>
 
           </motion.div>
