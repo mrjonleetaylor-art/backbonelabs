@@ -156,17 +156,10 @@ export async function POST(req: Request) {
       }
     }
 
-    // 2. Create. Deterministic idempotency key on agent + phone (or agent +
-    //    name when phone is absent) so two rapid tool calls collapse to one
-    //    Square customer even if the phone search above missed on both.
-    const idempotencySeed = normalisedPhone
-      ? `${agent_id}:${normalisedPhone}`
-      : `${agent_id}:${givenName}:${familyName ?? ''}:${emailAddress ?? ''}`;
-    const idempotencyKey = crypto
-      .createHash('sha256')
-      .update(idempotencySeed)
-      .digest('hex')
-      .slice(0, 45);
+    // Random idempotency key — duplicate prevention is handled by the phone
+    // dedupe-search above. A deterministic key caused IDEMPOTENCY_KEY_REUSED
+    // failures on any recycled phone number.
+    const idempotencyKey = crypto.randomUUID();
 
     const result = await squareClient.customers.create({
       idempotencyKey,
