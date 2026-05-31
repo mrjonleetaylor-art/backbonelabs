@@ -86,6 +86,7 @@ export async function POST(req: Request) {
     family_name?: string;
     phone_number?: string;
     email?: string;
+    address?: string;
   };
   try {
     body = await req.json();
@@ -93,7 +94,7 @@ export async function POST(req: Request) {
     return json(FALLBACK);
   }
 
-  const { agent_id, given_name, family_name, phone_number, email } = body;
+  const { agent_id, given_name, family_name, phone_number, email, address } = body;
 
   if (!agent_id) {
     return json(FALLBACK);
@@ -114,6 +115,11 @@ export async function POST(req: Request) {
   const normalisedPhone = phone_number ? normalisePhone(phone_number) : null;
   const familyName = family_name?.trim() || undefined;
   const emailAddress = email?.trim() || undefined;
+  // Free-text delivery address → Square address (line 1 only; team tidies in POS).
+  const addressLine = address?.trim();
+  const squareAddress = addressLine
+    ? { addressLine1: addressLine, country: 'AU' as const }
+    : undefined;
 
   const supabase = createClient(
     process.env.SUPABASE_URL!,
@@ -167,6 +173,7 @@ export async function POST(req: Request) {
       familyName,
       phoneNumber: normalisedPhone ?? undefined,
       emailAddress,
+      address: squareAddress,
     });
 
     const created = result.customer;
