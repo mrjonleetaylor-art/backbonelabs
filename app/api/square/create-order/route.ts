@@ -179,9 +179,12 @@ export async function POST(req: Request) {
       let line: ResolvedLine = { name: term, quantity: qty, price: 'price on request', matched: false };
       try {
         const search = await squareClient.catalog.searchItems({ textFilter: term, limit: 5 });
-        const item = (search.items ?? []).find(
+        const items = (search.items ?? []).filter(
           (it): it is Extract<typeof it, { type: 'ITEM' }> => it.type === 'ITEM'
         );
+        const item =
+          items.find((it) => it.itemData?.name?.toLowerCase() === term.toLowerCase().trim())
+          ?? items[0];
         const variation = item?.itemData?.variations?.[0];
         const variationId =
           variation?.type === 'ITEM_VARIATION' ? variation.id : undefined;
