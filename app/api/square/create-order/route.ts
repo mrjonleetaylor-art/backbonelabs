@@ -140,11 +140,19 @@ export async function POST(req: Request) {
     return json(FALLBACK);
   }
 
-  const { agent_id, square_customer_id, items, fulfillment_type, when_text, address, recipient_name } = body;
+  const { agent_id, items, fulfillment_type, when_text, address, recipient_name } = body;
 
   if (!agent_id || !items || !items.trim()) {
     return json(FALLBACK);
   }
+
+  // Guard against a hallucinated customer id. Real Square customer IDs are
+  // ~26-char uppercase alphanumerics. The agent has been seen inventing values
+  // like "sarah_square_id" — reject anything that isn't ID-shaped so we don't
+  // attach an order to a non-existent customer.
+  const rawCustomerId = body.square_customer_id?.trim();
+  const square_customer_id =
+    rawCustomerId && /^[A-Z0-9]{20,}$/.test(rawCustomerId) ? rawCustomerId : null;
 
   const fulfillmentType = (fulfillment_type ?? '').toLowerCase() === 'delivery' ? 'delivery' : 'pickup';
 
@@ -219,6 +227,35 @@ export async function POST(req: Request) {
             basePriceMoney: { amount: BigInt(0), currency: 'AUD' as const },
           }
     );
+
+    // 1b. Delivery fee as a real line item, looked up from the catalog by suburb.
+    //     The fee must come from Square, never from the agent's mouth (it has been
+    //     seen inventing fees like "$13 to Sutherland"). If we can't match a zone,
+    //     we add NO delivery line and the summary says the team will confirm it.
+    let deliveryFee: { name: string; amount: bigint } | null = null;
+    if (fulfillmentType === 'delivery' && address?.trim()) {
+      // Suburb is best-effort: last alphabetic comma-separated chunk, or last words.
+      const parts = address.split(',').map((p) => p.trim()).filter(Boolean);
+      const tail = parts[parts.length - 1] ?? '';
+      const suburbGuess = tail.replace(/\b\d{4}\b/g, '').replace(/[^a-zA-Z\s]/g, '').trim();
+      if (suburbGuess.length >= 3) {
+        try {
+          const dz = await squareClient.catalog.searchItems({ textFilter: `Delivery ${suburbGuess}`, limit: 10 });
+          const zone = (dz.items ?? [])
+            .filter((it): it is Extract<typeof it, { type: 'ITEM' }> => it.type === 'ITEM')
+            .find((it) => it.itemData?.name?.toLowerCase() === `delivery — ${suburbGuess.toLowerCase()}`);
+          const zVar = zone?.itemData?.variations?.[0];
+          const zId = zVar?.type === 'ITEM_VARIATION' ? zVar.id : undefined;
+          const zPrice = zVar?.type === 'ITEM_VARIATION' ? zVar.itemVariationData?.priceMoney : undefined;
+          if (zone && zId) {
+            lineItems.push({ catalogObjectId: zId, quantity: '1' });
+            deliveryFee = { name: zone.itemData?.name ?? `Delivery — ${suburbGuess}`, amount: zPrice?.amount ?? BigInt(0) };
+          }
+        } catch (e) {
+          console.error('[create-order] delivery zone lookup failed', { suburbGuess, e: e instanceof Error ? e.message : String(e) });
+        }
+      }
+    }
 
     // 3. Build the single fulfillment. Caller's date phrase goes verbatim in the
     //    note; the timestamp is a team-finalised placeholder.
@@ -303,14 +340,29 @@ export async function POST(req: Request) {
           ? ` for delivery to ${address.trim()}`
           : ' for delivery'
         : ' for pickup';
+    // Total comes straight from the created order (includes the delivery line if
+    // one was added), so the spoken total always matches what's in Square.
     const total = formatPrice(order.totalMoney?.amount, order.totalMoney?.currency);
     const totalText = total !== 'price on request' && total !== 'free' ? `, total ${total}` : '';
+
+    // Delivery clause: state the looked-up fee, or that the team will confirm it.
+    let deliveryText = '';
+    if (fulfillmentType === 'delivery') {
+      if (deliveryFee) {
+        deliveryText = deliveryFee.amount === BigInt(0)
+          ? ' Delivery is free to that area.'
+          : ` Delivery is ${formatPrice(deliveryFee.amount, 'AUD')}.`;
+      } else if (address?.trim()) {
+        deliveryText = ' The team will confirm the delivery cost for that address.';
+      }
+    }
 
     return json({
       created: true,
       order_id: order.id,
+      delivery_fee: deliveryFee ? formatPrice(deliveryFee.amount, 'AUD') : null,
       line_items: resolved.map((r) => ({ name: r.name, quantity: r.quantity, price: r.price, matched: r.matched })),
-      summary: `That's ${itemsText}${where}${whenPhrase}${totalText}. I've put that through for the team to confirm.`,
+      summary: `That's ${itemsText}${where}${whenPhrase}${totalText}.${deliveryText} I've put that through for the team to confirm.`,
     });
   } catch (err) {
     console.error('[create-order] Square Orders API error', {
