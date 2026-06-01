@@ -1,11 +1,13 @@
 import type { Metadata } from "next"
 import Nav from "@/components/Nav"
 import Hero from "@/components/Hero"
+import TrustStrip from "@/components/TrustStrip"
 import DemoCall from "@/components/DemoCall"
 import Problem from "@/components/Problem"
-import DashboardPreview from "@/components/DashboardPreview"
+import Reliability from "@/components/Reliability"
 import HowItWorks from "@/components/HowItWorks"
-import WhatThomas from "@/components/WhatThomas"
+import Control from "@/components/Control"
+import DashboardFeature from "@/components/DashboardFeature"
 // import SampleCalls from "@/components/SampleCalls" — hidden until real recordings available
 import ROICalculator from "@/components/ROICalculator"
 import Pricing from "@/components/Pricing"
@@ -47,11 +49,13 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
+        <TrustStrip />
         <DemoCall />
         <Problem />
+        <Reliability />
         <HowItWorks />
-        <DashboardPreview />
-        <WhatThomas />
+        <Control />
+        <DashboardFeature />
         {/* <SampleCalls /> — hidden until real call recordings are available */}
         <ROICalculator />
         <Pricing />
