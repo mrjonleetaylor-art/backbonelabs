@@ -58,13 +58,12 @@ export default function ROICalculator() {
   }, [revenueAtRisk, mv])
 
   return (
-    <section className="bg-ink py-24 border-t border-hairline" ref={sectionRef}>
+    <section className="bg-ink-2 py-24" ref={sectionRef}>
       <div className="max-w-[620px] mx-auto px-6">
 
         <motion.div
           initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease }}
           className="mb-10"
         >
@@ -76,8 +75,7 @@ export default function ROICalculator() {
 
         <motion.div
           initial={{ opacity: 0, y: 32 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease, delay: 0.1 }}
           className="rounded-2xl bg-white shadow-[0_8px_32px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.2)]"
         >
@@ -183,7 +181,7 @@ export default function ROICalculator() {
                   />
                 </div>
 
-                <div className="px-8 pb-8 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="px-6 pb-7 pt-1 mx-2 mb-2 rounded-xl bg-paper grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <OutputCard
                     label="Missed calls per month"
                     value={String(missedCalls)}

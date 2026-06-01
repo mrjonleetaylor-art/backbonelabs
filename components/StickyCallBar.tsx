@@ -5,7 +5,7 @@ export default function StickyCallBar() {
   return (
     <a
       href={PHONE_HREF}
-      className="lg:hidden fixed bottom-0 inset-x-0 z-40 flex items-center justify-center gap-3 bg-[#1E3A5F] text-white h-[60px] text-[16px] font-semibold"
+      className="lg:hidden fixed bottom-0 inset-x-0 z-40 flex items-center justify-center gap-3 bg-ink text-white h-[60px] text-[16px] font-semibold"
     >
       <PhoneIcon />
       {PHONE_DISPLAY}

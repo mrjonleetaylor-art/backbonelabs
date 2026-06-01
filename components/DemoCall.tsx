@@ -1,8 +1,5 @@
 "use client"
-import { motion } from "framer-motion"
-import { PHONE_HREF, EMAIL_HREF } from "@/lib/contact"
-
-const ease = [0.22, 1, 0.36, 1] as const
+import { PHONE_DISPLAY, PHONE_HREF, EMAIL_HREF } from "@/lib/contact"
 
 const QUESTIONS = [
   "How does setup work?",
@@ -12,13 +9,7 @@ const QUESTIONS = [
 
 export default function DemoCall() {
   return (
-    <motion.section
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, ease }}
-      className="border-b border-hairline bg-paper-2 py-20"
-    >
+    <section className="border-b border-hairline bg-paper-2 py-20">
       <div className="max-w-[1100px] mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
@@ -39,7 +30,7 @@ export default function DemoCall() {
               className="bg-ink hover:bg-ink-3 text-white font-bold text-[17px] rounded-full px-8 py-4 inline-flex items-center gap-2.5 transition-colors shadow-[0_1px_2px_rgba(10,20,34,0.4),0_10px_24px_-10px_rgba(10,20,34,0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper-2"
             >
               <PhoneIcon />
-              Call now: 02 5302 3030
+              Call now: {PHONE_DISPLAY}
             </a>
             <div className="mt-4">
               <a
@@ -71,7 +62,7 @@ export default function DemoCall() {
 
         </div>
       </div>
-    </motion.section>
+    </section>
   )
 }
 

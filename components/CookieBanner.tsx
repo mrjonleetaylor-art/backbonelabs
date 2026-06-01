@@ -153,14 +153,14 @@ function MainView({
       <p className="text-[14px] text-slate-600 leading-[1.65] mb-4">
         RelayDesk uses cookies to keep our website working, understand how visitors use it, and improve our marketing.
         You can accept all cookies, reject non-essential cookies, or customise your preferences.{" "}
-        <Link href="/privacy" className="text-[#1E3A5F] hover:underline">
+        <Link href="/privacy" className="text-ink hover:underline">
           Privacy Policy
         </Link>
       </p>
       <div className="flex flex-col sm:flex-row gap-2.5">
         <button
           onClick={onAcceptAll}
-          className="sm:flex-none bg-[#1E3A5F] hover:bg-[#162D47] text-white text-[13px] font-semibold rounded-full px-5 py-2.5 transition-colors"
+          className="sm:flex-none bg-ink hover:bg-ink-3 text-white text-[13px] font-semibold rounded-full px-5 py-2.5 transition-colors"
         >
           Accept all
         </button>
@@ -230,7 +230,7 @@ function CustomiseView({
       <div className="mt-6 pt-5 border-t border-slate-100">
         <button
           onClick={onSave}
-          className="bg-[#1E3A5F] hover:bg-[#162D47] text-white text-[13px] font-semibold rounded-full px-6 py-2.5 transition-colors"
+          className="bg-ink hover:bg-ink-3 text-white text-[13px] font-semibold rounded-full px-6 py-2.5 transition-colors"
         >
           Save preferences
         </button>
@@ -259,7 +259,7 @@ function ToggleRow({
         <p className="text-[13px] text-slate-500 leading-[1.6]">{description}</p>
       </div>
       {disabled ? (
-        <span className="text-[11px] font-semibold text-[#1E3A5F] uppercase tracking-[0.06em] mt-0.5 flex-shrink-0 whitespace-nowrap">
+        <span className="text-[11px] font-semibold text-ink uppercase tracking-[0.06em] mt-0.5 flex-shrink-0 whitespace-nowrap">
           Always on
         </span>
       ) : (
@@ -277,8 +277,8 @@ function Toggle({ checked, onChange }: { checked: boolean; onChange?: () => void
         role="switch"
         aria-checked={checked}
         onClick={onChange}
-        className={`relative w-10 h-6 rounded-full transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E3A5F] focus-visible:ring-offset-2 ${
-          checked ? "bg-[#1E3A5F]" : "bg-slate-200"
+        className={`relative w-10 h-6 rounded-full transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 ${
+          checked ? "bg-ink" : "bg-slate-200"
         }`}
       >
         <span

@@ -45,8 +45,7 @@ function StepCard({
   return (
     <motion.div
       initial={{ opacity: 0, x: fromLeft ? -40 : 40 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: "-8%" }}
+      animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.55, ease, delay }}
       whileHover={{ y: -4, boxShadow: "0 12px 32px rgba(10,20,34,0.12), 0 2px 8px rgba(10,20,34,0.06)" }}
       className="rounded-2xl border border-hairline bg-white p-6 cursor-default shadow-[0_1px_3px_rgba(10,20,34,0.06),0_4px_12px_rgba(10,20,34,0.04)]"
@@ -77,8 +76,7 @@ export default function HowItWorks() {
 
         <motion.div
           initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease }}
           className="mb-16"
         >
@@ -118,8 +116,7 @@ export default function HowItWorks() {
                   <div className="hidden lg:flex justify-center py-6">
                     <motion.div
                       initial={{ opacity: 0, scale: 0.5 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true, margin: "-5%" }}
+                      animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.4, ease: spring }}
                       className={`w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0 relative z-10 ${stepColors[i]}`}
                     >

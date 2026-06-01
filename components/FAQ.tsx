@@ -69,8 +69,7 @@ export default function FAQ() {
 
         <motion.div
           initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease }}
           className="mb-11"
         >
@@ -85,9 +84,8 @@ export default function FAQ() {
             <motion.div
               key={faq.q}
               initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, ease, delay: i * 0.04 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, ease, delay: Math.min(i * 0.04, 0.2) }}
             >
               <div
                 className={`border-b border-hairline rounded-lg px-4 transition-colors duration-200 ${

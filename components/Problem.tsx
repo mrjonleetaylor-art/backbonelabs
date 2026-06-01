@@ -61,8 +61,7 @@ export default function Problem() {
         <div className="max-w-[1100px] mx-auto px-6 lg:px-12" ref={headlineRef}>
           <motion.div
             initial={{ opacity: 0, y: 32 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease }}
           >
             <Eyebrow className="mb-3.5">The problem</Eyebrow>
@@ -94,24 +93,25 @@ export default function Problem() {
         </motion.div>
         {/* Vignette */}
         <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 55%, rgba(10,20,34,0.08) 0%, rgba(10,20,34,0.62) 100%)" }} />
-        {/* Paper gradient bleed from above */}
+        {/* Gradient bleed: matches DemoCall's bg-paper-2 above */}
         <div
           className="absolute top-0 inset-x-0 pointer-events-none z-10"
-          style={{ height: "120px", background: "linear-gradient(to bottom, var(--color-paper), transparent)" }}
+          style={{ height: "120px", background: "linear-gradient(to bottom, var(--color-paper-2), transparent)" }}
         />
 
         {/* Quote card — right-aligned on desktop */}
         <div className="relative z-20 w-full max-w-[1100px] mx-auto px-6 lg:px-12 py-20 flex items-center justify-end">
           <motion.div
             initial={{ opacity: 0, x: 60 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, ease, delay: 0.3 }}
             className="w-full max-w-[460px]"
           >
+            {/* Solid white card — must be fully opaque; it floats over the
+                busy backdrop image so any transparency kills readability. */}
             <div
               className="bg-white rounded-xl overflow-hidden"
-              style={{ boxShadow: "0 8px 32px rgba(10,20,34,0.28), 0 2px 8px rgba(10,20,34,0.12)" }}
+              style={{ boxShadow: "0 16px 48px rgba(10,20,34,0.45), 0 4px 12px rgba(10,20,34,0.2)" }}
             >
               {/* Gold top bar */}
               <div className="h-1 bg-gold" />
