@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 import { PHONE_DISPLAY, PHONE_HREF, EMAIL_HREF } from "@/lib/contact"
+import { BrandMark } from "@/components/brand"
 
 const NAV_LINKS = [
   { label: "How it works", href: "#process" },
@@ -38,16 +39,17 @@ export default function Nav() {
           initial={{ opacity: 0, y: -14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
-          className={`max-w-[1100px] mx-auto flex items-center justify-between pl-5 pr-2.5 h-[52px] rounded-full border border-slate-900/[0.09] pointer-events-auto transition-all duration-300 ${
+          className={`max-w-[1100px] mx-auto flex items-center justify-between pl-5 pr-2.5 h-[52px] rounded-full border border-hairline pointer-events-auto transition-all duration-300 ${
             scrolled
-              ? "bg-white shadow-[0_2px_4px_rgba(15,23,42,0.06),0_8px_28px_rgba(15,23,42,0.08)]"
-              : "bg-white/[0.88] backdrop-blur-2xl shadow-[0_1px_2px_rgba(15,23,42,0.04),0_6px_24px_rgba(15,23,42,0.06)]"
+              ? "bg-paper-2 shadow-[0_2px_4px_rgba(10,20,34,0.06),0_8px_28px_rgba(10,20,34,0.08)]"
+              : "bg-paper-2/[0.88] backdrop-blur-2xl shadow-[0_1px_2px_rgba(10,20,34,0.04),0_6px_24px_rgba(10,20,34,0.06)]"
           }`}
         >
-          <Link href="/" className="flex items-center select-none">
+          <Link href="/" className="flex items-center gap-2 select-none rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper-2">
+            <BrandMark size={22} />
             <span className="text-[17px] font-bold tracking-[-0.025em]">
-              <span className="text-slate-900">Relay</span>
-              <span className="text-[#F59E0B]">Desk</span>
+              <span className="text-ink">Relay</span>
+              <span className="text-gold">Desk</span>
             </span>
           </Link>
 
@@ -57,7 +59,7 @@ export default function Nav() {
               <a
                 key={href}
                 href={href}
-                className="text-[14px] font-normal text-slate-500 hover:text-slate-900 transition-colors duration-150"
+                className="text-[14px] font-normal text-ink/55 hover:text-ink transition-colors duration-150 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper-2"
               >
                 {label}
               </a>
@@ -68,17 +70,17 @@ export default function Nav() {
           <div className="flex items-center gap-3 sm:gap-4">
             <a
               href={PHONE_HREF}
-              className="hidden sm:block text-sm font-medium text-slate-900/50 hover:text-slate-900/80 transition-colors"
+              className="hidden sm:block text-sm font-medium text-ink/50 hover:text-ink/80 transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper-2"
             >
               {PHONE_DISPLAY}
             </a>
-            <div className="w-px h-4 bg-slate-300 hidden sm:block" />
+            <div className="w-px h-4 bg-hairline hidden sm:block" />
             <motion.a
               href={EMAIL_HREF}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.15 }}
-              className="hidden sm:inline-flex whitespace-nowrap text-[13px] font-medium text-slate-700 border border-slate-300 hover:border-slate-400 hover:bg-slate-50 rounded-full px-4 py-2 transition-all"
+              className="hidden sm:inline-flex whitespace-nowrap text-[13px] font-medium text-ink border border-hairline hover:border-[rgba(10,20,34,0.2)] hover:bg-white rounded-full px-4 py-2 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper-2"
             >
               Request a callback
             </motion.a>
@@ -86,18 +88,18 @@ export default function Nav() {
               href={PHONE_HREF}
               whileHover={{
                 scale: 1.03,
-                boxShadow: "0 0 0 4px rgba(30,58,95,0.4)",
+                boxShadow: "0 0 0 4px rgba(10,20,34,0.35)",
                 transition: { duration: 0.15 },
               }}
               whileTap={{ scale: 0.97, transition: { duration: 0.1 } }}
-              className="text-[13px] font-semibold text-white bg-[#1E3A5F] hover:bg-[#162D47] rounded-full px-[18px] py-2 transition-colors"
+              className="text-[13px] font-semibold text-white bg-ink hover:bg-ink-3 rounded-full px-[18px] py-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper-2"
             >
               Give us a call
             </motion.a>
 
             {/* Hamburger — mobile only */}
             <button
-              className="sm:hidden flex items-center justify-center w-11 h-11 rounded-full text-slate-600 hover:bg-slate-100 transition-colors"
+              className="sm:hidden flex items-center justify-center w-11 h-11 rounded-full text-ink/70 hover:bg-ink/[0.06] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper-2"
               onClick={() => setOpen((v) => !v)}
               aria-label={open ? "Close menu" : "Open menu"}
             >
@@ -143,7 +145,7 @@ export default function Nav() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
               onClick={closeMenu}
-              className="fixed inset-0 bg-slate-900/40 z-40 sm:hidden"
+              className="fixed inset-0 bg-ink/40 z-40 sm:hidden"
             />
 
             {/* Drawer panel */}
@@ -153,7 +155,7 @@ export default function Nav() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -12 }}
               transition={{ duration: 0.25, ease }}
-              className="fixed top-[72px] inset-x-4 z-50 sm:hidden bg-white/[0.97] backdrop-blur-xl rounded-2xl border border-slate-900/[0.09] shadow-[0_8px_32px_rgba(15,23,42,0.14)] overflow-hidden"
+              className="fixed top-[72px] inset-x-4 z-50 sm:hidden bg-paper-2/[0.97] backdrop-blur-xl rounded-2xl border border-hairline shadow-[0_8px_32px_rgba(10,20,34,0.14)] overflow-hidden"
             >
               <div className="p-3">
                 {/* Anchor links */}
@@ -162,19 +164,19 @@ export default function Nav() {
                     key={href}
                     href={href}
                     onClick={closeMenu}
-                    className="flex items-center text-[15px] font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-50 rounded-xl px-4 py-3 transition-colors"
+                    className="flex items-center text-[15px] font-medium text-ink hover:bg-ink/[0.04] rounded-xl px-4 py-3 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-inset"
                   >
                     {label}
                   </a>
                 ))}
 
-                <div className="h-px bg-slate-100 my-2" />
+                <div className="h-px bg-hairline my-2" />
 
                 {/* Phone number */}
                 <a
                   href={PHONE_HREF}
                   onClick={closeMenu}
-                  className="flex items-center text-[15px] font-medium text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-xl px-4 py-3 transition-colors"
+                  className="flex items-center text-[15px] font-medium text-ink/60 hover:text-ink hover:bg-ink/[0.04] rounded-xl px-4 py-3 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-inset"
                 >
                   {PHONE_DISPLAY}
                 </a>
@@ -184,14 +186,14 @@ export default function Nav() {
                   <a
                     href={EMAIL_HREF}
                     onClick={closeMenu}
-                    className="block text-center text-[14px] font-medium text-slate-700 border border-slate-300 hover:bg-slate-50 rounded-full py-2.5 transition-colors"
+                    className="block text-center text-[14px] font-medium text-ink border border-hairline hover:bg-ink/[0.04] rounded-full py-2.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper-2"
                   >
                     Request a callback
                   </a>
                   <a
                     href={PHONE_HREF}
                     onClick={closeMenu}
-                    className="block text-center text-[14px] font-semibold text-white bg-[#1E3A5F] hover:bg-[#162D47] rounded-full py-2.5 transition-colors"
+                    className="block text-center text-[14px] font-semibold text-white bg-ink hover:bg-ink-3 rounded-full py-2.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper-2"
                   >
                     Give us a call
                   </a>
