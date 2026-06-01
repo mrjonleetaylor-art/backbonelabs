@@ -61,6 +61,54 @@ function formatPrice(amount: bigint | null | undefined, currency: string | null 
   return new Intl.NumberFormat('en-AU', { style: 'currency', currency: currency ?? 'AUD' }).format(n);
 }
 
+// Best-effort E.164 (AU-biased) — mirrors the create-customer endpoint.
+function normalisePhone(raw: string): string | null {
+  const cleaned = raw.replace(/[^\d+]/g, '');
+  if (cleaned.length < 6) return null;
+  if (cleaned.startsWith('+')) return cleaned;
+  if (cleaned.startsWith('0')) return `+61${cleaned.slice(1)}`;
+  if (cleaned.startsWith('61')) return `+${cleaned}`;
+  return `+${cleaned}`;
+}
+
+// Find-or-create a Square customer from a spoken name + phone. Folded into
+// create-order so the LLM makes ONE tool call and can't fumble the
+// create_customer -> create_order id hand-off. Returns the customer id or null.
+async function findOrCreateCustomer(
+  squareClient: SquareClient,
+  callerName: string | undefined,
+  callerPhone: string | undefined,
+  address: string | undefined
+): Promise<string | null> {
+  const name = callerName?.trim();
+  const phone = callerPhone ? normalisePhone(callerPhone) : null;
+  // Need at least a name or phone to make a meaningful record.
+  if (!name && !phone) return null;
+  try {
+    if (phone) {
+      const found = await squareClient.customers.search({
+        query: { filter: { phoneNumber: { exact: phone } } },
+        limit: BigInt(1),
+      });
+      const existing = found.customers?.[0];
+      if (existing?.id) return existing.id;
+    }
+    const created = await squareClient.customers.create({
+      idempotencyKey: crypto.randomUUID(),
+      givenName: name || undefined,
+      phoneNumber: phone ?? undefined,
+      address: address?.trim() ? { addressLine1: address.trim(), country: 'AU' as const } : undefined,
+    });
+    return created.customer?.id ?? null;
+  } catch (e) {
+    // Non-fatal: the order should still be created even if the customer write fails.
+    console.error('[create-order] find-or-create customer failed', {
+      e: e instanceof Error ? e.message : String(e),
+    });
+    return null;
+  }
+}
+
 function makeSquareClient(token: string) {
   return new SquareClient({
     token,
@@ -133,6 +181,8 @@ export async function POST(req: Request) {
     when_text?: string;
     address?: string;
     recipient_name?: string;
+    caller_name?: string;
+    caller_phone?: string;
   };
   try {
     body = await req.json();
@@ -140,7 +190,7 @@ export async function POST(req: Request) {
     return json(FALLBACK);
   }
 
-  const { agent_id, items, fulfillment_type, when_text, address, recipient_name } = body;
+  const { agent_id, items, fulfillment_type, when_text, address, recipient_name, caller_name, caller_phone } = body;
 
   if (!agent_id || !items || !items.trim()) {
     return json(FALLBACK);
@@ -151,7 +201,7 @@ export async function POST(req: Request) {
   // like "sarah_square_id" — reject anything that isn't ID-shaped so we don't
   // attach an order to a non-existent customer.
   const rawCustomerId = body.square_customer_id?.trim();
-  const square_customer_id =
+  const passedCustomerId =
     rawCustomerId && /^[A-Z0-9]{20,}$/.test(rawCustomerId) ? rawCustomerId : null;
 
   const fulfillmentType = (fulfillment_type ?? '').toLowerCase() === 'delivery' ? 'delivery' : 'pickup';
@@ -177,6 +227,14 @@ export async function POST(req: Request) {
 
   const squareClient = makeSquareClient(customer.square_access_token);
   const locationId = customer.square_location_id;
+
+  // Resolve the customer to link the order to, in ONE place, server-side:
+  //  - a valid pre-call/known-caller id passed in, OR
+  //  - find-or-create from the caller's spoken name + phone.
+  // This removes the two-tool create_customer -> create_order hand-off that the
+  // LLM kept fumbling (unlinked orders, wrong order, invented ids).
+  const square_customer_id =
+    passedCustomerId ?? (await findOrCreateCustomer(squareClient, caller_name, caller_phone, address));
 
   try {
     // 1. Resolve each comma-separated item against the catalog.
