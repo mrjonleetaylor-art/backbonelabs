@@ -43,30 +43,38 @@ export default async function DashboardPage() {
 
   const calendarConnected = customer.google_calendar_connected ?? false
 
+  // KPI numbers use exact head-counts, not select().length. PostgREST caps a row
+  // fetch at 1000 by default, so counting via .length silently under-reports for a
+  // busy shop (>1000 calls in the window). head:true returns the count with no rows.
   const [
-    { data: thisWeekCalls },
-    { data: lastWeekCalls },
-    { data: pendingActions },
+    { count: totalThisWeekCount },
+    { count: transferThisWeekCount },
+    { count: totalLastWeekCount },
+    { data: pendingActions, count: pendingActionsCount },
     { data: recentCalls },
     { data: upcomingAppointments },
   ] = await Promise.all([
-    admin.from('calls').select('id, outcome').eq('customer_id', customer.id).gte('started_at', weekStart.toISOString()),
-    admin.from('calls').select('id').eq('customer_id', customer.id).gte('started_at', lastWeekStart.toISOString()).lte('started_at', lastWeekEnd.toISOString()),
-    admin.from('actions').select('id, call_id, type, payload, created_at').eq('customer_id', customer.id).eq('status', 'pending').order('created_at', { ascending: false }).limit(4),
+    admin.from('calls').select('id', { count: 'exact', head: true }).eq('customer_id', customer.id).gte('started_at', weekStart.toISOString()),
+    admin.from('calls').select('id', { count: 'exact', head: true }).eq('customer_id', customer.id).gte('started_at', weekStart.toISOString()).eq('outcome', 'transfer'),
+    admin.from('calls').select('id', { count: 'exact', head: true }).eq('customer_id', customer.id).gte('started_at', lastWeekStart.toISOString()).lte('started_at', lastWeekEnd.toISOString()),
+    admin.from('actions').select('id, call_id, type, payload, created_at', { count: 'exact' }).eq('customer_id', customer.id).eq('status', 'pending').order('created_at', { ascending: false }).limit(4),
     admin.from('calls').select('id, caller_phone, started_at, duration_s, outcome').eq('customer_id', customer.id).order('started_at', { ascending: false }).limit(5),
     calendarConnected
       ? admin.from('appointments').select('id, caller_name, caller_phone, service, booked_for, status').eq('customer_id', customer.id).eq('status', 'confirmed').gte('booked_for', now.toISOString()).order('booked_for', { ascending: true }).limit(5)
-      : Promise.resolve({ data: null }),
+      : Promise.resolve({ data: null, count: 0 }),
   ])
 
-  const totalThisWeek = thisWeekCalls?.length ?? 0
-  const totalLastWeek = lastWeekCalls?.length ?? 0
+  const totalThisWeek = totalThisWeekCount ?? 0
+  const totalLastWeek = totalLastWeekCount ?? 0
   const callsDelta = totalThisWeek - totalLastWeek
 
-  const nonTransfer = thisWeekCalls?.filter(c => c.outcome !== 'transfer').length ?? 0
+  // Non-transfer = total minus transfers, computed by subtraction so null outcomes
+  // count as non-transfer (matching the previous `outcome !== 'transfer'` filter).
+  const nonTransfer = totalThisWeek - (transferThisWeekCount ?? 0)
   const tomPct = totalThisWeek > 0 ? Math.round((nonTransfer / totalThisWeek) * 100) : 0
 
-  const pendingCount = pendingActions?.length ?? 0
+  // True outstanding count (the list below is limited to 4; this is the real total).
+  const pendingCount = pendingActionsCount ?? 0
 
   // For recent calls: collect call IDs with pending callback actions
   const recentCallIds = recentCalls?.map(c => c.id) ?? []
