@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from "react"
 import { motion, AnimatePresence, useMotionValue, useInView, animate } from "framer-motion"
 import { OVERFLOW_PRICE } from "@/lib/constants"
+import { Eyebrow } from "@/components/brand"
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -57,7 +58,7 @@ export default function ROICalculator() {
   }, [revenueAtRisk, mv])
 
   return (
-    <section className="bg-slate-900 py-24 border-t border-slate-200" ref={sectionRef}>
+    <section className="bg-ink py-24 border-t border-hairline" ref={sectionRef}>
       <div className="max-w-[620px] mx-auto px-6">
 
         <motion.div
@@ -67,11 +68,8 @@ export default function ROICalculator() {
           transition={{ duration: 0.5, ease }}
           className="mb-10"
         >
-          <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold uppercase tracking-[0.09em] text-white/50 mb-3.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-white/60" />
-            ROI calculator
-          </span>
-          <h2 className="text-[clamp(28px,3.5vw,44px)] font-bold leading-[1.1] tracking-[-0.025em] text-white mt-1.5">
+          <Eyebrow tone="onDark" className="mb-3.5">ROI calculator</Eyebrow>
+          <h2 className="font-display text-[clamp(28px,3.5vw,44px)] font-bold leading-[1.1] tracking-[-0.025em] text-white mt-1.5">
             How much are missed calls costing you?
           </h2>
         </motion.div>
@@ -81,8 +79,7 @@ export default function ROICalculator() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, ease, delay: 0.1 }}
-          className="bg-white rounded-2xl"
-          style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2)" }}
+          className="rounded-2xl bg-white shadow-[0_8px_32px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.2)]"
         >
           {/* Always-visible sliders */}
           <div className="p-8 pb-6 space-y-7">
@@ -110,33 +107,36 @@ export default function ROICalculator() {
 
           {/* Hero output */}
           <div className="px-8 pb-8 text-center">
-            <p className="text-[14px] text-slate-400 mb-0.5">You&apos;re losing about</p>
+            <p className="text-[14px] text-ink/50 mb-0.5">You&apos;re losing about</p>
             <p
-              className="font-extrabold text-slate-900 tabular-nums leading-[1] tracking-[-0.04em]"
+              className="font-display font-extrabold text-ink tabular-nums leading-[1] tracking-[-0.04em]"
               style={{ fontSize: "clamp(48px, 13vw, 88px)" }}
             >
               {fmt(displayVal)}
             </p>
-            <p className="text-[14px] text-slate-400 mt-0.5 mb-6">every month.</p>
+            <p className="text-[14px] text-ink/50 mt-0.5 mb-6">every month.</p>
 
-            <p className="text-[14px] text-slate-500 leading-[1.6]">
+            <p className="text-[14px] text-ink/60 leading-[1.6]">
               RelayDesk Overflow gets these orders back for ${OVERFLOW_PRICE}/month.
             </p>
 
-            <p className="text-[17px] font-bold tabular-nums mt-2 leading-snug" style={{ color: "#F59E0B" }}>
+            <p className="text-[17px] font-bold tabular-nums mt-2 leading-snug text-gold">
               {netGainText}/month back in your pocket
             </p>
 
-            <a href="#pricing" className="inline-flex items-center gap-1 text-[13px] text-slate-400 hover:text-[#1E3A5F] transition-colors mt-4">
+            <a
+              href="#pricing"
+              className="inline-flex items-center gap-1 text-[13px] text-ink/45 hover:text-ink transition-colors mt-4 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-1"
+            >
               See pricing
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <polyline points="9 18 15 12 9 6" />
               </svg>
             </a>
 
             <button
               onClick={() => setExpanded((v) => !v)}
-              className="inline-flex items-center gap-1.5 text-[13px] text-slate-400 hover:text-[#1E3A5F] transition-colors mt-5"
+              className="inline-flex items-center gap-1.5 text-[13px] text-ink/45 hover:text-ink transition-colors mt-5 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-1"
             >
               {expanded ? "Hide the working" : "Refine the numbers"}
               <motion.span
@@ -160,7 +160,7 @@ export default function ROICalculator() {
                 transition={{ duration: 0.3, ease: "easeOut" }}
                 className="overflow-hidden"
               >
-                <div className="border-t border-slate-100 px-8 pt-7 pb-6 space-y-7">
+                <div className="border-t border-hairline px-8 pt-7 pb-6 space-y-7">
                   <SliderField
                     id="roi-answer-rate"
                     label="Calls you currently answer"
@@ -258,7 +258,7 @@ function SliderField({ id, label, value, min, max, step, display, onChange }: Sl
 
   return (
     <div>
-      <p className="block text-[13px] font-medium text-slate-700 mb-3">{label}</p>
+      <p className="block text-[13px] font-medium text-ink/70 mb-3">{label}</p>
       <div
         id={id}
         ref={trackRef}
@@ -268,7 +268,7 @@ function SliderField({ id, label, value, min, max, step, display, onChange }: Sl
         aria-valuemax={max}
         aria-valuenow={value}
         tabIndex={0}
-        className="relative cursor-pointer select-none focus:outline-none"
+        className="relative cursor-pointer select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 rounded"
         style={{ height: "52px" }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
@@ -278,10 +278,11 @@ function SliderField({ id, label, value, min, max, step, display, onChange }: Sl
       >
         {/* Track */}
         <div
-          className="absolute inset-x-0 rounded-full bg-slate-200 pointer-events-none"
+          className="absolute inset-x-0 rounded-full bg-paper-2 pointer-events-none"
           style={{ top: "50%", transform: "translateY(-50%)", height: "10px" }}
         >
-          <div className="h-full rounded-full bg-[#F59E0B]" style={{ width: `${pct}%` }} />
+          {/* Gold fill */}
+          <div className="h-full rounded-full bg-gold" style={{ width: `${pct}%` }} />
         </div>
 
         {/* Fader grip */}
@@ -293,9 +294,9 @@ function SliderField({ id, label, value, min, max, step, display, onChange }: Sl
             style={{
               width: "56px",
               height: "46px",
-              background: "#1E3A5F",
+              background: "var(--color-ink)",
               borderRadius: "10px",
-              boxShadow: "0 0 0 3px rgba(30,58,95,0.22), 0 6px 18px rgba(30,58,95,0.38)",
+              boxShadow: "0 0 0 3px rgba(10,20,34,0.22), 0 6px 18px rgba(10,20,34,0.38)",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -314,7 +315,7 @@ function SliderField({ id, label, value, min, max, step, display, onChange }: Sl
           </div>
         </div>
       </div>
-      <div className="flex justify-between text-[11px] text-slate-400 mt-1.5">
+      <div className="flex justify-between text-[11px] text-ink/40 mt-1.5">
         <span>{min}</span>
         <span>{max}</span>
       </div>
@@ -330,13 +331,13 @@ type OutputCardProps = {
 
 function OutputCard({ label, value, highlight }: OutputCardProps) {
   return (
-    <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
-      <p className="text-[11px] font-medium uppercase tracking-[0.07em] text-slate-400 mb-2 leading-[1.4]">
+    <div className="bg-paper border border-hairline rounded-xl p-5">
+      <p className="text-[11px] font-medium uppercase tracking-[0.07em] text-ink/50 mb-2 leading-[1.4]">
         {label}
       </p>
       <p
         className="text-[26px] font-bold tracking-[-0.03em] leading-none tabular-nums"
-        style={{ color: highlight ? "#F59E0B" : "#0F172A" }}
+        style={{ color: highlight ? "var(--color-gold)" : "var(--color-ink)" }}
       >
         {value}
       </p>
@@ -346,7 +347,7 @@ function OutputCard({ label, value, highlight }: OutputCardProps) {
 
 function ChevronDown() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M6 9l6 6 6-6" />
     </svg>
   )

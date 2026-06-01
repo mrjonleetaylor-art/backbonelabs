@@ -1,6 +1,7 @@
 "use client"
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { Eyebrow } from "@/components/brand"
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -63,7 +64,7 @@ export default function FAQ() {
   const [open, setOpen] = useState<number | null>(null)
 
   return (
-    <section id="faq" className="bg-slate-50 py-24 border-t border-slate-200">
+    <section id="faq" className="bg-paper py-24 border-t border-hairline">
       <div className="max-w-[1100px] mx-auto px-6 lg:px-12">
 
         <motion.div
@@ -73,11 +74,8 @@ export default function FAQ() {
           transition={{ duration: 0.5, ease }}
           className="mb-11"
         >
-          <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold uppercase tracking-[0.09em] text-[#1E3A5F] mb-3.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
-            FAQ
-          </span>
-          <h2 className="text-[clamp(28px,3.5vw,44px)] font-bold leading-[1.1] tracking-[-0.025em] text-slate-900 mt-1.5">
+          <Eyebrow className="mb-3.5">FAQ</Eyebrow>
+          <h2 className="font-display text-[clamp(28px,3.5vw,44px)] font-bold leading-[1.1] tracking-[-0.025em] text-ink mt-1.5">
             Common questions
           </h2>
         </motion.div>
@@ -92,29 +90,30 @@ export default function FAQ() {
               transition={{ duration: 0.4, ease, delay: i * 0.04 }}
             >
               <div
-                className={`border-b border-slate-200 rounded-lg px-4 transition-colors duration-200 ${
-                  open === i ? "bg-slate-100" : "bg-transparent"
+                className={`border-b border-hairline rounded-lg px-4 transition-colors duration-200 ${
+                  open === i ? "bg-ink/[0.03]" : "bg-transparent"
                 }`}
               >
                 <button
                   onClick={() => setOpen(open === i ? null : i)}
-                  className="w-full flex items-center justify-between gap-4 py-[19px] text-left group"
+                  className="w-full flex items-center justify-between gap-4 py-[19px] text-left group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-inset rounded"
                   aria-expanded={open === i}
                   aria-controls={`faq-answer-${i}`}
                 >
-                  <span className="text-[17px] font-semibold text-slate-900 group-hover:text-[#1E3A5F] transition-colors tracking-[-0.01em]">
+                  <span className="text-[17px] font-semibold text-ink group-hover:text-gold transition-colors tracking-[-0.01em]">
                     {faq.q}
                   </span>
                   <motion.svg
                     animate={{ rotate: open === i ? 180 : 0 }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
-                    className={`flex-shrink-0 w-5 h-5 transition-colors ${open === i ? "text-[#1E3A5F]" : "text-slate-400"}`}
+                    className={`flex-shrink-0 w-5 h-5 transition-colors ${open === i ? "text-gold" : "text-ink/35"}`}
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
+                    aria-hidden="true"
                   >
                     <path d="M6 9l6 6 6-6" />
                   </motion.svg>
@@ -135,7 +134,7 @@ export default function FAQ() {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.2, delay: 0.1 }}
-                        className="text-[15px] text-slate-500 leading-[1.7] pb-[18px] -mt-1"
+                        className="text-[15px] text-ink/60 leading-[1.7] pb-[18px] -mt-1"
                       >
                         {faq.a}
                       </motion.p>

@@ -2,6 +2,7 @@
 import { motion } from "framer-motion"
 import { PHONE_HREF } from "@/lib/contact"
 import { OVERFLOW_PRICE, RECEPTIONIST_PRICE, OPERATOR_PRICE } from "@/lib/constants"
+import { Eyebrow } from "@/components/brand"
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -13,7 +14,7 @@ type Tier = {
   callsIncluded: string
   goodFor: string
   badge?: string
-  variant: "light" | "violet" | "dark"
+  variant: "light" | "gold" | "dark"
 }
 
 const tiers: Tier[] = [
@@ -49,7 +50,7 @@ const tiers: Tier[] = [
     callsIncluded: "1,000 calls/month included",
     goodFor: "For when every call counts.",
     badge: "Most popular",
-    variant: "violet",
+    variant: "gold",
   },
   {
     name: "Operator",
@@ -81,8 +82,8 @@ const cardItem = {
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease } },
 }
 
-function CheckIcon({ variant }: { variant: "light" | "violet" | "dark" }) {
-  const color = variant === "dark" ? "rgba(255,255,255,0.7)" : "#1E3A5F"
+function CheckIcon({ variant }: { variant: "light" | "gold" | "dark" }) {
+  const color = variant === "dark" ? "rgba(255,255,255,0.7)" : "var(--color-ink)"
   return (
     <svg
       className="w-[14px] h-[14px] flex-shrink-0 mt-[2px]"
@@ -92,6 +93,7 @@ function CheckIcon({ variant }: { variant: "light" | "violet" | "dark" }) {
       strokeWidth="2.5"
       strokeLinecap="round"
       strokeLinejoin="round"
+      aria-hidden="true"
     >
       <path d="M20 6 9 17l-5-5" />
     </svg>
@@ -100,48 +102,51 @@ function CheckIcon({ variant }: { variant: "light" | "violet" | "dark" }) {
 
 function PricingCard({ tier }: { tier: Tier }) {
   const isLight = tier.variant === "light"
-  const isViolet = tier.variant === "violet"
+  const isGold = tier.variant === "gold"
+  const isDark = tier.variant === "dark"
 
-  const bg = isLight ? "#ffffff" : isViolet ? "#FEF3C7" : "#0F172A"
-  const textPrimary = isLight ? "text-slate-900" : isViolet ? "text-slate-900" : "text-white"
-  const textMuted = isLight ? "text-slate-500" : isViolet ? "text-slate-600" : "text-white/60"
-  const textFeature = isLight ? "text-slate-700" : isViolet ? "text-slate-700" : "text-white/75"
-  const divider = isLight ? "border-slate-100" : isViolet ? "border-slate-900/10" : "border-white/[0.12]"
-  const badgeBg = isViolet ? "bg-[#1E3A5F] text-white" : ""
-  const goodForColor = isLight ? "text-slate-500" : isViolet ? "text-slate-600" : "text-white/55"
-  const callsColor = isLight ? "text-slate-400" : isViolet ? "text-slate-400" : "text-white/45"
-  const borderStyle = isLight ? "1px solid #E2E8F0" : isViolet ? "1px solid #FDE68A" : "none"
+  // Middle card: warm gold-cream surface with gold border/glow.
+  // Dark card: ink surface.
+  const bg = isDark ? "var(--color-ink)" : isGold ? "#FDF6E4" : "#ffffff"
+  const textPrimary = isDark ? "text-white" : "text-ink"
+  const textMuted = isDark ? "text-white/60" : "text-ink/60"
+  const textFeature = isDark ? "text-white/75" : "text-ink/80"
+  const divider = isDark ? "border-white/[0.12]" : isGold ? "border-[rgba(245,165,36,0.25)]" : "border-hairline"
+  const goodForColor = isDark ? "text-white/55" : "text-ink/55"
+  const callsColor = isDark ? "text-white/45" : "text-ink/40"
+  const borderStyle = isDark
+    ? "none"
+    : isGold
+      ? "1px solid rgba(245,165,36,0.35)"
+      : "1px solid var(--color-hairline)"
+  const boxShadow = isGold
+    ? "0 16px 48px rgba(245,165,36,0.18), 0 4px_12px rgba(245,165,36,0.10)"
+    : isLight
+      ? "0 1px 3px rgba(10,20,34,0.06), 0 4px 16px rgba(10,20,34,0.06)"
+      : "0 4px 24px rgba(0,0,0,0.35)"
 
   return (
     <motion.div
       variants={cardItem}
       whileHover={{
-        y: isViolet ? -16 : -5,
-        ...(isViolet ? { boxShadow: "0 20px 56px rgba(245,158,11,0.18)" } : {}),
+        y: isGold ? -16 : -5,
+        ...(isGold ? { boxShadow: "0 20px 56px rgba(245,165,36,0.22)" } : {}),
         transition: { type: "spring", stiffness: 280, damping: 22 },
       }}
-      className={`flex flex-col rounded-2xl h-full ${isViolet ? "lg:translate-y-[-12px] lg:scale-[1.03]" : ""}`}
-      style={{
-        background: bg,
-        border: borderStyle,
-        boxShadow: isViolet
-          ? "0 16px 48px rgba(245,158,11,0.12), 0 4px 12px rgba(245,158,11,0.08)"
-          : isLight
-          ? "0 1px 3px rgba(15,23,42,0.06), 0 4px 16px rgba(15,23,42,0.06)"
-          : "0 4px 24px rgba(0,0,0,0.25)",
-      }}
+      className={`flex flex-col rounded-2xl h-full ${isGold ? "lg:translate-y-[-12px] lg:scale-[1.03]" : ""}`}
+      style={{ background: bg, border: borderStyle, boxShadow }}
     >
       {/* Header */}
       <div className="p-7 pb-5">
         {tier.badge && (
-          <span className={`inline-flex items-center text-[11px] font-semibold rounded-full px-3 py-1 tracking-[0.04em] mb-4 ${badgeBg}`}>
+          <span className="inline-flex items-center text-[11px] font-semibold rounded-full px-3 py-1 tracking-[0.04em] mb-4 bg-ink text-white">
             {tier.badge}
           </span>
         )}
-        <div className={`text-[20px] font-bold mb-1 ${textPrimary}`}>{tier.name}</div>
+        <div className={`font-display text-[20px] font-bold mb-1 ${textPrimary}`}>{tier.name}</div>
         <p className={`text-[13px] leading-[1.5] mb-6 ${textMuted}`}>{tier.tagline}</p>
         <div className="flex items-baseline gap-1 mb-1">
-          <span className={`text-[52px] font-extrabold leading-none tracking-[-0.04em] ${textPrimary}`}>
+          <span className={`font-display text-[52px] font-extrabold leading-none tracking-[-0.04em] ${textPrimary}`}>
             ${tier.price}
           </span>
           <span className={`text-[14px] ${textMuted}`}>/month</span>
@@ -166,15 +171,12 @@ function PricingCard({ tier }: { tier: Tier }) {
         <p className={`text-[11.5px] mb-4 ${callsColor}`}>{tier.callsIncluded} - $1 per additional call</p>
         <motion.a
           href={PHONE_HREF}
-          whileHover={{
-            scale: 1.02,
-            transition: { duration: 0.15 },
-          }}
+          whileHover={{ scale: 1.02, transition: { duration: 0.15 } }}
           whileTap={{ scale: 0.97, transition: { duration: 0.1 } }}
-          className={`block w-full text-center text-[14px] font-semibold rounded-full py-3 transition-colors ${
-            isLight || isViolet
-              ? "bg-[#1E3A5F] hover:bg-[#162D47] text-white"
-              : "bg-white/[0.15] hover:bg-white/[0.25] text-white border border-white/[0.2]"
+          className={`block w-full text-center text-[14px] font-semibold rounded-full py-3 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${
+            isDark
+              ? "bg-white/[0.15] hover:bg-white/[0.25] text-white border border-white/[0.2] focus-visible:ring-white focus-visible:ring-offset-ink"
+              : "bg-ink hover:bg-ink-3 text-white focus-visible:ring-ink focus-visible:ring-offset-white"
           }`}
         >
           Give us a call
@@ -186,7 +188,7 @@ function PricingCard({ tier }: { tier: Tier }) {
 
 export default function Pricing() {
   return (
-    <section id="pricing" className="bg-white py-24 border-t border-slate-200">
+    <section id="pricing" className="bg-paper-2 py-24 border-t border-hairline">
       <div className="max-w-[1100px] mx-auto px-6 lg:px-12">
 
         <motion.div
@@ -196,11 +198,8 @@ export default function Pricing() {
           transition={{ duration: 0.5, ease }}
           className="mb-14"
         >
-          <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold uppercase tracking-[0.09em] text-[#1E3A5F] mb-3.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
-            Pricing
-          </span>
-          <h2 className="text-[clamp(28px,3.5vw,44px)] font-bold leading-[1.1] tracking-[-0.025em] text-slate-900 mt-1.5">
+          <Eyebrow className="mb-3.5">Pricing</Eyebrow>
+          <h2 className="font-display text-[clamp(28px,3.5vw,44px)] font-bold leading-[1.1] tracking-[-0.025em] text-ink mt-1.5">
             Simple pricing. Real outcomes.
           </h2>
         </motion.div>
@@ -222,7 +221,7 @@ export default function Pricing() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, ease, delay: 0.4 }}
-          className="text-[13px] text-slate-400 italic mt-10"
+          className="text-[13px] text-ink/45 italic mt-10"
         >
           Refer another business owner to RelayDesk. If they sign up, you both get a free month.
         </motion.p>

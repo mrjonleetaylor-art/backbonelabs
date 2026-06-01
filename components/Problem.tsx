@@ -2,6 +2,7 @@
 import { useRef, useState, useEffect } from "react"
 import { motion, AnimatePresence, useScroll, useTransform, useInView } from "framer-motion"
 import Image from "next/image"
+import { Eyebrow } from "@/components/brand"
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -15,8 +16,7 @@ function WordSwap({ trigger }: { trigger: boolean }) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease }}
-            style={{ color: "#1E3A5F" }}
-            className="inline-block"
+            className="inline-block text-ink"
           >
             answered
           </motion.span>
@@ -56,8 +56,8 @@ export default function Problem() {
 
   return (
     <section className="overflow-hidden">
-      {/* White: headline + body copy — left-aligned */}
-      <div className="bg-white pt-24 pb-16">
+      {/* Headline + body copy */}
+      <div className="bg-paper pt-24 pb-16">
         <div className="max-w-[1100px] mx-auto px-6 lg:px-12" ref={headlineRef}>
           <motion.div
             initial={{ opacity: 0, y: 32 }}
@@ -65,14 +65,11 @@ export default function Problem() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease }}
           >
-            <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold uppercase tracking-[0.09em] text-[#1E3A5F] mb-3.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
-              The problem
-            </span>
-            <h2 className="text-[clamp(32px,4vw,54px)] font-bold leading-[1.08] tracking-[-0.028em] text-slate-900 mt-1.5 mb-5 lg:max-w-[700px]">
+            <Eyebrow className="mb-3.5">The problem</Eyebrow>
+            <h2 className="font-display text-[clamp(32px,4vw,54px)] font-bold leading-[1.08] tracking-[-0.028em] text-ink mt-1.5 mb-5 lg:max-w-[700px]">
               Missed calls become <WordSwap trigger={wordSwapped} /> orders.
             </h2>
-            <p className="text-[17px] text-slate-500 leading-[1.7] max-w-[480px]">
+            <p className="text-[17px] text-ink/60 leading-[1.7] max-w-[480px]">
               Your busiest hours are when calls matter most. When you&apos;re with a customer, on a
               delivery, or elbow-deep in a Monday arrangement run, the phone still needs answering.
             </p>
@@ -80,7 +77,7 @@ export default function Problem() {
         </div>
       </div>
 
-      {/* Image: parallax flower, right-aligned quote card */}
+      {/* Image: parallax backdrop, right-aligned quote card */}
       <div ref={imageRef} className="relative overflow-hidden" style={{ minHeight: "62vh" }}>
         {/* Parallax background */}
         <motion.div
@@ -96,11 +93,11 @@ export default function Problem() {
           />
         </motion.div>
         {/* Vignette */}
-        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 55%, rgba(10,15,30,0.08) 0%, rgba(10,15,30,0.62) 100%)" }} />
-        {/* White gradient bleed from above */}
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 55%, rgba(10,20,34,0.08) 0%, rgba(10,20,34,0.62) 100%)" }} />
+        {/* Paper gradient bleed from above */}
         <div
           className="absolute top-0 inset-x-0 pointer-events-none z-10"
-          style={{ height: "120px", background: "linear-gradient(to bottom, #ffffff, transparent)" }}
+          style={{ height: "120px", background: "linear-gradient(to bottom, var(--color-paper), transparent)" }}
         />
 
         {/* Quote card — right-aligned on desktop */}
@@ -114,15 +111,15 @@ export default function Problem() {
           >
             <div
               className="bg-white rounded-xl overflow-hidden"
-              style={{ boxShadow: "0 8px 32px rgba(10,15,30,0.28), 0 2px 8px rgba(10,15,30,0.12)" }}
+              style={{ boxShadow: "0 8px 32px rgba(10,20,34,0.28), 0 2px 8px rgba(10,20,34,0.12)" }}
             >
-              {/* Violet top bar */}
-              <div className="h-1 bg-[#1E3A5F]" />
+              {/* Gold top bar */}
+              <div className="h-1 bg-gold" />
               <div className="px-8 py-8">
-                <p className="text-[clamp(17px,2.2vw,24px)] font-bold text-slate-900 leading-[1.5] tracking-[-0.01em] mb-5">
+                <p className="text-[clamp(17px,2.2vw,24px)] font-bold text-ink leading-[1.5] tracking-[-0.01em] mb-5">
                   &ldquo;Being a business owner and a mum, I used to dread missing calls. Now I don&apos;t even check my missed calls anymore.&rdquo;
                 </p>
-                <p className="text-[14px] font-semibold" style={{ color: "#F59E0B" }}>
+                <p className="text-[14px] font-semibold text-gold">
                   Sheena, local business owner, Menai NSW
                 </p>
               </div>
