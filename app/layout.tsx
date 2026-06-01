@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Inter, Bricolage_Grotesque } from "next/font/google"
 import Providers from "@/components/Providers"
 import CookieBanner from "@/components/CookieBanner"
 import StickyCallBar from "@/components/StickyCallBar"
@@ -8,6 +8,16 @@ import "./globals.css"
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+})
+
+// Display typeface for the rebrand (Phase 0). Body text stays on Inter; this
+// only exposes the --font-bricolage CSS variable (mapped to --font-display /
+// the font-display utility in globals.css). Nothing consumes it yet.
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  display: "swap",
 })
 
 export const metadata: Metadata = {
@@ -45,7 +55,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={`${inter.variable} ${bricolage.variable}`}>
       <head>
         <script
           type="application/ld+json"

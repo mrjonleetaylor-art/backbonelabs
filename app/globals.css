@@ -2,6 +2,7 @@
 
 @theme inline {
   --font-sans: var(--font-inter), "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bricolage), "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
   --color-beige: #FAF9F5;
   --color-navy: #1E3A5F;
   --color-navy-hover: #162D47;
@@ -9,6 +10,25 @@
   --color-amber: #F59E0B;
   --color-amber-hover: #D97706;
   --color-amber-light: #FEF3C7;
+}
+
+/* Rebrand palette (Phase 0 foundation). New tokens, added alongside the
+   navy/amber set above; later phases migrate sections onto these and the old
+   tokens get retired then. This is a regular @theme block (not inline) on
+   purpose: it emits :root custom properties so the values can be referenced
+   directly from the helper CSS below (e.g. .live-dot), as well as generating
+   the bg-/text-/border- utilities. */
+@theme {
+  --color-ink: #0A1422;
+  --color-ink-2: #0F1E33;
+  --color-ink-3: #1B3052;
+  --color-gold: #F5A524;
+  --color-gold-soft: #FBC56B;
+  --color-signal: #2DC2A0;
+  --color-signal-soft: #6FE0C6;
+  --color-paper: #F7F3EC;
+  --color-paper-2: #FCFAF5;
+  --color-hairline: rgba(10, 20, 34, 0.09);
 }
 
 html { scroll-behavior: smooth; }
@@ -63,6 +83,62 @@ body {
 .pulse-ring { animation: pulse-ring 2.4s ease-out infinite; }
 .dot-breathe { animation: breathe 2.2s ease-in-out infinite; }
 
+/* ---------- Rebrand primitives (Phase 0 foundation) ----------
+   Depth and motion helpers ported from the design comp. Consumed by the
+   components in components/brand and by later redesign phases. No existing
+   live section references these yet, so they are visually inert for now. */
+
+/* Pulsing "live" dot: a signal-teal dot with an expanding ring. */
+@keyframes ring {
+  0%   { transform: scale(0.6); opacity: 0.8; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+.live-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-signal);
+  position: relative;
+}
+.live-dot::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-signal);
+  animation: ring 2.2s ease-out infinite;
+}
+
+/* Audio waveform bars. Apply .wave-bar to each bar and stagger them with an
+   inline animation-delay; the height animates between a low and high state. */
+@keyframes wave {
+  0%, 100% { height: 14%; }
+  50%      { height: 88%; }
+}
+.wave-bar { animation: wave 1.1s ease-in-out infinite; }
+
+/* Film-grain overlay. Drop into a position:relative parent; soft-light blend. */
+.grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Blurred radial glows. Size and position are set by the consumer. */
+.glow-gold,
+.glow-signal {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(60px);
+}
+.glow-gold   { background: radial-gradient(circle, rgba(245, 165, 36, 0.30), transparent 62%); }
+.glow-signal { background: radial-gradient(circle, rgba(45, 194, 160, 0.22), transparent 62%); }
+
 .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 
@@ -109,5 +185,6 @@ input[type="range"]::-moz-range-thumb {
 
 @media (prefers-reduced-motion: reduce) {
   .pulse-ring, .dot-breathe, .blob-a, .blob-b, .blob-c,
-  .float-card-1, .float-card-2, .cursor-blink { animation: none; }
+  .float-card-1, .float-card-2, .cursor-blink,
+  .live-dot::after, .wave-bar { animation: none; }
 }
