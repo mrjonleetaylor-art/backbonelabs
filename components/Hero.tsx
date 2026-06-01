@@ -143,7 +143,7 @@ export default function Hero() {
   }
 
   return (
-    <section className="relative isolate overflow-hidden bg-paper pt-[120px] pb-24">
+    <section className="relative isolate overflow-hidden bg-paper pt-20 pb-16 sm:pt-[100px] lg:pt-[120px] lg:pb-24">
       {/* Depth layer: gold + signal glows and grain (Phase 0 helpers). */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <div className="glow-gold left-[-120px] top-[-200px] h-[620px] w-[620px]" />
@@ -152,7 +152,7 @@ export default function Hero() {
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-[1160px] px-7">
-        <div className="grid grid-cols-1 items-center gap-11 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
+        <div className="grid grid-cols-1 items-center gap-0 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
           {/* Left: copy */}
           <div>
             <motion.div {...rise(0.05)} className="mb-6">
@@ -170,7 +170,7 @@ export default function Hero() {
               </motion.span>
             </h1>
 
-            <motion.p {...rise(0.28)} className="mt-6 max-w-[460px] text-[19px] leading-[1.65] text-ink/60">
+            <motion.p {...rise(0.28)} className="mt-6 max-w-[460px] text-[17px] sm:text-[19px] leading-[1.65] text-ink/60">
               RelayDesk picks up when you can&apos;t, takes the order, answers the question, and sends
               you the details. No missed calls. No queue. No engaged tone.
             </motion.p>
@@ -204,6 +204,15 @@ export default function Hero() {
 
           {/* Right: interactive call demo */}
           <motion.div {...rise(0.2)}>
+            {/* Mobile separator — a clear break between pitch copy and the
+                demo unit below. Hidden on lg where the two-column grid does
+                the separating. */}
+            <div className="mt-10 mb-6 border-t border-hairline lg:hidden" />
+
+            {/* Mobile demo container — subtle surface so the pills + card
+                read as one distinct product unit, not free-floating elements.
+                Transparent on lg (the column layout does the job). */}
+            <div className="rounded-2xl bg-white/50 px-4 pb-5 pt-4 ring-1 ring-hairline backdrop-blur-[2px] lg:rounded-none lg:bg-transparent lg:p-0 lg:ring-0 lg:backdrop-blur-none">
             {/* Scenario pills */}
             <div className="mb-3.5 flex flex-wrap items-center gap-2">
               <span className="mr-0.5 text-[11.5px] font-semibold uppercase tracking-[0.06em] text-ink/55">
@@ -295,6 +304,7 @@ export default function Hero() {
                 </AnimatePresence>
               </GlassCard>
             </div>
+            </div>{/* end mobile demo container */}
           </motion.div>
         </div>
       </div>

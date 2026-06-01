@@ -43,14 +43,14 @@ const CARDS: { icon: ReactNode; tone: Tone; title: string; body: string }[] = [
   {
     icon: <ShieldCheck />,
     tone: "gold",
-    title: "Pressure-tested, not hoped",
-    body: "Hostile callers, half-sentences, thick accents, trick questions, \"are you a robot?\". We throw it all at your agent before a single real customer dials.",
+    title: "Ready for the hard calls",
+    body: "Thick accents, half-sentences, trick questions, \"are you a robot?\" — your agent handles all of it confidently before a single real customer dials.",
   },
   {
     icon: <GlobeCheck />,
     tone: "signal",
-    title: "Always a backup",
-    body: "If anything ever goes wrong mid-call, a fallback answers instantly and texts you the details. The phone never just rings out. Nothing drops silently.",
+    title: "Nothing slips through",
+    body: "Every call is answered, captured, and sent to you — orders, enquiries, the lot. Even at your busiest, no call just rings out.",
   },
   {
     icon: <SearchClock />,

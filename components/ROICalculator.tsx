@@ -217,75 +217,39 @@ type SliderProps = {
 }
 
 function SliderField({ id, label, value, min, max, step, display, onChange }: SliderProps) {
-  const trackRef = useRef<HTMLDivElement>(null)
-  const dragging = useRef(false)
   const pct = ((value - min) / (max - min)) * 100
-
-  function valueFromClientX(clientX: number) {
-    const rect = trackRef.current!.getBoundingClientRect()
-    const raw = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width))
-    const stepped = Math.round((min + raw * (max - min)) / step) * step
-    return Math.max(min, Math.min(max, stepped))
-  }
-
-  function onPointerDown(e: React.PointerEvent<HTMLDivElement>) {
-    e.currentTarget.setPointerCapture(e.pointerId)
-    dragging.current = true
-    onChange(valueFromClientX(e.clientX))
-  }
-
-  function onPointerMove(e: React.PointerEvent<HTMLDivElement>) {
-    if (!dragging.current) return
-    onChange(valueFromClientX(e.clientX))
-  }
-
-  function onPointerUp(e: React.PointerEvent<HTMLDivElement>) {
-    dragging.current = false
-    e.currentTarget.releasePointerCapture(e.pointerId)
-  }
-
-  function onKeyDown(e: React.KeyboardEvent) {
-    if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
-      e.preventDefault()
-      onChange(Math.max(min, value - step))
-    } else if (e.key === "ArrowRight" || e.key === "ArrowUp") {
-      e.preventDefault()
-      onChange(Math.min(max, value + step))
-    }
-  }
 
   return (
     <div>
       <p className="block text-[13px] font-medium text-ink/70 mb-3">{label}</p>
-      <div
-        id={id}
-        ref={trackRef}
-        role="slider"
-        aria-label={label}
-        aria-valuemin={min}
-        aria-valuemax={max}
-        aria-valuenow={value}
-        tabIndex={0}
-        className="relative cursor-pointer select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 rounded"
-        style={{ height: "52px" }}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
-        onPointerCancel={onPointerUp}
-        onKeyDown={onKeyDown}
-      >
-        {/* Track */}
+      {/* Native <input type="range"> sits invisible over the hit area.
+          It handles mouse, touch, and keyboard natively — the custom
+          pointer-event approach was unreliable on iOS/Android touch. */}
+      <div className="relative" style={{ height: "52px" }}>
+        <input
+          type="range"
+          id={id}
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={(e) => onChange(Number(e.target.value))}
+          aria-label={label}
+          className="absolute inset-0 h-full w-full cursor-pointer opacity-0 focus-visible:opacity-0"
+          style={{ zIndex: 2 }}
+        />
+
+        {/* Visual track (pointer-events-none — input handles all interaction) */}
         <div
-          className="absolute inset-x-0 rounded-full bg-paper-2 pointer-events-none"
+          className="pointer-events-none absolute inset-x-0 rounded-full bg-paper-2"
           style={{ top: "50%", transform: "translateY(-50%)", height: "10px" }}
         >
-          {/* Gold fill */}
           <div className="h-full rounded-full bg-gold" style={{ width: `${pct}%` }} />
         </div>
 
-        {/* Fader grip */}
+        {/* Visual fader grip — purely decorative */}
         <div
-          className="absolute pointer-events-none"
+          className="pointer-events-none absolute"
           style={{ left: `${pct}%`, top: "50%", transform: "translate(-50%, -50%)" }}
         >
           <div

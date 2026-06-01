@@ -9,7 +9,7 @@ const spring = [0.34, 1.56, 0.64, 1] as const
 const steps = [
   {
     number: "01",
-    title: "Investigation call",
+    title: "Discovery call",
     summary: "We learn how your business handles calls: your services, hours, and what customers ask most. About 20 minutes.",
   },
   {
