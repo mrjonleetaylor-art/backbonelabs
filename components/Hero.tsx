@@ -1,176 +1,301 @@
 "use client"
-import { useRef, useState, useCallback } from "react"
+
+import { useState } from "react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
-import { PHONE_DISPLAY, PHONE_HREF } from "@/lib/contact"
-import CallTranscript, { type CallTranscriptHandle } from "@/components/CallTranscript"
+import { PHONE_HREF } from "@/lib/contact"
 import CallbackForm from "@/components/CallbackForm"
+import { Eyebrow, Pill, GlassCard, SignalArcs } from "@/components/brand"
 
 const ease = [0.22, 1, 0.36, 1] as const
 
-const slideUp = (delay: number) => ({
-  initial: { opacity: 0, y: 32 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6, ease, delay },
-})
+// Inline-bold segments so the agent lines can emphasise the captured detail,
+// matching the comp. `b` marks a bolded run.
+type Part = { t: string; b?: boolean }
+type Line = { role: "caller" | "agent"; parts: Part[] }
 
-// Keyed to CallTranscript's scenario order, so the summary card matches the
-// transcript playing above it.
-const callSummaries = [
-  { caller: "Marcus T.", request: "Table for 4, Saturday 7pm", contact: "0412 XXX XXX", status: "Booking confirmed. Reminder scheduled." },
-  { caller: "New caller", request: "Bunch of sunflowers, Saturday pickup", contact: "0412 XXX XXX", status: "Order captured. Set aside for pickup." },
-  { caller: "New patient", request: "Checkup, Tuesday 10am", contact: "0412 XXX XXX", status: "Appointment confirmed." },
-  { caller: "New caller", request: "Tax question, property sale", contact: "0412 XXX XXX", status: "Message taken. Team to call back." },
+type Scenario = {
+  pill: string
+  avatar: string
+  avatarColor: string
+  name: string
+  meta: string
+  lines: Line[]
+  outcome: { title: string; detail: string }
+}
+
+// Placeholder demo copy, lifted verbatim from the design comp's HERO array.
+// A later copy phase revises this; do not rewrite it here.
+const SCENARIOS: Scenario[] = [
+  {
+    pill: "Order",
+    avatar: "M",
+    avatarColor: "#C77D2B",
+    name: "New caller",
+    meta: "Greenwood Florist · incoming",
+    lines: [
+      { role: "caller", parts: [{ t: "Hi, do you have sunflowers in this Saturday?" }] },
+      {
+        role: "agent",
+        parts: [
+          { t: "We do, fresh in Friday. Would you like a " },
+          { t: "bunch set aside for pickup", b: true },
+          { t: "?" },
+        ],
+      },
+      { role: "caller", parts: [{ t: "Yes please, a big one. Name's Marcus." }] },
+    ],
+    outcome: { title: "Order captured", detail: "Sunflowers, Sat pickup · summary sent to you" },
+  },
+  {
+    pill: "Booking",
+    avatar: "P",
+    avatarColor: "#1B3052",
+    name: "Priya N.",
+    meta: "Greenwood Florist · incoming",
+    lines: [
+      { role: "caller", parts: [{ t: "Can I book a consult for our wedding flowers next week?" }] },
+      {
+        role: "agent",
+        parts: [
+          { t: "Of course. I've got " },
+          { t: "Tuesday 10am or Wednesday 2pm", b: true },
+          { t: " free, which suits?" },
+        ],
+      },
+      { role: "caller", parts: [{ t: "Tuesday 10 is perfect." }] },
+    ],
+    outcome: { title: "Appointment booked", detail: "Tue 10am · reminder set, added to your calendar" },
+  },
+  {
+    pill: "Stock & delivery",
+    avatar: "J",
+    avatarColor: "#1A8C73",
+    name: "New caller",
+    meta: "Greenwood Florist · incoming",
+    lines: [
+      { role: "caller", parts: [{ t: "Do you deliver to Caringbah?" }] },
+      {
+        role: "agent",
+        parts: [
+          { t: "We do, " },
+          { t: "$15 and same-day if you order before noon", b: true },
+          { t: ". Want me to start an order?" },
+        ],
+      },
+      { role: "caller", parts: [{ t: "Yes, a get-well bunch." }] },
+    ],
+    outcome: { title: "Order captured", detail: "Caringbah delivery · same-day" },
+  },
+  {
+    pill: "Callback (wedding)",
+    avatar: "S",
+    avatarColor: "#9A4A2B",
+    name: "New caller",
+    meta: "After hours · 9:12pm",
+    lines: [
+      { role: "caller", parts: [{ t: "I know you're closed, just after a quote for a wedding in March." }] },
+      {
+        role: "agent",
+        parts: [
+          { t: "Happy to take the details and have " },
+          { t: "Sheena call you first thing", b: true },
+          { t: ". Roughly how many guests?" },
+        ],
+      },
+      { role: "caller", parts: [{ t: "About 60." }] },
+    ],
+    outcome: { title: "Lead captured", detail: "Wedding callback flagged for the morning" },
+  },
 ]
 
+const TRUST = ["Answers when you can't", "24/7 availability", "No lock-in"]
+
+// Deterministic waveform bars (no Math.random, so server and client markup
+// match). The CSS keyframe animates height; these are the at-rest heights used
+// when prefers-reduced-motion disables the animation.
+const WAVE = Array.from({ length: 24 }, (_, i) => ({
+  height: 26 + ((i * 53) % 58),
+  delay: ((i * 7) % 42) / 100,
+}))
+
 export default function Hero() {
-  const [activeConv, setActiveConv] = useState(0)
+  const [active, setActive] = useState(0)
   const [callbackOpen, setCallbackOpen] = useState(false)
-  const transcriptRef = useRef<CallTranscriptHandle>(null)
-  const reduceMotion = useReducedMotion()
-  const summary = callSummaries[activeConv] ?? callSummaries[0]
+  const reduce = useReducedMotion()
+  const scenario = SCENARIOS[active] ?? SCENARIOS[0]
 
-  const handleConvChange = useCallback((idx: number) => setActiveConv(idx), [])
+  // Entrance animation, disabled under reduced motion.
+  const rise = (delay: number) =>
+    reduce
+      ? {}
+      : {
+          initial: { opacity: 0, y: 24 },
+          animate: { opacity: 1, y: 0 },
+          transition: { duration: 0.6, ease, delay },
+        }
 
-  const handleDotClick = (i: number) => {
-    setActiveConv(i)
-    transcriptRef.current?.jumpTo(i)
+  // Crossfade for the per-scenario content on pill swap.
+  const fade = {
+    initial: reduce ? false : { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: reduce ? { opacity: 1 } : { opacity: 0 },
+    transition: { duration: reduce ? 0 : 0.25, ease },
   }
 
   return (
-    <section className="min-h-screen flex items-center bg-white overflow-hidden relative pt-[120px] pb-20">
-      <div
-        className="absolute inset-0 pointer-events-none"
-        aria-hidden="true"
-        style={{
-          background: "radial-gradient(ellipse 70% 60% at 30% 40%, rgba(30,58,95,0.04) 0%, transparent 65%)",
-        }}
-      />
+    <section className="relative isolate overflow-hidden bg-paper pt-[120px] pb-24">
+      {/* Depth layer: gold + signal glows and grain (Phase 0 helpers). */}
+      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+        <div className="glow-gold left-[-120px] top-[-200px] h-[620px] w-[620px]" />
+        <div className="glow-signal bottom-[-200px] right-[-140px] h-[560px] w-[560px]" />
+        <div className="grain" />
+      </div>
 
-      <div className="max-w-[1100px] mx-auto px-6 lg:px-12 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-
+      <div className="relative z-10 mx-auto w-full max-w-[1160px] px-7">
+        <div className="grid grid-cols-1 items-center gap-11 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
           {/* Left: copy */}
           <div>
-            <motion.div {...slideUp(0.05)} className="mb-5">
-              <span className="inline-flex items-center gap-1.5 text-[12px] font-medium text-slate-500 bg-slate-100 rounded-full px-3 py-1">
-                <span>🇦🇺</span>
+            <motion.div {...rise(0.05)} className="mb-6">
+              <Eyebrow variant="pill" live>
                 Built for Australian businesses
-              </span>
+              </Eyebrow>
             </motion.div>
-            <h1 className="text-[clamp(40px,5vw,68px)] font-extrabold leading-[1.04] tracking-[-0.032em] text-slate-900 mb-5">
-              <motion.span {...slideUp(0.1)} className="block">
+
+            <h1 className="font-display text-[clamp(44px,5.4vw,74px)] font-bold leading-[1.0] tracking-[-0.035em] text-ink">
+              <motion.span {...rise(0.1)} className="block">
                 Every call answered.
               </motion.span>
-              <motion.span {...slideUp(0.2)} className="block">
+              <motion.span {...rise(0.18)} className="block text-gold">
                 Every order captured.
               </motion.span>
             </h1>
 
-            <p className="text-[20px] text-slate-600 leading-[1.7] max-w-[460px] mb-9">
-              RelayDesk answers calls when you&apos;re busy, takes orders, handles questions,
-              and emails you the details.
-            </p>
+            <motion.p {...rise(0.28)} className="mt-6 max-w-[460px] text-[19px] leading-[1.65] text-ink/60">
+              RelayDesk picks up when you can&apos;t, takes the order, answers the question, and sends
+              you the details. No missed calls. No queue. No engaged tone.
+            </motion.p>
 
-            <motion.div {...slideUp(0.45)} className="flex flex-wrap gap-2.5 mb-11">
-              <motion.a
+            <motion.div {...rise(0.38)} className="mt-8 flex flex-wrap gap-3">
+              <a
                 href={PHONE_HREF}
-                whileHover={{ scale: 1.03, boxShadow: "0 0 0 4px rgba(30,58,95,0.25)", transition: { duration: 0.15 } }}
-                whileTap={{ scale: 0.97, transition: { duration: 0.1 } }}
-                className="inline-flex items-center gap-2 bg-[#1E3A5F] hover:bg-[#162D47] text-white text-[15px] font-semibold rounded-full px-7 py-3.5 transition-colors"
+                className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3.5 text-[15px] font-semibold text-white shadow-[0_1px_2px_rgba(10,20,34,0.4),0_10px_24px_-10px_rgba(10,20,34,0.55)] transition-transform hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
               >
                 <PhoneIcon />
-                <span className="sm:hidden">Call {PHONE_DISPLAY}</span>
-                <span className="hidden sm:inline">Give us a call</span>
-              </motion.a>
-              <motion.button
+                Give us a call
+              </a>
+              <button
+                type="button"
                 onClick={() => setCallbackOpen(true)}
-                whileHover={{ scale: 1.03, transition: { duration: 0.15 } }}
-                whileTap={{ scale: 0.97, transition: { duration: 0.1 } }}
-                className="inline-flex items-center text-[15px] font-medium text-slate-900 border border-slate-300 hover:border-slate-400 hover:bg-slate-50 rounded-full px-7 py-3.5 transition-all"
+                className="inline-flex items-center rounded-full border border-hairline bg-transparent px-6 py-3.5 text-[15px] font-semibold text-ink transition-colors hover:border-[rgba(10,20,34,0.2)] hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
               >
                 Request a callback
-              </motion.button>
+              </button>
             </motion.div>
 
-            <motion.div {...slideUp(0.55)} className="flex flex-wrap gap-6">
-              {["Answers in 2 rings", "24/7 availability", "No lock-in contract"].map((item) => (
-                <span key={item} className="flex items-center gap-2 text-[13px] text-slate-500 font-medium">
-                  <span
-                    className="w-[18px] h-[18px] rounded-full flex items-center justify-center flex-shrink-0"
-                    style={{ background: "#F59E0B" }}
-                  >
-                    <CheckIcon />
-                  </span>
+            <motion.div {...rise(0.48)} className="mt-8 flex flex-wrap gap-6">
+              {TRUST.map((item) => (
+                <span key={item} className="flex items-center gap-2 text-[13.5px] font-medium text-ink/60">
+                  <Tick />
                   {item}
                 </span>
               ))}
             </motion.div>
           </div>
 
-          {/* Right: transcript widget + scenario dots + call summary card */}
-          <motion.div {...slideUp(0.2)} className="block">
-            <div
-              className="relative h-[360px] bg-white rounded-[20px] overflow-hidden border border-slate-200"
-              style={{ boxShadow: "0 4px 6px rgba(0,0,0,0.04), 0 16px 40px rgba(0,0,0,0.10)" }}
-            >
-              <CallTranscript
-                ref={transcriptRef}
-                onConvChange={handleConvChange}
-              />
-            </div>
-
-            {/* Scenario dots */}
-            <div className="flex items-center justify-center gap-2.5 mt-4 mb-1">
-              {[0, 1, 2, 3].map((i) => (
-                <button
-                  key={i}
-                  onClick={() => handleDotClick(i)}
-                  aria-label={`Switch to scenario ${i + 1}`}
-                  className="w-2 h-2 rounded-full transition-all duration-200 focus:outline-none"
-                  style={{
-                    background: activeConv === i ? "#1E3A5F" : "#CBD5E1",
-                    transform: activeConv === i ? "scale(1.3)" : "scale(1)",
-                  }}
-                />
+          {/* Right: interactive call demo */}
+          <motion.div {...rise(0.2)}>
+            {/* Scenario pills */}
+            <div className="mb-3.5 flex flex-wrap items-center gap-2">
+              <span className="mr-0.5 text-[11.5px] font-semibold uppercase tracking-[0.06em] text-ink/55">
+                Try a call
+              </span>
+              {SCENARIOS.map((s, i) => (
+                <Pill key={s.pill} active={active === i} onClick={() => setActive(i)}>
+                  {s.pill}
+                </Pill>
               ))}
             </div>
 
-            {/* Call summary card */}
-            <div className="mt-3 bg-white rounded-xl border border-slate-200 border-l-4 border-l-[#F59E0B] px-5 py-4 shadow-md">
-              <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400 mb-3">
-                Call Summary &middot; 2 mins ago
-              </p>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeConv}
-                  initial={reduceMotion ? false : { opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
-                  transition={reduceMotion ? { duration: 0 } : { duration: 0.25, ease }}
-                  className="space-y-1.5 text-[13px] leading-relaxed"
-                >
-                  <div>
-                    <span className="text-slate-400">Caller: </span>
-                    <span className="text-slate-900 font-medium">{summary.caller}</span>
-                  </div>
-                  <div>
-                    <span className="text-slate-400">Request: </span>
-                    <span className="text-slate-900">{summary.request}</span>
-                  </div>
-                  <div>
-                    <span className="text-slate-400">Contact: </span>
-                    <span className="text-slate-900">{summary.contact}</span>
-                  </div>
-                  <div>
-                    <span className="text-slate-400">Status: </span>
-                    <span className="text-[#F59E0B] font-semibold">{summary.status}</span>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
+            {/* Call card with arcs behind it */}
+            <div className="relative">
+              <SignalArcs
+                size={460}
+                className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-ink opacity-50"
+              />
+
+              <GlassCard className="relative">
+                {/* Header: identity (swaps) + live indicator (constant) */}
+                <div className="flex items-center justify-between border-b border-hairline pb-3.5">
+                  <AnimatePresence mode="wait">
+                    <motion.div key={active} {...fade} className="flex items-center gap-2.5">
+                      <span
+                        className="flex h-[34px] w-[34px] flex-none items-center justify-center rounded-full text-[13px] font-semibold text-white"
+                        style={{ background: scenario.avatarColor }}
+                      >
+                        {scenario.avatar}
+                      </span>
+                      <span className="block">
+                        <span className="block text-[14px] font-semibold text-ink">{scenario.name}</span>
+                        <span className="block text-[11.5px] text-ink/55">{scenario.meta}</span>
+                      </span>
+                    </motion.div>
+                  </AnimatePresence>
+
+                  <span className="flex flex-none items-center gap-1.5 rounded-full bg-[rgba(45,194,160,0.12)] px-2.5 py-1 text-[11.5px] font-semibold text-[#1A8C73]">
+                    <span className="live-dot" />
+                    Live · 0:14
+                  </span>
+                </div>
+
+                {/* Waveform (constant) */}
+                <div className="my-4 flex h-[30px] items-center justify-center gap-[3px]" aria-hidden="true">
+                  {WAVE.map((bar, i) => (
+                    <i
+                      key={i}
+                      className={`wave-bar w-[3px] rounded-full ${i % 2 === 0 ? "bg-gold" : "bg-signal"}`}
+                      style={{ height: `${bar.height}%`, animationDelay: `${bar.delay}s` }}
+                    />
+                  ))}
+                </div>
+
+                {/* Conversation + captured outcome (swaps) */}
+                <AnimatePresence mode="wait">
+                  <motion.div key={active} {...fade}>
+                    {scenario.lines.map((line, i) => (
+                      <div
+                        key={i}
+                        className={
+                          line.role === "caller"
+                            ? "mb-2 max-w-[88%] rounded-[14px] rounded-bl-[4px] bg-[#EEEAE1] px-3.5 py-2.5 text-[13px] leading-[1.55] text-ink"
+                            : "mb-2 ml-auto max-w-[88%] rounded-[14px] rounded-br-[4px] bg-[rgba(245,165,36,0.16)] px-3.5 py-2.5 text-[13px] leading-[1.55] text-ink"
+                        }
+                      >
+                        {line.parts.map((part, j) =>
+                          part.b ? (
+                            <b key={j} className="font-semibold text-[#B5740B]">
+                              {part.t}
+                            </b>
+                          ) : (
+                            <span key={j}>{part.t}</span>
+                          ),
+                        )}
+                      </div>
+                    ))}
+
+                    <div className="mt-3 flex items-center gap-2.5 rounded-[14px] bg-[rgba(45,194,160,0.12)] px-3.5 py-2.5">
+                      <span className="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-signal text-white">
+                        <CheckIcon />
+                      </span>
+                      <span className="text-[12.5px] text-ink">
+                        <b className="font-semibold text-[#1A8C73]">{scenario.outcome.title}</b>{" "}
+                        <span className="text-ink/55">{scenario.outcome.detail}</span>
+                      </span>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </GlassCard>
             </div>
-
           </motion.div>
-
         </div>
       </div>
 
@@ -179,17 +304,32 @@ export default function Hero() {
   )
 }
 
+// Gold gradient tick used in the trust row; ink check for contrast.
+function Tick() {
+  return (
+    <span
+      className="flex h-[19px] w-[19px] flex-none items-center justify-center rounded-full text-ink"
+      style={{
+        background: "linear-gradient(180deg, var(--color-gold-soft), var(--color-gold))",
+        boxShadow: "0 2px 6px -1px rgba(245,165,36,0.5)",
+      }}
+    >
+      <CheckIcon size={10} />
+    </span>
+  )
+}
+
 function PhoneIcon() {
   return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 3.95 11a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 2.88 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 18.92z" />
     </svg>
   )
 }
 
-function CheckIcon() {
+function CheckIcon({ size = 12 }: { size?: number }) {
   return (
-    <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg width={size} height={size} viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M2 6l3 3 5-5" />
     </svg>
   )

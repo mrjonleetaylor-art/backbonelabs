@@ -23,6 +23,7 @@ export default function Pill({ children, active = false, onClick, className }: P
       aria-pressed={active}
       className={[
         "rounded-full border px-3.5 py-[7px] text-[12.5px] font-semibold transition-all duration-150",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper",
         active
           ? "border-transparent bg-ink text-white shadow-[0_8px_18px_-10px_rgba(10,20,34,0.6)]"
           : "border-hairline bg-white/[0.65] text-ink hover:-translate-y-px hover:border-[rgba(10,20,34,0.22)]",
