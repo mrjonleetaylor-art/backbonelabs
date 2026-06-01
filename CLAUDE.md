@@ -5,7 +5,7 @@ RelayDesk (relaydesk.com.au) is an AI phone agent service
 for owner-operated local businesses in Australia. We answer every 
 inbound call using ElevenLabs voice AI + Claude API + Twilio.
 
-Three tiers: Overflow ($99), Receptionist ($399), Operator ($699). No setup fees.
+Three tiers: Overflow ($99), Receptionist ($299), Operator ($599). No setup fees. (Live prices are in `lib/constants.ts` — that's the source of truth, this line is a convenience copy.)
 
 The demo agent is called Thomas Anderson (Tom). Prospects call 
 the RelayDesk number, speak to Tom, and think he is a real 
@@ -93,8 +93,16 @@ illusion anywhere on the website or in copy.
 12. Footer
 
 ## Execution plan
-See `../relaydesk/Execution Plan.md` — that is the single source of truth.
-Website tasks live under "Parallel — Website conversion audit" in that doc.
+See `../hub/Execution Plan.md` for milestone narrative, and `../hub/_home-base/state.md` for current priorities and blockers — the vault is the single source of truth for project state. Website tasks live under "Parallel — Website conversion audit" in the Execution Plan.
+
+## Keep the vault in sync when you ship
+This repo is code, but the project's "where are we" lives in the vault at `../hub/`. Web work is invisible to the vault unless you record it, which is how state drifts.
+
+**When you ship something here that changes project state** (deploy a fix, close a bug, change pricing/features, alter the dashboard or an integration), also update `../hub/_home-base/state.md` — add a dated line under "Recent completions", and clear or update any affected priority or blocker. If it's a tracked bug or a decision, also touch `TECH-DEBT.md` (in this repo) or `../hub/_home-base/decisions.md` as relevant.
+
+If you have write access to the vault, do it before you finish. **If you can't access the vault, stop and flag it with Jon** — name the file and the line it needs — don't silently skip it. Full doc-permission rules: `../hub/CLAUDE.md` → "Keeping docs current".
+
+Pure code hygiene (refactors, lint fixes, dependency bumps) doesn't need a vault entry — only things that change project state.
 
 ## Thomas Anderson
 - Lives in the demo call section only
